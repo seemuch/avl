@@ -8,12 +8,15 @@ How to build
    installed.
 
 2. Create configure script.
+
     autoreconf --install
 
 3. Create Makefiles.
+
     ./configure
 
 4. Make.
+
     make
 
 
