@@ -53,6 +53,12 @@ void die(const char *msg)
 	exit(EXIT_FAILURE);
 }
 
+void die_err(const char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
+}
+
 void parse_command_line(int argc, char *argv[])
 {
 	memset(input_file, 0, MAX_FILENAME);
@@ -109,7 +115,7 @@ void parse_command_line(int argc, char *argv[])
 
 	struct stat buf;
 	if (stat(input_file, &buf) != 0)
-		die("input file does not exist.");
+		die_err("input file does not exist");
 
 	if (translate_flag) {
 		strcpy(translate_file, input_file);
@@ -124,17 +130,17 @@ int main(int argc, char *argv[])
 
 	yyin = fopen(input_file, "r");
 	if (!yyin)
-		die("can not open input file.");
+		die_err("can not open input file");
 
 	if (translate_flag) {
 		yyout = fopen(translate_file, "w");
 		if (!yyout)
-			die("can not open translate file.");
+			die_err("can not open translate file");
 	}
 	else {
 		yyout = fopen(temp_file, "w");
 		if (!yyout)
-			die("can not open temporary file.");
+			die_err("can not open temporary file");
 	}
 
 	yyparse();
@@ -147,19 +153,22 @@ int main(int argc, char *argv[])
 		int status;
 
 		if (pid < 0)
-			die("fork() failed.");
+			die_err("fork() failed");
 		else if (pid == 0) {
 			if (output_flag) {
 				printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
-				execlp(CXX_COMPILER, "-o", output_file, temp_file);
+				if (execlp(CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
+					die_err("execlp() failed");
 			}
 			else {
 				printf("%s %s\n", CXX_COMPILER, temp_file);
-				execlp(CXX_COMPILER, temp_file);
+				if (execlp(CXX_COMPILER, temp_file, NULL) < 0)
+					die_err("execlp() failed");
 			}
 		}
 
-		waitpid(pid, &status, 0);
+		if (waitpid(pid, &status, 0) != pid)
+			die_err("waitpid() failed");
 		if (!status) {
 			die("failed to compile the temporary file.");
 		}
