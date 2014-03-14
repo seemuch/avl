@@ -1,4 +1,5 @@
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <getopt.h>
 #include <string.h>
 #include <stdlib.h>
@@ -12,10 +13,34 @@ const char *USAGE = "Usage: " PACKAGE_STRING " [-h|-o|-t] file\n"
 	"  -o --output=<file>       Place the output into <file>\n"
 	"  -t --translate           Translate the source files into c++\n"
 	"                           xxx.avl -> xxx.cpp\n"
-	"Use only one option at a time.\n"
+	"Use at most one option at a time.\n"
 	"\n"
 	"For bug reporting instructions, please see:\n"
 	"<" PACKAGE_URL ">.\n";
+
+#define MAX_FILENAME 256
+const char *DEFAULT_OUTPUT = "a.out";
+const char *DEFAULT_EXT = ".avl";
+const char *TRANSLATE_EXT = ".cpp";
+const char *DEFAULT_TEMP = "/tmp/avl_temp.cpp";
+const char *CXX_COMPILER = "g++";
+
+char input_file[MAX_FILENAME];
+char output_file[MAX_FILENAME];
+char translate_file[MAX_FILENAME];
+char temp_file[MAX_FILENAME];
+int translate_flag = 0;
+int output_flag = 0;
+
+extern FILE *yyin;
+extern FILE *yyout;
+
+const struct option long_options[] = {
+	{"help",      no_argument,       NULL, 'h'},
+	{"output",    required_argument, NULL, 'o'},
+	{"translate", no_argument,       NULL, 't'},
+	{0, 0, 0, 0}
+};
 
 void usage()
 {
@@ -27,26 +52,6 @@ void die(const char *msg)
 	fprintf(stderr, PACKAGE ": %s\n", msg);
 	exit(EXIT_FAILURE);
 }
-
-#define MAX_FILENAME 256
-const char *DEFAULT_OUTPUT = "a.out";
-const char *DEFAULT_EXT = ".avl";
-const char *TRANSLATE_EXT = ".cpp";
-const char *DEFAULT_TEMP = "/tmp/avl_temp.cpp";
-
-char input_file[MAX_FILENAME];
-char output_file[MAX_FILENAME];
-char translate_file[MAX_FILENAME];
-char temp_file[MAX_FILENAME];
-int translate_flag = 0;
-int output_flag = 0;
-
-const struct option long_options[] = {
-	{"help",      no_argument,       NULL, 'h'},
-	{"output",    required_argument, NULL, 'o'},
-	{"translate", no_argument,       NULL, 't'},
-	{0, 0, 0, 0}
-};
 
 void parse_command_line(int argc, char *argv[])
 {
@@ -88,7 +93,7 @@ void parse_command_line(int argc, char *argv[])
 	}
 
 	if (output_flag && translate_flag)
-		die("Please specify only one option at a time.");
+		die("Please specify at most one option at a time.");
 
 	if (optind != argc - 1) {
 		usage();
@@ -113,9 +118,6 @@ void parse_command_line(int argc, char *argv[])
 	}
 }
 
-extern FILE *yyin;
-extern FILE *yyout;
-
 int main(int argc, char *argv[])
 {
 	parse_command_line(argc, argv);
@@ -139,6 +141,29 @@ int main(int argc, char *argv[])
 
 	fclose(yyin);
 	fclose(yyout);
+
+	if (!translate_flag) {
+		pid_t pid = fork();
+		int status;
+
+		if (pid < 0)
+			die("fork() failed.");
+		else if (pid == 0) {
+			if (output_flag) {
+				printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
+				execlp(CXX_COMPILER, "-o", output_file, temp_file);
+			}
+			else {
+				printf("%s %s\n", CXX_COMPILER, temp_file);
+				execlp(CXX_COMPILER, temp_file);
+			}
+		}
+
+		waitpid(pid, &status, 0);
+		if (!status) {
+			die("failed to compile the temporary file.");
+		}
+	}
 
 	return 0;
 }
