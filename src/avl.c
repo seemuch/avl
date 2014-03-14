@@ -10,18 +10,11 @@ const char *USAGE = "Usage: " PACKAGE_STRING " [options] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
 	"  -o --output=<file>       Place the output into <file>\n"
-	"  --translate[=file]       Translate the source files into c++ [file]\n"
-	"                           If [file] is not specified, xxx.avl -> xxx.cpp\n"
+	"  -t --translate           Translate the source files into c++\n"
+	"                           xxx.avl -> xxx.cpp\n"
 	"\n"
 	"For bug reporting instructions, please see:\n"
 	"<" PACKAGE_URL ">.\n";
-
-const struct option long_options[] = {
-	{"help", no_argument, NULL, 'h'},
-	{"output", required_argument, NULL, 'o'},
-	{"translate", optional_argument, NULL, 't'},
-	{0, 0, 0, 0}
-};
 
 void usage()
 {
@@ -34,7 +27,7 @@ void die(const char *msg)
 	exit(EXIT_FAILURE);
 }
 
-#define MAX_FILENAME 128
+#define MAX_FILENAME 256
 const char *DEFAULT_OUTPUT = "a.out";
 const char *DEFAULT_EXT = ".avl";
 const char *TRANSLATE_EXT = ".cpp";
@@ -43,6 +36,14 @@ char input_file[MAX_FILENAME];
 char output_file[MAX_FILENAME];
 char translate_file[MAX_FILENAME];
 int translate_flag = 0;
+int output_flag = 0;
+
+const struct option long_options[] = {
+	{"help",      no_argument,       NULL, 'h'},
+	{"output",    required_argument, NULL, 'o'},
+	{"translate", no_argument,       NULL, 't'},
+	{0, 0, 0, 0}
+};
 
 void parse_command_line(int argc, char *argv[])
 {
@@ -67,19 +68,13 @@ void parse_command_line(int argc, char *argv[])
 					exit(EXIT_FAILURE);
 				}
 				if (strlen(optarg) <= 0)
-					die("No output filename.");
+					die("no output filename.");
 				else if (strlen(optarg) >= MAX_FILENAME)
-					die("Output filename too long.");
+					die("output filename too long.");
 				strcpy(output_file, optarg);
+				output_flag = 1;
 				break;
 			case 't':
-				if (optarg) {
-					if (strlen(optarg) <= 0)
-						die("No translate filename.");
-					else if (strlen(optarg) >= MAX_FILENAME)
-						die("Translate filename too long.");
-					strcpy(translate_file, optarg);
-				}
 				translate_flag = 1;
 				break;
 			default:
@@ -94,22 +89,20 @@ void parse_command_line(int argc, char *argv[])
 	}
 	if (strlen(argv[optind]) <= strlen(DEFAULT_EXT)
 			|| strlen(argv[optind]) >= MAX_FILENAME)
-		die("Invalid input filename.");
+		die("invalid input filename.");
 	strcpy(input_file, argv[optind]);
 	if (strcmp(input_file + strlen(input_file) - strlen(DEFAULT_EXT),
 				DEFAULT_EXT) != 0)
-		die("Not a valid avl source file.");
+		die("not a valid avl source file.");
 
 	struct stat buf;
 	if (stat(input_file, &buf) != 0)
-		die("Input file does not exist.");
+		die("input file does not exist.");
 
 	if (translate_flag) {
-		if (strlen(translate_file) == 0) {
-			strcpy(translate_file, input_file);
-			strcpy(translate_file + strlen(translate_file) - strlen(DEFAULT_EXT),
-					TRANSLATE_EXT);
-		}
+		strcpy(translate_file, input_file);
+		strcpy(translate_file + strlen(translate_file) - strlen(DEFAULT_EXT),
+				TRANSLATE_EXT);
 	}
 }
 
