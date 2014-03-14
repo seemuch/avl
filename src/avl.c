@@ -6,12 +6,13 @@
 #include "parser.h"
 #include "config.h"
 
-const char *USAGE = "Usage: " PACKAGE_STRING " [options] file\n"
+const char *USAGE = "Usage: " PACKAGE_STRING " [-h|-o|-t] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
 	"  -o --output=<file>       Place the output into <file>\n"
 	"  -t --translate           Translate the source files into c++\n"
 	"                           xxx.avl -> xxx.cpp\n"
+	"Use only one option at a time.\n"
 	"\n"
 	"For bug reporting instructions, please see:\n"
 	"<" PACKAGE_URL ">.\n";
@@ -31,10 +32,12 @@ void die(const char *msg)
 const char *DEFAULT_OUTPUT = "a.out";
 const char *DEFAULT_EXT = ".avl";
 const char *TRANSLATE_EXT = ".cpp";
+const char *DEFAULT_TEMP = "/tmp/avl_temp.cpp";
 
 char input_file[MAX_FILENAME];
 char output_file[MAX_FILENAME];
 char translate_file[MAX_FILENAME];
+char temp_file[MAX_FILENAME];
 int translate_flag = 0;
 int output_flag = 0;
 
@@ -51,6 +54,7 @@ void parse_command_line(int argc, char *argv[])
 	memset(output_file, 0, MAX_FILENAME);
 	memset(translate_file, 0, MAX_FILENAME);
 	strcpy(output_file, DEFAULT_OUTPUT);
+	strcpy(temp_file, DEFAULT_TEMP);
 
 	while (1) {
 		int option_index = 0;
@@ -83,6 +87,9 @@ void parse_command_line(int argc, char *argv[])
 		}
 	}
 
+	if (output_flag && translate_flag)
+		die("Please specify only one option at a time.");
+
 	if (optind != argc - 1) {
 		usage();
 		exit(EXIT_FAILURE);
@@ -106,9 +113,32 @@ void parse_command_line(int argc, char *argv[])
 	}
 }
 
+extern FILE *yyin;
+extern FILE *yyout;
+
 int main(int argc, char *argv[])
 {
 	parse_command_line(argc, argv);
+
+	yyin = fopen(input_file, "r");
+	if (!yyin)
+		die("can not open input file.");
+
+	if (translate_flag) {
+		yyout = fopen(translate_file, "w");
+		if (!yyout)
+			die("can not open translate file.");
+	}
+	else {
+		yyout = fopen(temp_file, "w");
+		if (!yyout)
+			die("can not open temporary file.");
+	}
+
+	yyparse();
+
+	fclose(yyin);
+	fclose(yyout);
 
 	return 0;
 }
