@@ -1,14 +1,12 @@
-#include <unistd.h>
 #include <sys/stat.h>
 #include <getopt.h>
-#include <libgen.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "parser.h"
 #include "config.h"
 
-const char *USAGE = "Usage: " PACKAGE_STRING " [options] file...\n"
+const char *USAGE = "Usage: " PACKAGE_STRING " [options] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
 	"  -o --output=<file>       Place the output into <file>\n"
@@ -36,18 +34,18 @@ void die(const char *msg)
 	exit(EXIT_FAILURE);
 }
 
-const size_t MAX_FILENAME = 128;
+#define MAX_FILENAME 128
 const char *DEFAULT_OUTPUT = "a.out";
 const char *DEFAULT_EXT = ".avl";
 const char *TRANSLATE_EXT = ".cpp";
 
-int main(int argc, char *argv[])
-{
-	char input_file[MAX_FILENAME];
-	char output_file[MAX_FILENAME];
-	char translate_file[MAX_FILENAME];
-	int translate_flag = 0;
+char input_file[MAX_FILENAME];
+char output_file[MAX_FILENAME];
+char translate_file[MAX_FILENAME];
+int translate_flag = 0;
 
+void parse_command_line(int argc, char *argv[])
+{
 	memset(input_file, 0, MAX_FILENAME);
 	memset(output_file, 0, MAX_FILENAME);
 	memset(translate_file, 0, MAX_FILENAME);
@@ -68,14 +66,18 @@ int main(int argc, char *argv[])
 					usage();
 					exit(EXIT_FAILURE);
 				}
-				if (strlen(optarg) <= 0 || strlen(optarg) >= MAX_FILENAME)
-					die("Incorrect output filename.");
+				if (strlen(optarg) <= 0)
+					die("No output filename.");
+				else if (strlen(optarg) >= MAX_FILENAME)
+					die("Output filename too long.");
 				strcpy(output_file, optarg);
 				break;
 			case 't':
 				if (optarg) {
-					if (strlen(optarg) <= 0 || strlen(optarg) >= MAX_FILENAME)
-						die("Incorrect translate filename.");
+					if (strlen(optarg) <= 0)
+						die("No translate filename.");
+					else if (strlen(optarg) >= MAX_FILENAME)
+						die("Translate filename too long.");
 					strcpy(translate_file, optarg);
 				}
 				translate_flag = 1;
@@ -92,7 +94,7 @@ int main(int argc, char *argv[])
 	}
 	if (strlen(argv[optind]) <= strlen(DEFAULT_EXT)
 			|| strlen(argv[optind]) >= MAX_FILENAME)
-		die("Incorrect input filename.");
+		die("Invalid input filename.");
 	strcpy(input_file, argv[optind]);
 	if (strcmp(input_file + strlen(input_file) - strlen(DEFAULT_EXT),
 				DEFAULT_EXT) != 0)
@@ -100,7 +102,7 @@ int main(int argc, char *argv[])
 
 	struct stat buf;
 	if (stat(input_file, &buf) != 0)
-		die("Input filename does not exist.");
+		die("Input file does not exist.");
 
 	if (translate_flag) {
 		if (strlen(translate_file) == 0) {
@@ -109,10 +111,11 @@ int main(int argc, char *argv[])
 					TRANSLATE_EXT);
 		}
 	}
+}
 
-	printf("Input: %s\n", input_file);
-	printf("Output: %s\n", output_file);
-	printf("Translate: %s\n", translate_file);
+int main(int argc, char *argv[])
+{
+	parse_command_line(argc, argv);
 
 	return 0;
 }
