@@ -145,7 +145,8 @@ int main(int argc, char *argv[])
 			die_err("can not open temporary file");
 	}
 
-	yyparse();
+	if (yyparse() != 0)
+		die("Parsing failed.");
 
 	fclose(yyin);
 	fclose(yyout);
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
 			die_err("fork() failed");
 		else if (pid == 0) {
 			printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
-			if (execlp(CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
+			if (execlp(CXX_COMPILER, CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
 				die_err("execlp() failed");
 		}
 
