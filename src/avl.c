@@ -150,23 +150,16 @@ int main(int argc, char *argv[])
 
 	if (!translate_flag) {
 		pid_t pid = fork();
-		int status;
 
 		if (pid < 0)
 			die_err("fork() failed");
 		else if (pid == 0) {
-			if (output_flag) {
-				printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
-				if (execlp(CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
-					die_err("execlp() failed");
-			}
-			else {
-				printf("%s %s\n", CXX_COMPILER, temp_file);
-				if (execlp(CXX_COMPILER, temp_file, NULL) < 0)
-					die_err("execlp() failed");
-			}
+			printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
+			if (execlp(CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
+				die_err("execlp() failed");
 		}
 
+		int status;
 		if (waitpid(pid, &status, 0) != pid)
 			die_err("waitpid() failed");
 		if (!status) {
