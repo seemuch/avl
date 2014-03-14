@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #include <getopt.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,7 +11,7 @@
 const char *USAGE = "Usage: " PACKAGE_STRING " [-h|-o|-t] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
-	"  -o --output=<file>       Place the output into <file>\n"
+	"  -o --output=<file>       Compile and place the executable into <file>\n"
 	"  -t --translate           Translate the source files into c++\n"
 	"                           xxx.avl -> xxx.cpp\n"
 	"Use at most one option at a time.\n"
@@ -18,13 +19,13 @@ const char *USAGE = "Usage: " PACKAGE_STRING " [-h|-o|-t] file\n"
 	"For bug reporting instructions, please see:\n"
 	"<" PACKAGE_URL ">.\n";
 
-#define MAX_FILENAME 256
 const char *DEFAULT_OUTPUT = "a.out";
 const char *DEFAULT_EXT = ".avl";
 const char *TRANSLATE_EXT = ".cpp";
 const char *DEFAULT_TEMP = "/tmp/avl_temp.cpp";
 const char *CXX_COMPILER = "g++";
 
+#define MAX_FILENAME 256
 char input_file[MAX_FILENAME];
 char output_file[MAX_FILENAME];
 char translate_file[MAX_FILENAME];
@@ -64,6 +65,7 @@ void parse_command_line(int argc, char *argv[])
 	memset(input_file, 0, MAX_FILENAME);
 	memset(output_file, 0, MAX_FILENAME);
 	memset(translate_file, 0, MAX_FILENAME);
+	memset(temp_file, 0, MAX_FILENAME);
 	strcpy(output_file, DEFAULT_OUTPUT);
 	strcpy(temp_file, DEFAULT_TEMP);
 
@@ -115,7 +117,7 @@ void parse_command_line(int argc, char *argv[])
 
 	struct stat buf;
 	if (stat(input_file, &buf) != 0)
-		die_err("input file does not exist");
+		die_err("invalid input file");
 
 	if (translate_flag) {
 		strcpy(translate_file, input_file);
