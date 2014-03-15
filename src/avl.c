@@ -8,7 +8,7 @@
 #include "parser.h"
 #include "config.h"
 
-const char *USAGE = "Usage: " PACKAGE_STRING " [-h|-o|-t] file\n"
+const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
 	"  -o --output=<file>       Compile and place the executable into <file>\n"
