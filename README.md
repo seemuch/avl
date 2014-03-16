@@ -13,30 +13,31 @@ How to build
 		sudo port install freeglut glew glm glfw
 		```
 	- Linux
+		* Only need to install libraries
 		```bash
-		sudo apt-get install
+		sudo apt-get install **
 		```
 
 2. Create configure script.
 	- Mac
     	```bash
-		autoreconf --install
-		```
+	autoreconf --install
+	```
 
 3. Create Makefiles.
 	- Mac
-		```bash
+	```bash
     	./configure -CXXFLAGS=/opt/local/include
-		```
+	```
 	- Linux
-		```bash
-		./configure
-		```
+	```bash
+	./configure
+	```
 
 4. Make.
 
 	```bash
-    make
+    	make
 	```
 
 5. Install
