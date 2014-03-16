@@ -19,8 +19,8 @@ How to build
 		```
 
 2. Create configure script.
-	- Mac
-    	```bash
+
+	```bash
 	autoreconf --install
 	```
 
