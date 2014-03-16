@@ -4,21 +4,46 @@ AVL
 How to build
 ============
 
-1. Make sure you have [Autotools](http://www.gnu.org/software/automake/)
-   installed. You can install it using [MacPorts](http://guide.macports.org) on
-   Mac or apt-get on Linux.
+1. Prerequisites
+	- Mac
+		* Setup [MacPorts](http://guide.macports.org)
+		* Intall [XQuartz](https://xquartz.macosforge.org/)
+		* Install dependencies
+		```bash
+		sudo port install freeglut glew glm glfw
+		```
+	- Linux
+		```bash
+		sudo apt-get install
+		```
 
 2. Create configure script.
-
-    autoreconf --install
+	- Mac
+    	```bash
+		autoreconf --install
+		```
 
 3. Create Makefiles.
-
-    ./configure
+	- Mac
+		```bash
+    	./configure -CXXFLAGS=/opt/local/include
+		```
+	- Linux
+		```bash
+		./configure
+		```
 
 4. Make.
 
+	```bash
     make
+	```
 
+5. Install
 
-# vim: textwidth=80
+	```bash
+	sudo make install
+	```
+
+This would install avl to /usr/local/bin, header files to /usr/local/include
+and libavl.a to /usr/local/lib.
