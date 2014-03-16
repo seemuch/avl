@@ -3,6 +3,7 @@
 
 #include <GL/freeglut.h>
 #include <GL/glut.h>
+#include "AvlTypes.h"
 
 const int OpenGL_Major_Version = 2;
 const int OpenGL_Minor_Version = 1;
