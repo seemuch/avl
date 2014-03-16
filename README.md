@@ -7,7 +7,7 @@ How to build
 1. Prerequisites
 	- Mac
 		* Setup [MacPorts](http://guide.macports.org)
-		* Intall [XQuartz](https://xquartz.macosforge.org/)
+		* Install [XQuartz](https://xquartz.macosforge.org/)
 		* Install dependencies
 		```bash
 		sudo port install freeglut glew glm glfw
