@@ -26,7 +26,7 @@ How to build
 3. Create Makefiles.
 	- Mac
 	```bash
-	./configure -CXXFLAGS=/opt/local/include
+	./configure -CXXFLAGS=-I/opt/local/include
 	```
 	- Linux
 	```bash
