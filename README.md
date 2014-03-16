@@ -17,10 +17,12 @@ How to build
 		```bash
 		sudo apt-get install **
 		```
+
 2. Create configure script.
 	```bash
 	autoreconf --install
 	```
+
 3. Create Makefiles.
 	- Mac
 	```bash
@@ -30,11 +32,12 @@ How to build
 	```bash
 	./configure
 	```
-4. Make.
 
+4. Make.
 	```bash
 	make
 	```
+
 5. Install
 	```bash
 	sudo make install
