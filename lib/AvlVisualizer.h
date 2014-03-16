@@ -4,11 +4,11 @@
 #include <GL/freeglut.h>
 #include <GL/glut.h>
 
-#define OpenGL_Major_Version 2
-#define OpenGL_Minor_Version 1
-#define Title "Algorithm Visualization"
-#define Default_Width 640
-#define Default_Height 480
+const int OpenGL_Major_Version = 2;
+const int OpenGL_Minor_Version = 1;
+const char *const Title = "Algorithm Visualization";
+const int Default_Width = 640;
+const int Default_Height = 480;
 
 class AvlVisualizer
 {
