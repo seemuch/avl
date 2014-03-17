@@ -3,7 +3,9 @@
 
 #include <GL/freeglut.h>
 #include <string>
+#include <iostream>
 using std::to_string;
+using std::ostream;
 
 class AvlObject
 {
@@ -16,15 +18,6 @@ class AvlObject
 			_width = width;
 			_height = height;
 			_font = font;
-		}
-
-		AvlObject(const AvlObject &obj)
-		{
-			_x = obj._x;
-			_y = obj._y;
-			_width = obj._width;
-			_height = obj._height;
-			_font = obj._font;
 		}
 
 		virtual ~AvlObject() {}
@@ -63,33 +56,70 @@ class AvlInt : public AvlObject
 
 		virtual ~AvlInt() {}
 
-		AvlInt operator+(int v) const
+		friend ostream& operator<<(ostream &os, const AvlInt &v)
+		{
+			os << v.value;
+			return os;
+		}
+
+		const AvlInt& operator+() const { return *this; }
+		const AvlInt operator-() const
+		{
+			AvlInt ret = *this;
+			ret.value = -value;
+			return ret;
+		}
+
+		const AvlInt operator+(int v) const
 		{
 			AvlInt ret = *this;
 			ret.value += v;
 			return ret;
 		}
+		const AvlInt operator+(const AvlInt &v) const { return *this + v.value; }
+		const AvlInt& operator+=(int v) { value += v; return *this; }
+		const AvlInt& operator+=(const AvlInt &v) { return *this += v.value; }
+		friend const AvlInt operator+(int v1, const AvlInt &v2) { return v2 + v1; }
 
-		AvlInt operator+=(int v)
+		const AvlInt operator-(int v) const
 		{
-			value += v;
-			return *this;
+			AvlInt ret = *this;
+			ret.value -= v;
+			return ret;
+		}
+		const AvlInt operator-(const AvlInt &v) const { return *this - v.value; }
+		const AvlInt& operator-=(int v) { value -= v; return *this; }
+		const AvlInt& operator-=(const AvlInt &v) { return *this -= v.value; }
+		friend const AvlInt operator-(int v1, const AvlInt &v2) { return -v2 + v1; }
+
+		const AvlInt operator*(int v) const
+		{
+			AvlInt ret = *this;
+			ret.value *= v;
+			return ret;
+		}
+		const AvlInt operator*(const AvlInt &v) const { return *this * v.value; }
+		const AvlInt& operator*=(int v) { value *= v; return *this; }
+		const AvlInt& operator*=(const AvlInt &v) { return *this *= v.value; }
+		friend const AvlInt operator*(int v1, const AvlInt &v2) { return v2 * v1; }
+
+		const AvlInt operator/(int v) const
+		{
+			AvlInt ret = *this;
+			ret.value /= v;
+			return ret;
+		}
+		const AvlInt operator/(const AvlInt &v) const { return *this / v.value; }
+		const AvlInt& operator/=(int v) { value /= v; return *this; }
+		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
+		friend const AvlInt operator/(int v1, const AvlInt &v2)
+		{
+			AvlInt ret = v2;
+			ret.value = v1 / v2.value;
+			return ret;
 		}
 
-		AvlInt operator+(const AvlInt &v) const
-		{
-			return *this + v.value;
-		}
-
-		AvlInt operator+=(const AvlInt &v)
-		{
-			return *this += v.value;
-		}
-
-		int val() const
-		{
-			return value;
-		}
+		int val() const { return value; }
 
 		virtual void render() const
 		{
