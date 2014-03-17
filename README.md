@@ -43,4 +43,4 @@ How to build
 	sudo make install
 	```
 This would install avl to /usr/local/bin, header files to /usr/local/include
-and libavl.a to /usr/local/lib.
+and libraries to /usr/local/lib.
