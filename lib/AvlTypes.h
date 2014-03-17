@@ -2,6 +2,8 @@
 #define AVL_TYPES_H_
 
 #include <GL/freeglut.h>
+#include <string>
+using std::to_string;
 
 class AvlObject
 {
@@ -24,17 +26,6 @@ class AvlObject
 			_font = obj._font;
 		}
 
-		AvlObject operator=(const AvlObject &obj)
-		{
-			_x = obj._x;
-			_y = obj._y;
-			_width = obj._width;
-			_height = obj._height;
-			_font = obj._font;
-
-			return *this;
-		}
-
 		int x() const { return _x; }
 		int y() const { return _y; }
 		int width() const { return _width; }
@@ -46,6 +37,9 @@ class AvlObject
 		void set_width(int width) { _width = width; }
 		void set_height(int height) { _height = height; }
 		void set_font(void *font) { _font = font; }
+
+	protected:
+		virtual void render() const = 0;
 
 	private:
 		int _x;
@@ -91,6 +85,13 @@ class AvlInt : public AvlObject
 		int val() const
 		{
 			return value;
+		}
+
+		void render() const
+		{
+			glColor4f(1.0, 0.0, 0.0, 0.0);
+			glRasterPos2f(x(), y());
+			glutBitmapString(font(), (const unsigned char *)(to_string(value).c_str()));
 		}
 
 	private:
