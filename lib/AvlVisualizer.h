@@ -5,6 +5,11 @@
 #include <GL/glut.h>
 #include "AvlTypes.h"
 
+#include <unordered_map>
+#include <string>
+using std::unordered_map;
+using std::string;
+
 const int OpenGL_Major_Version = 2;
 const int OpenGL_Minor_Version = 1;
 const char *const Title = "Algorithm Visualization";
@@ -19,6 +24,9 @@ class AvlVisualizer
 
 		void show();
 
+		void addObject(const AvlObject *obj, const string &name);
+		void delObject(const string &name);
+
 	private:
 		static void avlResize(int width, int height);
 
@@ -27,6 +35,8 @@ class AvlVisualizer
 		int windowHandle;
 		static int currentWidth;
 		static int currentHeight;
+
+		static unordered_map<string, const AvlObject *> objects;
 };
 
 #endif // AVL_VISUALIZER_H_
