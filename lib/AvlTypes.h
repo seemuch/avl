@@ -8,7 +8,8 @@ using std::to_string;
 class AvlObject
 {
 	public:
-		AvlObject(int x = 0, int y = 0, int width = 0, int height = 0, void *font = GLUT_BITMAP_9_BY_15)
+		AvlObject(GLfloat x = 0, GLfloat y = 0, GLfloat width = 0, GLfloat height = 0,
+				void *font = GLUT_BITMAP_9_BY_15)
 		{
 			_x = x;
 			_y = y;
@@ -26,38 +27,41 @@ class AvlObject
 			_font = obj._font;
 		}
 
-		int x() const { return _x; }
-		int y() const { return _y; }
-		int width() const { return _width; }
-		int height() const { return _height; }
+		virtual ~AvlObject() {}
+
+		GLfloat x() const { return _x; }
+		GLfloat y() const { return _y; }
+		GLfloat width() const { return _width; }
+		GLfloat height() const { return _height; }
 		void *font() const { return _font; }
 
-		void set_x(int x) { _x = x; }
-		void set_y(int y) { _y = y; }
-		void set_width(int width) { _width = width; }
-		void set_height(int height) { _height = height; }
+		void set_x(GLfloat x) { _x = x; }
+		void set_y(GLfloat y) { _y = y; }
+		void set_width(GLfloat width) { _width = width; }
+		void set_height(GLfloat height) { _height = height; }
 		void set_font(void *font) { _font = font; }
 
-	protected:
 		virtual void render() const = 0;
 
 	private:
-		int _x;
-		int _y;
-		int _width;
-		int _height;
+		GLfloat _x;
+		GLfloat _y;
+		GLfloat _width;
+		GLfloat _height;
 		void *_font;
 };
 
 class AvlInt : public AvlObject
 {
 	public:
-		AvlInt(int v = 0, int x = 0, int y = 0, int width = 0,
-				int height = 0, void *font = GLUT_BITMAP_9_BY_15)
+		AvlInt(int v = 0, GLfloat x = 0, GLfloat y = 0, GLfloat width = 0,
+				GLfloat height = 0, void *font = GLUT_BITMAP_9_BY_15)
 			: AvlObject(x, y, width, height, font)
 		{
 			value = v;
 		}
+
+		virtual ~AvlInt() {}
 
 		AvlInt operator+(int v) const
 		{
@@ -87,7 +91,7 @@ class AvlInt : public AvlObject
 			return value;
 		}
 
-		void render() const
+		virtual void render() const
 		{
 			glColor4f(1.0, 0.0, 0.0, 0.0);
 			glRasterPos2f(x(), y());
