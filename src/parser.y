@@ -1,5 +1,8 @@
 %{
 #include <stdio.h>
+
+int yylex();
+void yyerror(const char *msg);
 %}
 
 %debug
