@@ -19,12 +19,6 @@ const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"For bug reporting instructions, please see:\n"
 	"<" PACKAGE_URL ">.\n";
 
-const char *DEFAULT_OUTPUT = "a.out";
-const char *DEFAULT_EXT = ".avl";
-const char *TRANSLATE_EXT = ".cpp";
-const char *DEFAULT_TEMP = "/tmp/avl_temp.cpp";
-const char *CXX_COMPILER = "g++";
-
 #define MAX_FILENAME 256
 char input_file[MAX_FILENAME];
 char output_file[MAX_FILENAME];
@@ -35,6 +29,22 @@ int output_flag = 0;
 
 extern FILE *yyin;
 extern FILE *yyout;
+
+const char *const DEFAULT_OUTPUT = "a.out";
+const char *const DEFAULT_EXT = ".avl";
+const char *const TRANSLATE_EXT = ".cpp";
+const char *const DEFAULT_TEMP = "/tmp/avl_temp.cpp";
+char *const CXX_OPTIONS[] = {
+	"g++",
+	"-o",
+	output_file,
+	"-I/opt/local/include",
+	"-L/opt/local/lib",
+	"-lGL",
+	"-lglut",
+	temp_file,
+	NULL
+};
 
 const struct option long_options[] = {
 	{"help",      no_argument,       NULL, 'h'},
@@ -157,8 +167,11 @@ int main(int argc, char *argv[])
 		if (pid < 0)
 			die_err("fork() failed");
 		else if (pid == 0) {
-			printf("%s -o %s %s\n", CXX_COMPILER, output_file, temp_file);
-			if (execlp(CXX_COMPILER, CXX_COMPILER, "-o", output_file, temp_file, NULL) < 0)
+			char *const *s = CXX_OPTIONS;
+			while (*s)
+				printf("%s ", *s++);
+			printf("\n");
+			if (execvp(CXX_OPTIONS[0], CXX_OPTIONS) < 0)
 				die_err("execlp() failed");
 		}
 
