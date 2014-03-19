@@ -211,9 +211,11 @@ class AvlArray : public AvlObject, public std::vector<T>
 		virtual GLfloat y() const { return AvlObject::y(); }
 		virtual GLfloat width() const
 		{
-			GLfloat w = 0;
-			for (auto& v: *this)
+			GLfloat w = -font().width();
+			for (auto& v: *this) {
 				w += v.width();
+				w += font().width();
+			}
 			return w;
 		}
 		virtual GLfloat height() const { return AvlObject::height(); }
