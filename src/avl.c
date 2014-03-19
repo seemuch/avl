@@ -36,6 +36,7 @@ const char *const TRANSLATE_EXT = ".cpp";
 const char *const DEFAULT_TEMP = "/tmp/avl_temp.cpp";
 char *const CXX_OPTIONS[] = {
 	"g++",
+	"-std=c++11",
 	"-o",
 	output_file,
 	"-I/opt/local/include",
