@@ -7,16 +7,56 @@
 #include <string>
 #include <iostream>
 
+class AvlFont
+{
+	public:
+		AvlFont(void *font = GLUT_BITMAP_9_BY_15)
+		{
+			_font = font;
+			if (font == GLUT_BITMAP_9_BY_15) {
+				_width = 9;
+				_height = 15;
+			}
+			else {
+				_width = 0;
+				_height = 0;
+			}
+		}
+
+		const AvlFont& operator=(void *font)
+		{
+			_font = font;
+			if (font == GLUT_BITMAP_9_BY_15) {
+				_width = 9;
+				_height = 15;
+			}
+			else {
+				_width = 0;
+				_height = 0;
+			}
+
+			return *this;
+		}
+
+		GLfloat width() const { return _width; }
+		GLfloat height() const { return _height; }
+		void *font() const { return _font; }
+
+	private:
+		void *_font;
+		GLfloat _width;
+		GLfloat _height;
+};
+
 class AvlObject
 {
 	public:
-		AvlObject(GLfloat x = 0, GLfloat y = 0, GLfloat width = 9, GLfloat height = 15,
-				void *font = GLUT_BITMAP_9_BY_15)
+		AvlObject(GLfloat x = 0, GLfloat y = 0, const AvlFont &font = GLUT_BITMAP_9_BY_15)
 		{
 			_x = x;
 			_y = y;
-			_width = width;
-			_height = height;
+			_width = font.width();
+			_height = font.height();
 			_font = font;
 		}
 
@@ -26,43 +66,44 @@ class AvlObject
 		virtual GLfloat y() const { return _y; }
 		virtual GLfloat width() const { return _width; }
 		virtual GLfloat height() const { return _height; }
-		virtual void *font() const { return _font; }
+		virtual AvlFont font() const { return _font; }
 
 		virtual void set_x(GLfloat x) { _x = x; }
 		virtual void set_y(GLfloat y) { _y = y; }
+		virtual void set_font(const AvlFont &font) { _font = font; }
+
+		virtual void render() = 0;
+
+	protected:
 		virtual void set_width(GLfloat width) { _width = width; }
 		virtual void set_height(GLfloat height) { _height = height; }
-		virtual void set_font(void *font) { _font = font; }
-
-		virtual void render() const = 0;
 
 	private:
 		GLfloat _x;
 		GLfloat _y;
 		GLfloat _width;
 		GLfloat _height;
-		void *_font;
+		AvlFont _font;
 };
 
 class AvlInt : public AvlObject
 {
 	public:
-		AvlInt(int v = 0, GLfloat x = 0, GLfloat y = 0, GLfloat width = 9,
-				GLfloat height = 15, void *font = GLUT_BITMAP_9_BY_15)
-			: AvlObject(x, y, width, height, font)
+		AvlInt(int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font)
 		{
 			value = v;
 		}
 
 		virtual ~AvlInt() {}
 
+		const AvlInt& operator=(int v) { value = v; return *this; }
+
 		friend std::ostream& operator<<(std::ostream &os, const AvlInt &v)
 		{
 			os << v.value;
 			return os;
 		}
-
-		const AvlInt& operator=(int v) { value = v; return *this; }
 
 		const AvlInt& operator+() const { return *this; }
 		const AvlInt operator-() const
@@ -123,14 +164,34 @@ class AvlInt : public AvlObject
 
 		int val() const { return value; }
 
-		virtual void render() const
+		virtual void render()
 		{
+			update();
+
 			glColor4f(1.0, 0.0, 0.0, 0.0);
 			glRasterPos2f(x(), y());
-			glutBitmapString(font(), (const unsigned char *)(std::to_string(value).c_str()));
+			glutBitmapString(font().font(), (const unsigned char *)(std::to_string(value).c_str()));
 		}
 
 	private:
+		void update() { set_width(numOfDigit() * font().width()); }
+
+		int numOfDigit() const
+		{
+			if (value == 0)
+				return 1;
+
+			int num = value >= 0 ? 0 : 1;
+			int k = value;
+
+			while (k != 0) {
+				k /= 10;
+				num++;
+			}
+
+			return num;
+		}
+
 		int value;
 };
 
@@ -138,24 +199,16 @@ template <typename T>
 class AvlArray : public AvlObject, public std::vector<T>
 {
 	public:
-		AvlArray(size_t size) : std::vector<T>(size)
-		{
-			for (size_t i = 1; i < size; i++) {
-				(*this)[i].set_x((*this)[i-1].x() + (*this)[i-1].width() * 1.5);
-				(*this)[i].set_y((*this)[i-1].y());
-			}
-		}
-		AvlArray(const std::initializer_list<T> &l) : std::vector<T>(l) {
-			for (size_t i = 1; i < l.size(); i++) {
-				(*this)[i].set_x((*this)[i-1].x() + (*this)[i-1].width() * 1.5);
-				(*this)[i].set_y((*this)[i-1].y());
-			}
-		}
+		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
+				const AvlFont &font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font), std::vector<T>(size) {}
+		AvlArray(const std::initializer_list<T> &l)
+			: std::vector<T>(l) {}
 
 		virtual ~AvlArray() {}
 
-		virtual GLfloat x() const { return (*this)[0].x(); }
-		virtual GLfloat y() const { return (*this)[0].y(); }
+		virtual GLfloat x() const { return AvlObject::x(); }
+		virtual GLfloat y() const { return AvlObject::y(); }
 		virtual GLfloat width() const
 		{
 			GLfloat w = 0;
@@ -163,47 +216,37 @@ class AvlArray : public AvlObject, public std::vector<T>
 				w += v.width();
 			return w;
 		}
-		virtual GLfloat height() const
-		{
-			GLfloat h = 0;
-			for (auto& v: *this)
-				h = v.height() > h ? v.height() : h;
-			return h;
-		}
-		virtual void *font() const { return (*this)[0].font(); }
+		virtual GLfloat height() const { return AvlObject::height(); }
+		virtual AvlFont font() const { return AvlObject::font(); }
 
-		virtual void set_x(GLfloat x)
-		{
-			(*this)[0].set_x(x);
-			for (size_t i = 1; i < this->size(); i++)
-				(*this)[i].set_x((*this)[i-1].x() + (*this)[i-1].width());
-		}
-		virtual void set_y(GLfloat y)
-		{
-			for (auto& v: *this)
-				v.set_y(y);
-		}
-		virtual void set_width(GLfloat width)
-		{
-			for (auto& v: *this)
-				v.set_width(width / this->size());
-			set_x((*this)[0].x());
-		}
-		virtual void set_height(GLfloat y)
-		{
-			for (auto& v: *this)
-				v.set_height(y);
-		}
-		virtual void set_font(void *font)
-		{
-			for (auto& v: *this)
-				v.set_font(font);
-		}
+		virtual void set_x(GLfloat x) { AvlObject::set_x(x); }
+		virtual void set_y(GLfloat y) { AvlObject::set_y(y); }
+		virtual void set_font(const AvlFont &font) { AvlObject::set_font(font); }
 
-		virtual void render() const
+		virtual void render()
 		{
+			update();
+
 			for (auto& v: *this)
 				v.render();
+		}
+
+	private:
+		void update()
+		{
+			for (typename std::vector<T>::iterator it = this->begin();
+					it != this->end(); it++) {
+				if (it == this->begin()) {
+					it->set_x(AvlObject::x());
+					it->set_y(AvlObject::y());
+					it->set_font(AvlObject::font());
+				}
+				else {
+					it->set_x((it-1)->x() + (it-1)->width() + font().width());
+					it->set_y((it-1)->y());
+					it->set_font(this->begin()->font());
+				}
+			}
 		}
 };
 

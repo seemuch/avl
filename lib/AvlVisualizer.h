@@ -24,7 +24,7 @@ class AvlVisualizer
 
 		void show();
 
-		void addObject(const AvlObject *obj, const string &name);
+		void addObject(AvlObject *obj, const string &name);
 		void delObject(const string &name);
 
 	private:
@@ -36,7 +36,7 @@ class AvlVisualizer
 		static int currentWidth;
 		static int currentHeight;
 
-		static unordered_map<string, const AvlObject *> objects;
+		static unordered_map<string, AvlObject *> objects;
 };
 
 #endif // AVL_VISUALIZER_H_
