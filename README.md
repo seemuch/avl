@@ -42,6 +42,7 @@ and libraries to /usr/local/lib.
 
 How to run test cases
 =====================
-	```bash
-	make check
-	```
+
+```bash
+make check
+```
