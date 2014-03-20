@@ -39,3 +39,10 @@ How to build
 	```
 This would install avl to /usr/local/bin, header files to /usr/local/include
 and libraries to /usr/local/lib.
+
+How to run test cases
+=====================
+
+```bash
+make check
+```
