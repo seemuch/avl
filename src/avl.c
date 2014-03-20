@@ -5,8 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "parser.h"
 #include "config.h"
+#include "parser.h"
 
 const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"Options:\n"
