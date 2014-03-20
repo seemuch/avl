@@ -46,3 +46,4 @@ How to run test cases
 ```bash
 make check
 ```
+You can run ```make check -j [N]``` if you have multiple CPUs.
