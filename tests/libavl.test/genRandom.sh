@@ -13,11 +13,14 @@ genRandom ()
 	do
 		element=$(( ( RANDOM % 20000 ) - 10000 ))
 
-		for j in $(seq 2 $2)
-		do
-			num=$(( ( RANDOM % 20000 ) - 10000 ))
-			element="$element $num"
-		done
+		if [[ $2 -ge 2 ]]
+		then
+			for j in $(seq 2 $2)
+			do
+				num=$(( ( RANDOM % 20000 ) - 10000 ))
+				element="$element $num"
+			done
+		fi
 
 		rArray[$i]="$element"
 	done
