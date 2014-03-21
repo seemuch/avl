@@ -6,7 +6,10 @@ declare -a rArray=()
 # Argument 2: #numbers in each element
 genRandom ()
 {
-	for i in $(seq 1 $1)
+	rArray=()
+	declare -i n=$(( $1 - 1 ))
+
+	for i in $(seq 0 $n)
 	do
 		element=$(( ( RANDOM % 20000 ) - 10000 ))
 
@@ -16,6 +19,6 @@ genRandom ()
 			element="$element $num"
 		done
 
-		rArray=("${rArray[@]}" "$element")
+		rArray[$i]="$element"
 	done
 }
