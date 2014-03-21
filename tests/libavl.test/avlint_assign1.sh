@@ -4,8 +4,9 @@ SUCCESS=0
 
 program="./avlint_assign1"
 declare -i n=100
-declare -a input=()
+declare -a input=("0")
 
+source genRandom.sh
 genRandom $n 1
 input=("${input[@]}" "${rArray[@]}")
 len=${#input[@]}
