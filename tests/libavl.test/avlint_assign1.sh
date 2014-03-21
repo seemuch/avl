@@ -6,7 +6,6 @@ program="./avlint_assign1"
 declare -i n=100
 declare -a input=()
 
-source genRandom.sh
 genRandom $n 1
 input=("${input[@]}" "${rArray[@]}")
 len=${#input[@]}
