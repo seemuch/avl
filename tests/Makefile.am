@@ -1,1 +1,1 @@
-SUBDIRS = libavl.test
+SUBDIRS = libavl.test avl.test
