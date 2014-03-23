@@ -1,3 +1,3 @@
 #!/bin/bash
 
-avl -o insert_sort insert_sort.avl
+avl -o insertion_sort insertion_sort.avl
