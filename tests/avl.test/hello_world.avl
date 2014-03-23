@@ -1,0 +1,8 @@
+int main() {
+	<begin_display>
+	display char str[] = “Hello world!”;
+	display int a[] = {1, 2, 3, 4};
+	<end_display>
+	return 0;
+}
+

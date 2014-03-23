@@ -1,0 +1,15 @@
+int main() {
+	display int a[] = {5, 2, 7, 3, 6, 8};
+	<begin_display>
+	for (display index i = 1; i < len(a); i = i + 1) {
+		display index j = i - 1;
+		while (j >= 0 && a[j] > a[j + 1]) {
+			swap(a, j + 1, j);
+			j = j - 1;
+		}
+	}
+	<end_display>
+	return 0;
+}
+
+
