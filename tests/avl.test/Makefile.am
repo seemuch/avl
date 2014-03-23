@@ -3,7 +3,7 @@ AM_TESTS_FD_REDIRECT = 9>&2
 
 TESTS = \
 		empty.sh \
-		hello_word.sh \
+		hello_world.sh \
 		insertion_sort.sh \
 		quick_sort.sh \
 		kmp.sh
