@@ -7,8 +7,6 @@
 
 #include <unordered_map>
 #include <string>
-using std::unordered_map;
-using std::string;
 
 const int OpenGL_Major_Version = 2;
 const int OpenGL_Minor_Version = 1;
@@ -24,8 +22,8 @@ class AvlVisualizer
 
 		void show();
 
-		void addObject(AvlObject *obj, const string &name);
-		void delObject(const string &name);
+		void addObject(AvlObject *obj, const std::string &name);
+		void delObject(const std::string &name);
 
 	private:
 		static void avlResize(int width, int height);
@@ -36,7 +34,7 @@ class AvlVisualizer
 		static int currentWidth;
 		static int currentHeight;
 
-		static unordered_map<string, AvlObject *> objects;
+		static std::unordered_map<std::string, AvlObject *> objects;
 };
 
 #endif // AVL_VISUALIZER_H_
