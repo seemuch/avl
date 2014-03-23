@@ -34,13 +34,13 @@ void AvlVisualizer::show()
 	glutMainLoop();
 }
 
-void AvlVisualizer::addObject(AvlObject *obj, const string &name)
+void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
 	if (objects.find(name) == objects.end())
 		objects[name] = obj;
 }
 
-void AvlVisualizer::delObject(const string &name)
+void AvlVisualizer::delObject(const std::string &name)
 {
 	if (objects.find(name) != objects.end())
 		objects.erase(name);
