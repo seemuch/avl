@@ -266,40 +266,54 @@ class AvlInt : public AvlObject
 		int value;
 };
 
+// ***NOTE!***: every element in this array is a pointer
 template <typename T>
-class AvlArray : public AvlObject, public std::vector<T>
+class AvlArray : public AvlObject, private std::vector<T *>
 {
 	public:
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
 				const AvlFont &font = GLUT_BITMAP_9_BY_15)
-			: AvlObject(x, y, font), std::vector<T>(size)
+			: AvlObject(x, y, font), std::vector<T *>(size)
 		{
+			for (auto& v: *this)
+				v = new T;
+
 			shouldUpdate = true;
 		}
-		AvlArray(const std::initializer_list<T> &l) : std::vector<T>(l)
+		AvlArray(const std::initializer_list<T> &l) : std::vector<T *>(l.size())
 		{
+			typename std::initializer_list<T>::iterator it1 = l.begin();
+			typename std::vector<T *>::iterator it2 = this->begin();
+
+			while (it1 != l.end()) {
+				*it2 = new T(*it1);
+				it1++;
+				it2++;
+			}
+
 			shouldUpdate = true;
 		}
 
-		virtual ~AvlArray() {}
+		virtual ~AvlArray()
+		{
+			for (auto& v: *this)
+				delete v;
+		}
 
-		virtual GLfloat x() const { return AvlObject::x(); }
-		virtual GLfloat y() const { return AvlObject::y(); }
+		T& operator[](size_t index) { return *(std::vector<T *>::operator[](index)); }
+		const T& operator[](size_t index) const { return *(std::vector<T *>::operator[](index)); }
+
+		size_t size() const { return std::vector<T *>::size(); }
+
 		virtual GLfloat width() const
 		{
 			GLfloat w = -font().width();
 			for (auto& v: *this) {
-				w += v.width();
+				w += v->width();
 				w += font().width();
 			}
 			return w;
 		}
-		virtual GLfloat height() const { return AvlObject::height(); }
-		virtual AvlFont font() const { return AvlObject::font(); }
-
-		virtual void set_x(GLfloat x) { AvlObject::set_x(x); }
-		virtual void set_y(GLfloat y) { AvlObject::set_y(y); }
-		virtual void set_font(const AvlFont &font) { AvlObject::set_font(font); }
 
 		virtual void render()
 		{
@@ -307,18 +321,18 @@ class AvlArray : public AvlObject, public std::vector<T>
 				update();
 
 			for (auto& v: *this)
-				v.render();
+				v->render();
 		}
 
-		void swap_element(size_t idx1, size_t idx2)
+		void swap(size_t idx1, size_t idx2)
 		{
 			shouldUpdate = false;
 
 			pthread_t thread[2];
 			moveArg args[2];
 
-			args[0].obj = &(*this)[idx1];
-			args[1].obj = &(*this)[idx2];
+			args[0].obj = std::vector<T *>::operator[](idx1);
+			args[1].obj = std::vector<T *>::operator[](idx2);
 
 			args[0].x = 0;
 			args[1].x = 0;
@@ -356,9 +370,9 @@ class AvlArray : public AvlObject, public std::vector<T>
 			pthread_join(thread[0], NULL);
 			pthread_join(thread[1], NULL);
 
-			T tmp = (*this)[idx1];
-			(*this)[idx1] = (*this)[idx2];
-			(*this)[idx2] = tmp;
+			T* tmp = std::vector<T *>::operator[](idx1);
+			std::vector<T *>::operator[](idx1) = std::vector<T *>::operator[](idx2);
+			std::vector<T *>::operator[](idx2) = tmp;
 
 			shouldUpdate = true;
 			avlSleep(0.1);
@@ -367,17 +381,17 @@ class AvlArray : public AvlObject, public std::vector<T>
 	private:
 		void update()
 		{
-			for (typename std::vector<T>::iterator it = this->begin();
+			for (typename std::vector<T *>::iterator it = this->begin();
 					it != this->end(); it++) {
 				if (it == this->begin()) {
-					it->set_x(AvlObject::x());
-					it->set_y(AvlObject::y());
-					it->set_font(AvlObject::font());
+					(*it)->set_x(AvlObject::x());
+					(*it)->set_y(AvlObject::y());
+					(*it)->set_font(AvlObject::font());
 				}
 				else {
-					it->set_x((it-1)->x() + (it-1)->width() + font().width());
-					it->set_y((it-1)->y());
-					it->set_font(this->begin()->font());
+					(*it)->set_x( (*(it-1))->x() + (*(it-1))->width() + font().width() );
+					(*it)->set_y( (*(it-1))->y() );
+					(*it)->set_font( (*(it-1))->font() );
 				}
 			}
 		}
