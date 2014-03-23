@@ -1,3 +1,3 @@
 #!/bin/bash
 
-avl -o hello_word hello_word.avl
+avl -o hello_world hello_world.avl
