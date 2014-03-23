@@ -54,7 +54,7 @@ How to add a test case
 
 Suppose you want to test ```if``` control flow.
 
-1. Create ```if1.avl``` in ```tests/avl.test/```, suppose you have multiple test cases for ```if```.
+1. Create ```if1.avl``` in ```tests/avl.test/```, assuming you have multiple test cases for ```if```.
 
 2. Write a bash script ```if1.sh```, also put it into ```tests/avl.test/```:
 	```bash
