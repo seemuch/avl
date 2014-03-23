@@ -1,6 +1,6 @@
 AVL
 ===
-Please see Issues for bugs and new tasks.
+Please see [Issues](https://github.com/wqfish/avl/issues) for bugs and new tasks.
 
 How to build
 ============
