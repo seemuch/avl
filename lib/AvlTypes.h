@@ -8,6 +8,8 @@
 #include <iostream>
 #include <pthread.h>
 
+const float DEFAULT_DELAY = 0.5;
+
 class AvlFont
 {
 	public:
@@ -60,6 +62,8 @@ class AvlObject
 			_height = font.height();
 			_font = font;
 
+			_delay = DEFAULT_DELAY;
+
 			pthread_mutex_init(&mutex, NULL);
 		}
 
@@ -80,6 +84,8 @@ class AvlObject
 
 		virtual void render() = 0;
 
+		float delay() const { return _delay; }
+
 		void lock() { pthread_mutex_lock(&mutex); }
 		void unlock() { pthread_mutex_unlock(&mutex); }
 
@@ -93,6 +99,8 @@ class AvlObject
 		GLfloat _width;
 		GLfloat _height;
 		AvlFont _font;
+
+		float _delay;
 
 		pthread_mutex_t mutex;
 };
