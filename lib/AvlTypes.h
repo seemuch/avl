@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <pthread.h>
 
 class AvlFont
 {
@@ -58,9 +59,14 @@ class AvlObject
 			_width = font.width();
 			_height = font.height();
 			_font = font;
+
+			pthread_mutex_init(&mutex, NULL);
 		}
 
-		virtual ~AvlObject() {}
+		virtual ~AvlObject()
+		{
+			pthread_mutex_destroy(&mutex);
+		}
 
 		virtual GLfloat x() const { return _x; }
 		virtual GLfloat y() const { return _y; }
@@ -74,6 +80,9 @@ class AvlObject
 
 		virtual void render() = 0;
 
+		void lock() { pthread_mutex_lock(&mutex); }
+		void unlock() { pthread_mutex_unlock(&mutex); }
+
 	protected:
 		virtual void set_width(GLfloat width) { _width = width; }
 		virtual void set_height(GLfloat height) { _height = height; }
@@ -84,6 +93,8 @@ class AvlObject
 		GLfloat _width;
 		GLfloat _height;
 		AvlFont _font;
+
+		pthread_mutex_t mutex;
 };
 
 class AvlInt : public AvlObject

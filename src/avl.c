@@ -43,6 +43,7 @@ char *const CXX_OPTIONS[] = {
 	"-L/opt/local/lib",
 	"-lGL",
 	"-lglut",
+	"-pthread",
 	temp_file,
 	NULL
 };
