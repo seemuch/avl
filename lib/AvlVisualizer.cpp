@@ -36,8 +36,10 @@ void AvlVisualizer::show()
 
 void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
-	if (objects.find(name) == objects.end())
+	if (objects.find(name) == objects.end()) {
 		objects[name] = obj;
+		avlSleep(0.5);
+	}
 }
 
 void AvlVisualizer::delObject(const std::string &name)
