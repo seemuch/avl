@@ -181,6 +181,30 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		bool operator <(int v) const { return value < v; }
+		bool operator <(const AvlInt &v) const { return value < v.value; }
+		friend bool operator<(int v1, const AvlInt v2) { return v1 < v2.value; }
+
+		bool operator <=(int v) const { return value <= v; }
+		bool operator <=(const AvlInt &v) const { return value <= v.value; }
+		friend bool operator<=(int v1, const AvlInt v2) { return v1 <= v2.value; }
+
+		bool operator >(int v) const { return value > v; }
+		bool operator >(const AvlInt &v) const { return value > v.value; }
+		friend bool operator>(int v1, const AvlInt v2) { return v1 > v2.value; }
+
+		bool operator >=(int v) const { return value >= v; }
+		bool operator >=(const AvlInt &v) const { return value >= v.value; }
+		friend bool operator>=(int v1, const AvlInt v2) { return v1 >= v2.value; }
+
+		bool operator ==(int v) const { return value == v; }
+		bool operator ==(const AvlInt &v) const { return value == v.value; }
+		friend bool operator==(int v1, const AvlInt v2) { return v1 == v2.value; }
+
+		bool operator !=(int v) const { return value != v; }
+		bool operator !=(const AvlInt &v) const { return value != v.value; }
+		friend bool operator!=(int v1, const AvlInt v2) { return v1 != v2.value; }
+
 		int val() const { return value; }
 
 		virtual void render()
