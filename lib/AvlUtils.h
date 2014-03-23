@@ -1,5 +1,5 @@
-#ifndef UTILS_H_
-#define UTILS_H_
+#ifndef AVL_UTILS_H_
+#define AVL_UTILS_H_
 
 #include <sys/select.h>
 #include <iostream>
@@ -14,4 +14,4 @@ inline void avlSleep(float seconds)
 	select(0, NULL, NULL, NULL, &tv);
 }
 
-#endif // UTILS_H_
+#endif // AVL_UTILS_H_

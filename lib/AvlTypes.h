@@ -7,8 +7,11 @@
 #include <string>
 #include <iostream>
 #include <pthread.h>
+#include "AvlUtils.h"
 
 const float DEFAULT_DELAY = 0.5;
+
+const int FPS = 25;
 
 class AvlFont
 {
@@ -104,6 +107,31 @@ class AvlObject
 
 		pthread_mutex_t mutex;
 };
+
+struct moveArg
+{
+	AvlObject *obj;
+	GLfloat x;
+	GLfloat y;
+	float seconds;
+};
+
+inline void *moveThread(void *arglist)
+{
+	moveArg *args = (moveArg *)arglist;
+
+	int steps = FPS * args->seconds;
+	GLfloat delta_x = args->x / steps;
+	GLfloat delta_y = args->y / steps;
+
+	for (int i = 0; i < steps; i++) {
+		args->obj->set_x(args->obj->x() + delta_x);
+		args->obj->set_y(args->obj->y() + delta_y);
+		avlSleep(1.0 / FPS);
+	}
+
+	return NULL;
+}
 
 class AvlInt : public AvlObject
 {
@@ -244,9 +272,14 @@ class AvlArray : public AvlObject, public std::vector<T>
 	public:
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
 				const AvlFont &font = GLUT_BITMAP_9_BY_15)
-			: AvlObject(x, y, font), std::vector<T>(size) {}
-		AvlArray(const std::initializer_list<T> &l)
-			: std::vector<T>(l) {}
+			: AvlObject(x, y, font), std::vector<T>(size)
+		{
+			shouldUpdate = true;
+		}
+		AvlArray(const std::initializer_list<T> &l) : std::vector<T>(l)
+		{
+			shouldUpdate = true;
+		}
 
 		virtual ~AvlArray() {}
 
@@ -270,10 +303,65 @@ class AvlArray : public AvlObject, public std::vector<T>
 
 		virtual void render()
 		{
-			update();
+			if (shouldUpdate)
+				update();
 
 			for (auto& v: *this)
 				v.render();
+		}
+
+		void swap_element(size_t idx1, size_t idx2)
+		{
+			shouldUpdate = false;
+
+			pthread_t thread[2];
+			moveArg args[2];
+
+			args[0].obj = &(*this)[idx1];
+			args[1].obj = &(*this)[idx2];
+
+			args[0].x = 0;
+			args[1].x = 0;
+			args[0].y = args[0].obj->height() * 1.5;
+			args[1].y = args[1].obj->height() * 1.5;
+			args[0].seconds = DEFAULT_DELAY;
+			args[1].seconds = DEFAULT_DELAY;
+
+			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
+			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
+			pthread_join(thread[0], NULL);
+			pthread_join(thread[1], NULL);
+
+			args[0].x = args[1].obj->x() - args[0].obj->x();
+			args[1].x = args[0].obj->x() - args[1].obj->x();
+			args[0].y = 0;
+			args[1].y = 0;
+			args[0].seconds = DEFAULT_DELAY * abs(idx1 - idx2);
+			args[1].seconds = DEFAULT_DELAY * abs(idx1 - idx2);
+
+			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
+			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
+			pthread_join(thread[0], NULL);
+			pthread_join(thread[1], NULL);
+
+			args[0].x = 0;
+			args[1].x = 0;
+			args[0].y = - args[0].obj->height() * 1.5;
+			args[1].y = - args[1].obj->height() * 1.5;
+			args[0].seconds = DEFAULT_DELAY;
+			args[1].seconds = DEFAULT_DELAY;
+
+			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
+			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
+			pthread_join(thread[0], NULL);
+			pthread_join(thread[1], NULL);
+
+			T tmp = (*this)[idx1];
+			(*this)[idx1] = (*this)[idx2];
+			(*this)[idx2] = tmp;
+
+			shouldUpdate = true;
+			avlSleep(0.1);
 		}
 
 	private:
@@ -293,6 +381,8 @@ class AvlArray : public AvlObject, public std::vector<T>
 				}
 			}
 		}
+
+		bool shouldUpdate;
 };
 
 #endif // AVL_TYPES_H_
