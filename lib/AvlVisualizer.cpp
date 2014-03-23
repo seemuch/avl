@@ -2,7 +2,7 @@
 
 int AvlVisualizer::currentWidth = 0;
 int AvlVisualizer::currentHeight = 0;
-unordered_map<string, AvlObject *> AvlVisualizer::objects;
+std::unordered_map<std::string, AvlObject *> AvlVisualizer::objects;
 
 AvlVisualizer::AvlVisualizer(int argc, char *argv[])
 {
