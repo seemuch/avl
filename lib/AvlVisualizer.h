@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include <unordered_map>
 #include <string>
+#include <atomic>
 #include "AvlTypes.h"
 
 const int OpenGL_Major_Version = 2;
@@ -24,6 +25,9 @@ class AvlVisualizer
 		void addObject(AvlObject *obj, const std::string &name);
 		void delObject(const std::string &name);
 
+		void start();
+		void stop();
+
 	private:
 		static void avlResize(int width, int height);
 
@@ -34,6 +38,8 @@ class AvlVisualizer
 		static int currentHeight;
 
 		static std::unordered_map<std::string, AvlObject *> objects;
+
+		static std::atomic<int> displayLevel;
 };
 
 #endif // AVL_VISUALIZER_H_
