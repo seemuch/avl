@@ -139,6 +139,22 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		const AvlInt& operator++() { value++; return *this; }
+		const AvlInt operator++(int)
+		{
+			AvlInt ret = *this;
+			value++;
+			return ret;
+		}
+
+		const AvlInt& operator--() { value--; return *this; }
+		const AvlInt operator--(int)
+		{
+			AvlInt ret = *this;
+			value--;
+			return ret;
+		}
+
 		const AvlInt operator+(int v) const
 		{
 			AvlInt ret = *this;
