@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "config.h"
-#include "parser.h"
+
+int yyparse();
 
 const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"Options:\n"
