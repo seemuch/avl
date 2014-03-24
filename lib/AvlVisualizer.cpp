@@ -3,6 +3,7 @@
 int AvlVisualizer::currentWidth = 0;
 int AvlVisualizer::currentHeight = 0;
 std::unordered_map<std::string, AvlObject *> AvlVisualizer::objects;
+std::atomic<int> AvlVisualizer::displayLevel(0);
 
 AvlVisualizer::AvlVisualizer(int argc, char *argv[])
 {
@@ -34,12 +35,20 @@ void AvlVisualizer::show()
 	glutMainLoop();
 }
 
+void AvlVisualizer::start()
+{
+	displayLevel++;
+}
+
+void AvlVisualizer::stop()
+{
+	displayLevel--;
+}
+
 void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
-	if (objects.find(name) == objects.end()) {
+	if (objects.find(name) == objects.end())
 		objects[name] = obj;
-		avlSleep(0.5);
-	}
 }
 
 void AvlVisualizer::delObject(const std::string &name)
@@ -75,11 +84,13 @@ void AvlVisualizer::avlResize(int width, int height)
 
 void AvlVisualizer::avlDisplay()
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (displayLevel.load() > 0) {
+		glClearColor(0.0, 0.0, 0.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto& obj: objects)
-		obj.second->render();
+		for (auto& obj: objects)
+			obj.second->render();
+	}
 
 	glutSwapBuffers();
 	glutPostRedisplay();
