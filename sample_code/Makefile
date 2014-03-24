@@ -5,3 +5,6 @@ bubblesort: bubblesort.cpp
 
 quicksort: quicksort.cpp
 	g++ -std=c++11 -I/opt/local/include -L/opt/local/lib -lGL -lglut -lavl quicksort.cpp -o quicksort
+
+clean:
+	rm -f bubblesort quicksort

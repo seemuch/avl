@@ -1,20 +1,19 @@
 #include <AvlVisualizer.h>
 #include <condition_variable>
-using namespace std;
 
-AvlVisualizer *vi = NULL;
-bool ready() { return vi != NULL; }
-mutex mtx;
-condition_variable_any cv;
+AvlVisualizer *__avl__vi = NULL;
+bool __avl__ready() { return __avl__vi != NULL; }
+std::mutex __avl_mtx;
+std::condition_variable_any __avl__cv;
 
 void display(int argc, char **argv)
 {
-	mtx.lock();
-	vi = new AvlVisualizer(argc, argv);
-	cv.notify_one();
-	mtx.unlock();
+	__avl_mtx.lock();
+	__avl__vi = new AvlVisualizer(argc, argv);
+	__avl__cv.notify_one();
+	__avl_mtx.unlock();
 
-	vi->show();
+	__avl__vi->show();
 }
 
 void quicksort(AvlArray<AvlInt> a)
@@ -26,7 +25,7 @@ void quicksort(AvlArray<AvlInt> a)
 	int j = 0;
 	int k = a.size() - 1;
 
-	vi->start();
+	__avl__vi->start();
 	avlSleep(0.5);
 
 	while (j < k) {
@@ -45,30 +44,30 @@ void quicksort(AvlArray<AvlInt> a)
 	quicksort(a.subarray(0, i+1));
 	quicksort(a.subarray(i+2, k+1));
 
-	vi->stop();
+	__avl__vi->stop();
 }
 
 int main(int argc, char *argv[])
 {
-	thread loop(display, argc, argv);
+	std::thread __avl__loop(display, argc, argv);
 
-	mtx.lock();
-	cv.wait(mtx, ready);
-	mtx.unlock();
+	__avl_mtx.lock();
+	__avl__cv.wait(__avl_mtx, __avl__ready);
+	__avl_mtx.unlock();
 	avlSleep(0.5);
 
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
-	vi->addObject(&a, "a");
+	__avl__vi->addObject(&a, "a");
 	
-	vi->start();
+	__avl__vi->start();
 	avlSleep(0.5);
 
 	quicksort(a);
 
-	vi->stop();
+	__avl__vi->stop();
 
-	loop.join();
-	delete vi;
+	__avl__loop.join();
+	delete __avl__vi;
 
 	return 0;
 }
