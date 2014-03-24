@@ -7,6 +7,7 @@
 #include <string>
 #include <memory>
 #include <thread>
+#include <mutex>
 #include <iostream>
 #include "AvlUtils.h"
 
@@ -273,7 +274,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			for (auto& v: *this)
 				v = std::shared_ptr<T>(new T);
 
-			shouldUpdate = std::shared_ptr<bool>(new bool(true));
+			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
 		}
 		AvlArray(const std::initializer_list<T> &l) : std::vector< std::shared_ptr<T> >(l.size())
 		{
@@ -286,7 +287,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 				dst++;
 			}
 
-			shouldUpdate = std::shared_ptr<bool>(new bool(true));
+			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
 		}
 
 		virtual ~AvlArray() {}
@@ -309,7 +310,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 				dst++;
 			}
 
-			ret.shouldUpdate = shouldUpdate;
+			ret.updateMutex = updateMutex;
 
 			return ret;
 		}
@@ -326,8 +327,10 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 
 		virtual void render()
 		{
-			if (*shouldUpdate)
+			if (updateMutex->try_lock()) {
 				update();
+				updateMutex->unlock();
+			}
 
 			for (auto& v: *this)
 				v->render();
@@ -335,13 +338,13 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 
 		void swap(size_t idx1, size_t idx2)
 		{
-			*shouldUpdate = false;
-
 			std::shared_ptr<T> obj[2];
 			std::thread moveThread[2];
 
 			obj[0] = std::vector< std::shared_ptr<T> >::operator[](idx1);
 			obj[1] = std::vector< std::shared_ptr<T> >::operator[](idx2);
+
+			updateMutex->lock();
 
 			moveThread[0] = std::thread(moveObject, obj[0], 0, obj[0]->height() * 1.5, DEFAULT_DELAY);
 			moveThread[1] = std::thread(moveObject, obj[1], 0, obj[1]->height() * 1.5, DEFAULT_DELAY);
@@ -362,7 +365,8 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			*std::vector< std::shared_ptr<T> >::operator[](idx1) = *std::vector< std::shared_ptr<T> >::operator[](idx2);
 			*std::vector< std::shared_ptr<T> >::operator[](idx2) = tmp;
 
-			*shouldUpdate = true;
+			updateMutex->unlock();
+
 			avlSleep(0.1);
 		}
 
@@ -384,7 +388,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			}
 		}
 
-		std::shared_ptr<bool> shouldUpdate;
+		std::shared_ptr<std::mutex> updateMutex;
 };
 
 #endif // AVL_TYPES_H_
