@@ -33,9 +33,11 @@ extern FILE *yyout;
 const char *const DEFAULT_OUTPUT = "a.out";
 const char *const DEFAULT_EXT = ".avl";
 const char *const TRANSLATE_EXT = ".cpp";
-const char *const DEFAULT_TEMP = "/tmp/avl_temp.cpp";
+const char *const DEFAULT_TEMP = "/tmp/avl_temp.XXXXXX";
 char *const CXX_OPTIONS[] = {
 	"g++",
+	"-x",
+	"c++",
 	"-std=c++11",
 	"-o",
 	output_file,
@@ -152,7 +154,8 @@ int main(int argc, char *argv[])
 			die_err("can not open translate file");
 	}
 	else {
-		yyout = fopen(temp_file, "w");
+		int fd = mkstemp(temp_file);
+		yyout = fdopen(fd, "w");
 		if (!yyout)
 			die_err("can not open temporary file");
 	}

@@ -2,7 +2,7 @@
 
 int AvlVisualizer::currentWidth = 0;
 int AvlVisualizer::currentHeight = 0;
-unordered_map<string, AvlObject *> AvlVisualizer::objects;
+std::unordered_map<std::string, AvlObject *> AvlVisualizer::objects;
 
 AvlVisualizer::AvlVisualizer(int argc, char *argv[])
 {
@@ -34,13 +34,15 @@ void AvlVisualizer::show()
 	glutMainLoop();
 }
 
-void AvlVisualizer::addObject(AvlObject *obj, const string &name)
+void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
-	if (objects.find(name) == objects.end())
+	if (objects.find(name) == objects.end()) {
 		objects[name] = obj;
+		avlSleep(0.5);
+	}
 }
 
-void AvlVisualizer::delObject(const string &name)
+void AvlVisualizer::delObject(const std::string &name)
 {
 	if (objects.find(name) != objects.end())
 		objects.erase(name);
