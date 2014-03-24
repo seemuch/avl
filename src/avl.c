@@ -44,6 +44,7 @@ char *const CXX_OPTIONS[] = {
 	output_file,
 	"-I/opt/local/include",
 	"-L/opt/local/lib",
+	"-lavl",
 	"-lGL",
 	"-lglut",
 	temp_file,
