@@ -279,28 +279,46 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			for (auto& v: *this)
 				v = std::shared_ptr<T>(new T);
 
-			shouldUpdate = true;
+			shouldUpdate = std::shared_ptr<bool>(new bool(true));
 		}
 		AvlArray(const std::initializer_list<T> &l) : std::vector< std::shared_ptr<T> >(l.size())
 		{
-			typename std::initializer_list<T>::iterator it1 = l.begin();
-			typename std::vector< std::shared_ptr<T> >::iterator it2 = this->begin();
+			typename std::initializer_list<T>::iterator src = l.begin();
+			typename std::vector< std::shared_ptr<T> >::iterator dst = this->begin();
 
-			while (it1 != l.end()) {
-				*it2 = std::shared_ptr<T>(new T(*it1));
-				it1++;
-				it2++;
+			while (src != l.end()) {
+				*dst = std::shared_ptr<T>(new T(*src));
+				src++;
+				dst++;
 			}
 
-			shouldUpdate = true;
+			shouldUpdate = std::shared_ptr<bool>(new bool(true));
 		}
 
 		virtual ~AvlArray() {}
 
-		T& operator[](size_t index) { return *(std::vector< std::shared_ptr<T> >::operator[](index)); }
-		const T& operator[](size_t index) const { return *(std::vector< std::shared_ptr<T> >::operator[](index)); }
+		T& operator[](size_t index) { return *std::vector< std::shared_ptr<T> >::operator[](index); }
+		const T& operator[](size_t index) const { return *std::vector< std::shared_ptr<T> >::operator[](index); }
 
 		size_t size() const { return std::vector< std::shared_ptr<T> >::size(); }
+
+		AvlArray<T> subarray(size_t s, size_t e) const
+		{
+			AvlArray<T> ret(e - s);
+
+			typename std::vector< std::shared_ptr<T> >::const_iterator src = this->begin() + s;
+			typename AvlArray<T>::iterator dst = ret.begin();
+
+			while (src != this->begin() + e) {
+				*dst = *src;
+				src++;
+				dst++;
+			}
+
+			ret.shouldUpdate = shouldUpdate;
+
+			return ret;
+		}
 
 		virtual GLfloat width() const
 		{
@@ -314,7 +332,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 
 		virtual void render()
 		{
-			if (shouldUpdate)
+			if (*shouldUpdate)
 				update();
 
 			for (auto& v: *this)
@@ -323,7 +341,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 
 		void swap(size_t idx1, size_t idx2)
 		{
-			shouldUpdate = false;
+			*shouldUpdate = false;
 
 			pthread_t thread[2];
 			moveArg args[2];
@@ -367,11 +385,11 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			pthread_join(thread[0], NULL);
 			pthread_join(thread[1], NULL);
 
-			std::shared_ptr<T> tmp = std::vector< std::shared_ptr<T> >::operator[](idx1);
-			std::vector< std::shared_ptr<T> >::operator[](idx1) = std::vector< std::shared_ptr<T> >::operator[](idx2);
-			std::vector< std::shared_ptr<T> >::operator[](idx2) = tmp;
+			T tmp = *std::vector< std::shared_ptr<T> >::operator[](idx1);
+			*std::vector< std::shared_ptr<T> >::operator[](idx1) = *std::vector< std::shared_ptr<T> >::operator[](idx2);
+			*std::vector< std::shared_ptr<T> >::operator[](idx2) = tmp;
 
-			shouldUpdate = true;
+			*shouldUpdate = true;
 			avlSleep(0.1);
 		}
 
@@ -393,7 +411,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			}
 		}
 
-		bool shouldUpdate;
+		std::shared_ptr<bool> shouldUpdate;
 };
 
 #endif // AVL_TYPES_H_
