@@ -6,8 +6,8 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <thread>
 #include <iostream>
-#include <pthread.h>
 #include "AvlUtils.h"
 
 const float DEFAULT_DELAY = 0.5;
@@ -67,14 +67,9 @@ class AvlObject
 			_font = font;
 
 			_delay = DEFAULT_DELAY;
-
-			pthread_mutex_init(&mutex, NULL);
 		}
 
-		virtual ~AvlObject()
-		{
-			pthread_mutex_destroy(&mutex);
-		}
+		virtual ~AvlObject() {}
 
 		virtual GLfloat x() const { return _x; }
 		virtual GLfloat y() const { return _y; }
@@ -90,9 +85,6 @@ class AvlObject
 
 		float delay() const { return _delay; }
 
-		void lock() { pthread_mutex_lock(&mutex); }
-		void unlock() { pthread_mutex_unlock(&mutex); }
-
 	protected:
 		virtual void set_width(GLfloat width) { _width = width; }
 		virtual void set_height(GLfloat height) { _height = height; }
@@ -105,33 +97,19 @@ class AvlObject
 		AvlFont _font;
 
 		float _delay;
-
-		pthread_mutex_t mutex;
 };
 
-struct moveArg
+inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, float seconds)
 {
-	std::shared_ptr<AvlObject> obj;
-	GLfloat x;
-	GLfloat y;
-	float seconds;
-};
-
-inline void *moveThread(void *arglist)
-{
-	moveArg *args = (moveArg *)arglist;
-
-	int steps = FPS * args->seconds;
-	GLfloat delta_x = args->x / steps;
-	GLfloat delta_y = args->y / steps;
+	int steps = FPS * seconds;
+	GLfloat delta_x = x / steps;
+	GLfloat delta_y = y / steps;
 
 	for (int i = 0; i < steps; i++) {
-		args->obj->set_x(args->obj->x() + delta_x);
-		args->obj->set_y(args->obj->y() + delta_y);
+		obj->set_x(obj->x() + delta_x);
+		obj->set_y(obj->y() + delta_y);
 		avlSleep(1.0 / FPS);
 	}
-
-	return NULL;
 }
 
 class AvlInt : public AvlObject
@@ -343,47 +321,26 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 		{
 			*shouldUpdate = false;
 
-			pthread_t thread[2];
-			moveArg args[2];
+			std::shared_ptr<T> obj[2];
+			std::thread moveThread[2];
 
-			args[0].obj = std::vector< std::shared_ptr<T> >::operator[](idx1);
-			args[1].obj = std::vector< std::shared_ptr<T> >::operator[](idx2);
+			obj[0] = std::vector< std::shared_ptr<T> >::operator[](idx1);
+			obj[1] = std::vector< std::shared_ptr<T> >::operator[](idx2);
 
-			args[0].x = 0;
-			args[1].x = 0;
-			args[0].y = args[0].obj->height() * 1.5;
-			args[1].y = args[1].obj->height() * 1.5;
-			args[0].seconds = DEFAULT_DELAY;
-			args[1].seconds = DEFAULT_DELAY;
+			moveThread[0] = std::thread(moveObject, obj[0], 0, obj[0]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[1] = std::thread(moveObject, obj[1], 0, obj[1]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[0].join();
+			moveThread[1].join();
 
-			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
-			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
-			pthread_join(thread[0], NULL);
-			pthread_join(thread[1], NULL);
+			moveThread[0] = std::thread(moveObject, obj[0], obj[1]->x() - obj[0]->x(), 0, DEFAULT_DELAY * abs(idx1 - idx2));
+			moveThread[1] = std::thread(moveObject, obj[1], obj[0]->x() - obj[1]->x(), 0, DEFAULT_DELAY * abs(idx1 - idx2));
+			moveThread[0].join();
+			moveThread[1].join();
 
-			args[0].x = args[1].obj->x() - args[0].obj->x();
-			args[1].x = args[0].obj->x() - args[1].obj->x();
-			args[0].y = 0;
-			args[1].y = 0;
-			args[0].seconds = DEFAULT_DELAY * abs(idx1 - idx2);
-			args[1].seconds = DEFAULT_DELAY * abs(idx1 - idx2);
-
-			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
-			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
-			pthread_join(thread[0], NULL);
-			pthread_join(thread[1], NULL);
-
-			args[0].x = 0;
-			args[1].x = 0;
-			args[0].y = - args[0].obj->height() * 1.5;
-			args[1].y = - args[1].obj->height() * 1.5;
-			args[0].seconds = DEFAULT_DELAY;
-			args[1].seconds = DEFAULT_DELAY;
-
-			pthread_create(&thread[0], NULL, moveThread, (void *)(&args[0]));
-			pthread_create(&thread[1], NULL, moveThread, (void *)(&args[1]));
-			pthread_join(thread[0], NULL);
-			pthread_join(thread[1], NULL);
+			moveThread[0] = std::thread(moveObject, obj[0], 0, -obj[0]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[1] = std::thread(moveObject, obj[1], 0, -obj[1]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[0].join();
+			moveThread[1].join();
 
 			T tmp = *std::vector< std::shared_ptr<T> >::operator[](idx1);
 			*std::vector< std::shared_ptr<T> >::operator[](idx1) = *std::vector< std::shared_ptr<T> >::operator[](idx2);
