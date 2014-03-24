@@ -1,11 +1,18 @@
 #include <AvlVisualizer.h>
+#include <condition_variable>
 using namespace std;
 
 AvlVisualizer *vi = NULL;
+bool ready() { return vi != NULL; }
+mutex mtx;
+condition_variable_any cv;
 
 void display(int argc, char **argv)
 {
+	mtx.lock();
 	vi = new AvlVisualizer(argc, argv);
+	cv.notify_one();
+	mtx.unlock();
 
 	vi->show();
 }
@@ -14,8 +21,9 @@ int main(int argc, char *argv[])
 {
 	thread loop(display, argc, argv);
 
-	while (vi == NULL)
-		avlSleep(0.1);
+	mtx.lock();
+	cv.wait(mtx, ready);
+	mtx.unlock();
 	avlSleep(0.5);
 
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};

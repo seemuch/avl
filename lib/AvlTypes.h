@@ -13,7 +13,7 @@
 
 const float DEFAULT_DELAY = 0.5;
 
-const int FPS = 25;
+const int FPS = 20;
 
 class AvlFont
 {
