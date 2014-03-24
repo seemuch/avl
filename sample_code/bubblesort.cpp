@@ -1,35 +1,34 @@
 #include <AvlVisualizer.h>
 #include <condition_variable>
-using namespace std;
 
-AvlVisualizer *vi = NULL;
-bool ready() { return vi != NULL; }
-mutex mtx;
-condition_variable_any cv;
+AvlVisualizer *__avl__vi = NULL;
+bool __avl__ready() { return __avl__vi != NULL; }
+std::mutex __avl__mtx;
+std::condition_variable_any __avl__cv;
 
-void display(int argc, char **argv)
+void __avl__display(int argc, char **argv)
 {
-	mtx.lock();
-	vi = new AvlVisualizer(argc, argv);
-	cv.notify_one();
-	mtx.unlock();
+	__avl__mtx.lock();
+	__avl__vi = new AvlVisualizer(argc, argv);
+	__avl__cv.notify_one();
+	__avl__mtx.unlock();
 
-	vi->show();
+	__avl__vi->show();
 }
 
 int main(int argc, char *argv[])
 {
-	thread loop(display, argc, argv);
+	std::thread __avl__loop(__avl__display, argc, argv);
 
-	mtx.lock();
-	cv.wait(mtx, ready);
-	mtx.unlock();
+	__avl__mtx.lock();
+	__avl__cv.wait(__avl__mtx, __avl__ready);
+	__avl__mtx.unlock();
 	avlSleep(0.5);
 
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
-	vi->addObject(&a, "a");
+	__avl__vi->addObject(&a, "a");
 
-	vi->start();
+	__avl__vi->start();
 	avlSleep(0.5);
 
 	for (int i = 1; i < a.size(); i = i + 1) {
@@ -40,10 +39,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	vi->stop();
+	__avl__vi->stop();
 
-	loop.join();
-	delete vi;
+	__avl__loop.join();
+	delete __avl__vi;
 
 	return 0;
 }
