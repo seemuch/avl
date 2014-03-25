@@ -90,15 +90,15 @@ class AvlObject
 
 		virtual ~AvlObject() {}
 
-		virtual GLfloat x() const { return _x; }
-		virtual GLfloat y() const { return _y; }
-		virtual GLfloat width() const { return _width; }
-		virtual GLfloat height() const { return _height; }
-		virtual AvlFont font() const { return _font; }
+		GLfloat x() const { return _x; }
+		GLfloat y() const { return _y; }
+		GLfloat width() const { return _width; }
+		GLfloat height() const { return _height; }
+		AvlFont font() const { return _font; }
 
-		virtual void set_x(GLfloat x) { _x = x; }
-		virtual void set_y(GLfloat y) { _y = y; }
-		virtual void set_font(const AvlFont &font) { _font = font; }
+		void set_x(GLfloat x) { _x = x; }
+		void set_y(GLfloat y) { _y = y; }
+		void set_font(const AvlFont &font) { _font = font; }
 
 		virtual void render() = 0;
 
@@ -107,8 +107,8 @@ class AvlObject
 		void unlock() { mtx.unlock(); }
 
 	protected:
-		virtual void set_width(GLfloat width) { _width = width; }
-		virtual void set_height(GLfloat height) { _height = height; }
+		void set_width(GLfloat width) { _width = width; }
+		void set_height(GLfloat height) { _height = height; }
 
 	private:
 		GLfloat _x;
@@ -344,16 +344,6 @@ class AvlArray : public AvlObject
 			return ret;
 		}
 
-		virtual GLfloat width() const
-		{
-			GLfloat w = -font().width();
-			for (auto& v: arr) {
-				w += v->width();
-				w += font().width();
-			}
-			return w;
-		}
-
 		virtual void render()
 		{
 			if (updateMutex->try_lock()) {
@@ -402,19 +392,25 @@ class AvlArray : public AvlObject
 	private:
 		void update()
 		{
+			GLfloat w = -font().width();
+
 			for (typename std::vector< std::shared_ptr<T> >::iterator it = arr.begin();
 					it != arr.end(); it++) {
 				if (it == arr.begin()) {
-					(*it)->set_x(AvlObject::x());
-					(*it)->set_y(AvlObject::y());
-					(*it)->set_font(AvlObject::font());
+					(*it)->set_x( x() );
+					(*it)->set_y( y() );
+					(*it)->set_font( font() );
+					w += (*it)->width() + font().width();
 				}
 				else {
 					(*it)->set_x( (*(it-1))->x() + (*(it-1))->width() + font().width() );
 					(*it)->set_y( (*(it-1))->y() );
 					(*it)->set_font( (*(it-1))->font() );
+					w += (*it)->width() + font().width();
 				}
 			}
+
+			set_width(w);
 		}
 
 		std::vector< std::shared_ptr<T> > arr;
