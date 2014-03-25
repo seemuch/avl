@@ -17,6 +17,7 @@ AC_CONFIG_FILES([
 		 Makefile
 		 src/Makefile
 		 lib/Makefile
+		 sample_code/Makefile
 		 tests/Makefile
 		 tests/libavl.test/Makefile
 		 tests/avl.test/Makefile

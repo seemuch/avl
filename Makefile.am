@@ -1,2 +1,2 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = src lib tests
+SUBDIRS = src lib sample_code tests
