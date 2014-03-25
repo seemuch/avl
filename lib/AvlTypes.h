@@ -66,8 +66,26 @@ class AvlObject
 			_width = font.width();
 			_height = font.height();
 			_font = font;
+		}
 
-			_delay = DEFAULT_DELAY;
+		AvlObject(const AvlObject &obj)
+		{
+			_x = obj._x;
+			_y = obj._y;
+			_width = obj._width;
+			_height = obj._height;
+			_font = obj._font;
+		}
+
+		const AvlObject& operator=(const AvlObject &obj)
+		{
+			_x = obj._x;
+			_y = obj._y;
+			_width = obj._width;
+			_height = obj._height;
+			_font = obj._font;
+
+			return *this;
 		}
 
 		virtual ~AvlObject() {}
@@ -84,7 +102,9 @@ class AvlObject
 
 		virtual void render() = 0;
 
-		float delay() const { return _delay; }
+		void lock() { mtx.lock(); }
+		bool try_lock() { return mtx.try_lock(); }
+		void unlock() { mtx.unlock(); }
 
 	protected:
 		virtual void set_width(GLfloat width) { _width = width; }
@@ -97,7 +117,7 @@ class AvlObject
 		GLfloat _height;
 		AvlFont _font;
 
-		float _delay;
+		std::mutex mtx;
 };
 
 inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, float seconds)
@@ -107,8 +127,10 @@ inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, flo
 	GLfloat delta_y = y / steps;
 
 	for (int i = 0; i < steps; i++) {
+		obj->lock();
 		obj->set_x(obj->x() + delta_x);
 		obj->set_y(obj->y() + delta_y);
+		obj->unlock();
 		avlSleep(1.0 / FPS);
 	}
 }
