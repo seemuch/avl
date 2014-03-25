@@ -142,11 +142,12 @@ class AvlInt : public AvlObject
 			: AvlObject(x, y, font)
 		{
 			value = v;
+			update();
 		}
 
 		virtual ~AvlInt() {}
 
-		const AvlInt& operator=(int v) { value = v; return *this; }
+		const AvlInt& operator=(int v) { value = v; update(); return *this; }
 
 		friend std::ostream& operator<<(std::ostream &os, const AvlInt &v)
 		{
@@ -159,22 +160,25 @@ class AvlInt : public AvlObject
 		{
 			AvlInt ret = *this;
 			ret.value = -value;
+			ret.update();
 			return ret;
 		}
 
-		const AvlInt& operator++() { value++; return *this; }
+		const AvlInt& operator++() { value++; update(); return *this; }
 		const AvlInt operator++(int)
 		{
 			AvlInt ret = *this;
 			value++;
+			update();
 			return ret;
 		}
 
-		const AvlInt& operator--() { value--; return *this; }
+		const AvlInt& operator--() { value--; update(); return *this; }
 		const AvlInt operator--(int)
 		{
 			AvlInt ret = *this;
 			value--;
+			update();
 			return ret;
 		}
 
@@ -182,10 +186,11 @@ class AvlInt : public AvlObject
 		{
 			AvlInt ret = *this;
 			ret.value += v;
+			ret.update();
 			return ret;
 		}
 		const AvlInt operator+(const AvlInt &v) const { return *this + v.value; }
-		const AvlInt& operator+=(int v) { value += v; return *this; }
+		const AvlInt& operator+=(int v) { value += v; update(); return *this; }
 		const AvlInt& operator+=(const AvlInt &v) { return *this += v.value; }
 		friend const AvlInt operator+(int v1, const AvlInt &v2) { return v2 + v1; }
 
@@ -193,10 +198,11 @@ class AvlInt : public AvlObject
 		{
 			AvlInt ret = *this;
 			ret.value -= v;
+			ret.update();
 			return ret;
 		}
 		const AvlInt operator-(const AvlInt &v) const { return *this - v.value; }
-		const AvlInt& operator-=(int v) { value -= v; return *this; }
+		const AvlInt& operator-=(int v) { value -= v; update(); return *this; }
 		const AvlInt& operator-=(const AvlInt &v) { return *this -= v.value; }
 		friend const AvlInt operator-(int v1, const AvlInt &v2) { return -v2 + v1; }
 
@@ -204,10 +210,11 @@ class AvlInt : public AvlObject
 		{
 			AvlInt ret = *this;
 			ret.value *= v;
+			ret.update();
 			return ret;
 		}
 		const AvlInt operator*(const AvlInt &v) const { return *this * v.value; }
-		const AvlInt& operator*=(int v) { value *= v; return *this; }
+		const AvlInt& operator*=(int v) { value *= v; update(); return *this; }
 		const AvlInt& operator*=(const AvlInt &v) { return *this *= v.value; }
 		friend const AvlInt operator*(int v1, const AvlInt &v2) { return v2 * v1; }
 
@@ -215,15 +222,17 @@ class AvlInt : public AvlObject
 		{
 			AvlInt ret = *this;
 			ret.value /= v;
+			ret.update();
 			return ret;
 		}
 		const AvlInt operator/(const AvlInt &v) const { return *this / v.value; }
-		const AvlInt& operator/=(int v) { value /= v; return *this; }
+		const AvlInt& operator/=(int v) { value /= v; update(); return *this; }
 		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
 		friend const AvlInt operator/(int v1, const AvlInt &v2)
 		{
 			AvlInt ret = v2;
 			ret.value = v1 / v2.value;
+			ret.update();
 			return ret;
 		}
 
@@ -255,8 +264,6 @@ class AvlInt : public AvlObject
 
 		virtual void render()
 		{
-			update();
-
 			glColor4f(1.0, 0.0, 0.0, 0.0);
 			glRasterPos2f(x(), y());
 			glutBitmapString(font().font(), (const unsigned char *)(std::to_string(value).c_str()));
