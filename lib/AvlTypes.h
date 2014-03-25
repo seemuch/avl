@@ -293,22 +293,22 @@ class AvlInt : public AvlObject
 
 // ***NOTE!***: every element in this array is a pointer
 template <typename T>
-class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
+class AvlArray : public AvlObject
 {
 	public:
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
-				const AvlFont &font = GLUT_BITMAP_9_BY_15)
-			: AvlObject(x, y, font), std::vector< std::shared_ptr<T> >(size)
+				const AvlFont &font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font), arr(size)
 		{
-			for (auto& v: *this)
+			for (auto& v: arr)
 				v = std::shared_ptr<T>(new T);
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
 		}
-		AvlArray(const std::initializer_list<T> &l) : std::vector< std::shared_ptr<T> >(l.size())
+
+		AvlArray(const std::initializer_list<T> &l) : arr(l.size())
 		{
-			typename std::initializer_list<T>::iterator src = l.begin();
-			typename std::vector< std::shared_ptr<T> >::iterator dst = this->begin();
+			typename std::initializer_list<T>::const_iterator src = l.begin();
+			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
 
 			while (src != l.end()) {
 				*dst = std::shared_ptr<T>(new T(*src));
@@ -321,19 +321,19 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 
 		virtual ~AvlArray() {}
 
-		T& operator[](size_t index) { return *std::vector< std::shared_ptr<T> >::operator[](index); }
-		const T& operator[](size_t index) const { return *std::vector< std::shared_ptr<T> >::operator[](index); }
+		T& operator[](size_t index) { return *arr[index]; }
+		const T& operator[](size_t index) const { return *arr[index]; }
 
-		size_t size() const { return std::vector< std::shared_ptr<T> >::size(); }
+		size_t size() const { return arr.size(); }
 
-		AvlArray<T> subarray(size_t s, size_t e) const
+		AvlArray<T> subarray(size_t start, size_t end) const
 		{
-			AvlArray<T> ret(e - s);
+			AvlArray<T> ret(end - start);
 
-			typename std::vector< std::shared_ptr<T> >::const_iterator src = this->begin() + s;
-			typename AvlArray<T>::iterator dst = ret.begin();
+			typename std::vector< std::shared_ptr<T> >::const_iterator src = arr.begin() + start;
+			typename std::vector< std::shared_ptr<T> >::iterator dst = ret.arr.begin();
 
-			while (src != this->begin() + e) {
+			while (src != arr.begin() + end) {
 				*dst = *src;
 				src++;
 				dst++;
@@ -347,7 +347,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 		virtual GLfloat width() const
 		{
 			GLfloat w = -font().width();
-			for (auto& v: *this) {
+			for (auto& v: arr) {
 				w += v->width();
 				w += font().width();
 			}
@@ -361,7 +361,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 				updateMutex->unlock();
 			}
 
-			for (auto& v: *this)
+			for (auto& v: arr)
 				v->render();
 		}
 
@@ -370,8 +370,8 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			std::shared_ptr<T> obj[2];
 			std::thread moveThread[2];
 
-			obj[0] = std::vector< std::shared_ptr<T> >::operator[](idx1);
-			obj[1] = std::vector< std::shared_ptr<T> >::operator[](idx2);
+			obj[0] = arr[idx1];
+			obj[1] = arr[idx2];
 
 			updateMutex->lock();
 
@@ -390,9 +390,9 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			moveThread[0].join();
 			moveThread[1].join();
 
-			T tmp = *std::vector< std::shared_ptr<T> >::operator[](idx1);
-			*std::vector< std::shared_ptr<T> >::operator[](idx1) = *std::vector< std::shared_ptr<T> >::operator[](idx2);
-			*std::vector< std::shared_ptr<T> >::operator[](idx2) = tmp;
+			T tmp = *arr[idx1];
+			*arr[idx1] = *arr[idx2];
+			*arr[idx2] = tmp;
 
 			updateMutex->unlock();
 
@@ -402,9 +402,9 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 	private:
 		void update()
 		{
-			for (typename std::vector< std::shared_ptr<T> >::iterator it = this->begin();
-					it != this->end(); it++) {
-				if (it == this->begin()) {
+			for (typename std::vector< std::shared_ptr<T> >::iterator it = arr.begin();
+					it != arr.end(); it++) {
+				if (it == arr.begin()) {
 					(*it)->set_x(AvlObject::x());
 					(*it)->set_y(AvlObject::y());
 					(*it)->set_font(AvlObject::font());
@@ -417,6 +417,7 @@ class AvlArray : public AvlObject, private std::vector< std::shared_ptr<T> >
 			}
 		}
 
+		std::vector< std::shared_ptr<T> > arr;
 		std::shared_ptr<std::mutex> updateMutex;
 };
 
