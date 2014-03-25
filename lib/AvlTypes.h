@@ -299,7 +299,7 @@ class AvlArray : public AvlObject
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
 				const AvlFont &font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font), arr(size)
 		{
-			for (auto& v: arr)
+			for (auto& v : arr)
 				v = std::shared_ptr<T>(new T);
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
@@ -351,7 +351,7 @@ class AvlArray : public AvlObject
 				updateMutex->unlock();
 			}
 
-			for (auto& v: arr)
+			for (auto& v : arr)
 				v->render();
 		}
 

@@ -88,7 +88,7 @@ void AvlVisualizer::avlDisplay()
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		for (auto& obj: objects)
+		for (auto& obj : objects)
 			obj.second->render();
 	}
 
