@@ -15,6 +15,12 @@ const float DEFAULT_DELAY = 0.5;
 
 const int FPS = 20;
 
+typedef unsigned int AvlColor;
+const AvlColor AVL_RED = 0xFF0000;
+const AvlColor AVL_GREEN = 0x00FF00;
+const AvlColor AVL_COLOR_HIGHLIGHT = AVL_GREEN;
+const AvlColor AVL_COLOR_DEFAULT = AVL_RED;
+
 class AvlFont
 {
 	public:
@@ -66,6 +72,7 @@ class AvlObject
 			_width = font.width();
 			_height = font.height();
 			_font = font;
+			_color = AVL_COLOR_DEFAULT;
 		}
 
 		AvlObject(const AvlObject &obj)
@@ -75,6 +82,7 @@ class AvlObject
 			_width = obj._width;
 			_height = obj._height;
 			_font = obj._font;
+			_color = obj._color;
 		}
 
 		const AvlObject& operator=(const AvlObject &obj)
@@ -84,6 +92,7 @@ class AvlObject
 			_width = obj._width;
 			_height = obj._height;
 			_font = obj._font;
+			_color = obj._color;
 
 			return *this;
 		}
@@ -95,10 +104,12 @@ class AvlObject
 		GLfloat width() const { return _width; }
 		GLfloat height() const { return _height; }
 		AvlFont font() const { return _font; }
+		AvlColor color() const { return _color; }
 
 		void set_x(GLfloat x) { _x = x; }
 		void set_y(GLfloat y) { _y = y; }
 		void set_font(const AvlFont &font) { _font = font; }
+		void set_color(AvlColor color) { _color = color; }
 
 		virtual void render() = 0;
 
@@ -116,6 +127,7 @@ class AvlObject
 		GLfloat _width;
 		GLfloat _height;
 		AvlFont _font;
+		AvlColor _color;
 
 		std::mutex mtx;
 };
@@ -264,10 +276,17 @@ class AvlInt : public AvlObject
 
 		virtual void render()
 		{
-			glColor4f(1.0, 0.0, 0.0, 0.0);
+			unsigned int red = color() / 0x10000;
+			unsigned int green = color() % 0x10000 / 0x100;
+			unsigned int blue = color() % 0x100;
+			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
 			glRasterPos2f(x(), y());
 			glutBitmapString(font().font(), (const unsigned char *)(std::to_string(value).c_str()));
 		}
+
+		void highlight() { set_color(AVL_COLOR_HIGHLIGHT); }
+		void lowlight() { set_color(AVL_COLOR_DEFAULT); }
 
 	private:
 		void update() { set_width(numOfDigit() * font().width()); }
@@ -303,6 +322,8 @@ class AvlArray : public AvlObject
 				v = std::shared_ptr<T>(new T);
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
+
+			toplevelArray = this;
 		}
 
 		AvlArray(const std::initializer_list<T> &l) : arr(l.size())
@@ -317,6 +338,8 @@ class AvlArray : public AvlObject
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
+
+			toplevelArray = this;
 		}
 
 		virtual ~AvlArray() {}
@@ -340,6 +363,7 @@ class AvlArray : public AvlObject
 			}
 
 			ret.updateMutex = updateMutex;
+			ret.toplevelArray = toplevelArray;
 
 			return ret;
 		}
@@ -353,6 +377,18 @@ class AvlArray : public AvlObject
 
 			for (auto& v : arr)
 				v->render();
+		}
+
+		void highlight()
+		{
+			for (auto& v: arr)
+				v->highlight();
+		}
+
+		void lowlight()
+		{
+			for (auto& v: toplevelArray->arr)
+				v->lowlight();
 		}
 
 		void swap(size_t idx1, size_t idx2)
@@ -415,6 +451,8 @@ class AvlArray : public AvlObject
 
 		std::vector< std::shared_ptr<T> > arr;
 		std::shared_ptr<std::mutex> updateMutex;
+
+		AvlArray<T> *toplevelArray;
 };
 
 #endif // AVL_TYPES_H_
