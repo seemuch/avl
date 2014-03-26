@@ -20,20 +20,29 @@ void __avl__display(int argc, char **argv)
 }
 /* End of Headers */
 
-/* user defined function:
+/* User defined function:
  * NOTE: the parameters should be passed by value */
 void quicksort(AvlArray<AvlInt> a)
 {
-	/* Insert the following two lines at the
+	/* Insert the following three lines at the
 	 * beginning of each function */
+	__avl__vi->reset();
 	a.lowlight();
 	a.highlight();
 
 	/* len(a) -> a.size() */
-	if (a.size() <= 1)
+	if (a.size() <= 1) {
+		/* NOTE: 'return' is equivalent to end of function
+		 * so the following two lines are needed. Additional
+		 * '{' and '}' are also required.
+		 * !!!FIXME!!!: Is a return between <begin_display> and
+		 * <end_display> allowed? */
+		a.lowlight();
+		__avl__vi->restore();
 		return;
+	}
 
-	/* Currently, translate type index to int */
+	/* Currently, just translate type index to int */
 	int i = -1;
 	int j = 0;
 	int k = a.size() - 1;
@@ -54,6 +63,7 @@ void quicksort(AvlArray<AvlInt> a)
 		}
 	}
 
+	/* same as above */
 	a.swap(i+1, k);
 
 	/* translation rule for subarrys */
@@ -64,12 +74,13 @@ void quicksort(AvlArray<AvlInt> a)
 	avlSleep(0.1);
 	__avl__vi->stop();
 
-	/* Insert the following line at the end of each function */
+	/* Insert the following two lines at the end of each function */
 	a.lowlight();
+	__avl__vi->restore();
 }
 
 /* main:
- * NOTE: argc and argv is needed */
+ * NOTE: argc and argv are required */
 int main(int argc, char *argv[])
 {
 	/* only for main:

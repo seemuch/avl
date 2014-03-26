@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 #include <GL/glut.h>
 #include <unordered_map>
+#include <stack>
 #include <string>
 #include <atomic>
 #include "AvlTypes.h"
@@ -27,6 +28,8 @@ class AvlVisualizer
 
 		void start();
 		void stop();
+		void reset();
+		void restore();
 
 	private:
 		static void avlResize(int width, int height);
@@ -41,6 +44,7 @@ class AvlVisualizer
 		static std::unordered_map<std::string, AvlObject *> objects;
 
 		static std::atomic<int> displayLevel;
+		static std::stack<int> levelBackup;
 };
 
 #endif // AVL_VISUALIZER_H_
