@@ -322,8 +322,9 @@ class AvlArray : public AvlObject
 				v = std::shared_ptr<T>(new T);
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
-
 			toplevelArray = this;
+
+			update();
 		}
 
 		AvlArray(const std::initializer_list<T> &l) : arr(l.size())
@@ -338,8 +339,9 @@ class AvlArray : public AvlObject
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
-
 			toplevelArray = this;
+
+			update();
 		}
 
 		virtual ~AvlArray() {}
