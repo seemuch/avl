@@ -4,6 +4,7 @@ int AvlVisualizer::currentWidth = 0;
 int AvlVisualizer::currentHeight = 0;
 std::unordered_map<std::string, AvlObject *> AvlVisualizer::objects;
 std::atomic<int> AvlVisualizer::displayLevel(0);
+std::stack<int> AvlVisualizer::levelBackup;
 
 AvlVisualizer::AvlVisualizer(int argc, char *argv[])
 {
@@ -43,6 +44,18 @@ void AvlVisualizer::start()
 void AvlVisualizer::stop()
 {
 	displayLevel--;
+}
+
+void AvlVisualizer::reset()
+{
+	levelBackup.push(displayLevel.load());
+	displayLevel.store(0);
+}
+
+void AvlVisualizer::restore()
+{
+	displayLevel.store(levelBackup.top());
+	levelBackup.pop();
 }
 
 void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
