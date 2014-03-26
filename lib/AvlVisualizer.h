@@ -30,8 +30,9 @@ class AvlVisualizer
 
 	private:
 		static void avlResize(int width, int height);
-
 		static void avlDisplay();
+
+		void placeObject();
 
 		int windowHandle;
 		static int currentWidth;

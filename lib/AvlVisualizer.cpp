@@ -49,12 +49,28 @@ void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
 	if (objects.find(name) == objects.end())
 		objects[name] = obj;
+
+	placeObject();
 }
 
 void AvlVisualizer::delObject(const std::string &name)
 {
 	if (objects.find(name) != objects.end())
 		objects.erase(name);
+
+	placeObject();
+}
+
+void AvlVisualizer::placeObject()
+{
+	// only consider the easiest case
+	if (objects.size() == 1) {
+		AvlObject *obj = objects.begin()->second;
+		obj->lock();
+		obj->set_x(-obj->width() / 2);
+		obj->set_y(obj->height() / 2);
+		obj->unlock();
+	}
 }
 
 void AvlVisualizer::avlResize(int width, int height)
