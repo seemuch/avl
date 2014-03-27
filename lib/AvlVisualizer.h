@@ -7,13 +7,14 @@
 #include <stack>
 #include <string>
 #include <atomic>
-#include "AvlTypes.h"
 
 const int OpenGL_Major_Version = 2;
 const int OpenGL_Minor_Version = 1;
 const char *const Title = "Algorithm Visualization";
 const int Default_Width = 640;
 const int Default_Height = 480;
+
+class AvlObject;
 
 class AvlVisualizer
 {
@@ -30,6 +31,7 @@ class AvlVisualizer
 		void stop();
 		void reset();
 		void restore();
+		int getLevel() const;
 
 	private:
 		static void avlResize(int width, int height);
@@ -43,7 +45,7 @@ class AvlVisualizer
 
 		static std::unordered_map<std::string, AvlObject *> objects;
 
-		static std::atomic<int> displayLevel;
+		static std::atomic<int> level;
 		static std::stack<int> levelBackup;
 };
 

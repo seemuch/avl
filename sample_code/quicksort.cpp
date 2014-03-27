@@ -2,6 +2,7 @@
  * insert the following lines at the beginning of each
  * object C++ file */
 #include <AvlVisualizer.h>
+#include <AvlTypes.h>
 #include <condition_variable>
 
 AvlVisualizer *__avl__vi = NULL;
