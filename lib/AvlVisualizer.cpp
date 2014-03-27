@@ -1,9 +1,10 @@
 #include "AvlVisualizer.h"
+#include "AvlTypes.h"
 
 int AvlVisualizer::currentWidth = 0;
 int AvlVisualizer::currentHeight = 0;
 std::unordered_map<std::string, AvlObject *> AvlVisualizer::objects;
-std::atomic<int> AvlVisualizer::displayLevel(0);
+std::atomic<int> AvlVisualizer::level(0);
 std::stack<int> AvlVisualizer::levelBackup;
 
 AvlVisualizer::AvlVisualizer(int argc, char *argv[])
@@ -38,30 +39,37 @@ void AvlVisualizer::show()
 
 void AvlVisualizer::start()
 {
-	displayLevel++;
+	level++;
 }
 
 void AvlVisualizer::stop()
 {
-	displayLevel--;
+	level--;
 }
 
 void AvlVisualizer::reset()
 {
-	levelBackup.push(displayLevel.load());
-	displayLevel.store(0);
+	levelBackup.push(level.load());
+	level.store(0);
 }
 
 void AvlVisualizer::restore()
 {
-	displayLevel.store(levelBackup.top());
+	level.store(levelBackup.top());
 	levelBackup.pop();
+}
+
+int AvlVisualizer::getLevel() const
+{
+	return level.load();
 }
 
 void AvlVisualizer::addObject(AvlObject *obj, const std::string &name)
 {
-	if (objects.find(name) == objects.end())
+	if (objects.find(name) == objects.end()) {
 		objects[name] = obj;
+		obj->setVisualizer(this);
+	}
 
 	placeObject();
 }
@@ -113,7 +121,7 @@ void AvlVisualizer::avlResize(int width, int height)
 
 void AvlVisualizer::avlDisplay()
 {
-	if (displayLevel.load() > 0) {
+	if (level.load() > 0) {
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

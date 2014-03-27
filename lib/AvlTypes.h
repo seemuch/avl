@@ -10,6 +10,7 @@
 #include <mutex>
 #include <iostream>
 #include "AvlUtils.h"
+#include "AvlVisualizer.h"
 
 const float DEFAULT_DELAY = 0.5;
 
@@ -73,6 +74,8 @@ class AvlObject
 			_height = font.height();
 			_font = font;
 			_color = AVL_COLOR_DEFAULT;
+
+			_vi = NULL;
 		}
 
 		AvlObject(const AvlObject &obj)
@@ -83,6 +86,8 @@ class AvlObject
 			_height = obj._height;
 			_font = obj._font;
 			_color = obj._color;
+
+			_vi = obj._vi;
 		}
 
 		const AvlObject& operator=(const AvlObject &obj)
@@ -93,6 +98,8 @@ class AvlObject
 			_height = obj._height;
 			_font = obj._font;
 			_color = obj._color;
+
+			_vi = obj._vi;
 
 			return *this;
 		}
@@ -117,9 +124,13 @@ class AvlObject
 		bool try_lock() { return mtx.try_lock(); }
 		void unlock() { mtx.unlock(); }
 
+		void setVisualizer(const AvlVisualizer *vi) { _vi = vi; }
+
 	protected:
 		void set_width(GLfloat width) { _width = width; }
 		void set_height(GLfloat height) { _height = height; }
+
+		bool isDisplaying() const { return _vi->getLevel() > 0; }
 
 	private:
 		GLfloat _x;
@@ -130,6 +141,8 @@ class AvlObject
 		AvlColor _color;
 
 		std::mutex mtx;
+
+		const AvlVisualizer *_vi;
 };
 
 inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, float seconds)
@@ -395,6 +408,13 @@ class AvlArray : public AvlObject
 
 		void swap(size_t idx1, size_t idx2)
 		{
+			if (!isDisplaying()) {
+				T tmp = *arr[idx1];
+				*arr[idx1] = *arr[idx2];
+				*arr[idx2] = tmp;
+				return;
+			}
+
 			std::shared_ptr<T> obj[2];
 			std::thread moveThread[2];
 
