@@ -26,10 +26,28 @@ void quicksort(int a[])
 	<end_display>
 }
 
+void randomPermute(int a[])
+{
+	for (index i = 0; i < len(a); i++) {
+		index j = rand() % len(a);
+		swap(a, i, j);
+	}
+}
+
 int main() {
 	display int a[] = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
 
 	<begin_display>
+	for (display index i = 1; i < len(a); i++) {
+		display index j = i - 1;
+		while (j >= 0 && a[j] > a[j+1]) {
+			swap(a, j + 1, j);
+			j = j - 1;
+		}
+	}
+
+	randomPermute(a);
+
 	quicksort(a);
 	<end_display>
 
