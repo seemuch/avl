@@ -1,9 +1,10 @@
 /* Headers:
- * insert the following lines at the beginning of each
- * object C++ file */
+ * insert the following lines at the beginning of
+ * each target C++ file */
 #include <AvlVisualizer.h>
 #include <AvlTypes.h>
 #include <condition_variable>
+#include <cstdlib>
 
 AvlVisualizer *__avl__vi = NULL;
 bool __avl__ready() { return __avl__vi != NULL; }
@@ -26,7 +27,7 @@ void __avl__display(int argc, char **argv)
 void quicksort(AvlArray<AvlInt> a)
 {
 	/* Insert the following three lines at the
-	 * beginning of each function */
+	 * beginning of each function except main() */
 	__avl__vi->reset();
 	a.lowlight();
 	a.highlight();
@@ -37,7 +38,7 @@ void quicksort(AvlArray<AvlInt> a)
 		 * so the following two lines are needed. Additional
 		 * '{' and '}' are also required.
 		 * !!!FIXME!!!: Is a return between <begin_display> and
-		 * <end_display> allowed? */
+		 * <end_display> allowed? Seems no problem. */
 		a.lowlight();
 		__avl__vi->restore();
 		return;
@@ -68,12 +69,36 @@ void quicksort(AvlArray<AvlInt> a)
 	a.swap(i+1, k);
 
 	/* translation rule for subarrys */
-	quicksort(a.subarray(0, i+1));
-	quicksort(a.subarray(i+2, k+1));
+	quicksort(a.subarray(0, (i+1)));
+	quicksort(a.subarray((i+2), (k+1)));
 
 	/* substitude <end_display> with the following two lines */
 	avlSleep(0.1);
 	__avl__vi->stop();
+
+	/* Insert the following two lines at the end of each function */
+	a.lowlight();
+	__avl__vi->restore();
+}
+
+/* This is an example of user defined function
+ * which does not contain <begin_display> and
+ * <end_display>, it should not be displayed */
+void randomPermute(AvlArray<AvlInt> a)
+{
+	/* Insert the following three lines at the
+	 * beginning of each function except main */
+	__avl__vi->reset();
+	a.lowlight();
+	a.highlight();
+
+	for (int i = 0; i < a.size(); i++) {
+		/* Should rand be a keyword or a function?
+		 * If function, consider inline C (like inline
+		 * assembly in C) */
+		int j = rand() % a.size();
+		a.swap(i, j);
+	}
 
 	/* Insert the following two lines at the end of each function */
 	a.lowlight();
@@ -87,7 +112,6 @@ int main(int argc, char *argv[])
 	/* only for main:
 	 * insert the following five lines at the beginning of main */
 	std::thread __avl__loop(__avl__display, argc, argv);
-
 	__avl_mtx.lock();
 	__avl__cv.wait(__avl_mtx, __avl__ready);
 	__avl_mtx.unlock();
@@ -97,7 +121,29 @@ int main(int argc, char *argv[])
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
 	__avl__vi->addObject(&a, "a");
 
-	/* substitude <end_display> with the following two lines */
+	/* 1. bubblesort */
+
+	/* substitude <begin_display> with the following two lines */
+	__avl__vi->start();
+	avlSleep(0.5);
+
+	for (int i = 1; i < a.size(); i++) {
+		int j = i - 1;
+		while (j >= 0 && a[j] > a[j+1]) {
+			a.swap(j + 1, j);
+			j = j - 1;
+		}
+	}
+
+	/* 2. random permutation */
+
+	/* This function won't be displayed, although it is
+	 * put between <begin_display> and <end_display> */
+	randomPermute(a);
+
+	/* 3. quicksort */
+
+	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
 	avlSleep(0.5);
 
