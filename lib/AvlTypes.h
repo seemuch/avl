@@ -359,6 +359,20 @@ class AvlArray : public AvlObject
 
 		virtual ~AvlArray() {}
 
+		friend std::ostream& operator<<(std::ostream &os, const AvlArray<T> &ar)
+		{
+			typename std::vector< std::shared_ptr<T> >::const_iterator src = ar.arr.begin();
+
+			while (src != ar.arr.end()) {
+				os << **src;
+				if (src != ar.arr.end() - 1)
+					os << " ";
+				src++;
+			}
+
+			return os;
+		}
+
 		T& operator[](size_t index) { return *arr[index]; }
 		const T& operator[](size_t index) const { return *arr[index]; }
 
