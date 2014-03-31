@@ -122,12 +122,14 @@ class AvlObject
 		GLfloat height() const { return _height; }
 		AvlFont font() const { return _font; }
 		AvlColor color() const { return _color; }
+		std::string name() const { return _name; }
 
 		// setter functions
 		void set_x(GLfloat x) { _x = x; }
 		void set_y(GLfloat y) { _y = y; }
 		void set_font(const AvlFont &font) { _font = font; }
 		void set_color(AvlColor color) { _color = color; }
+		void set_name(const std::string& name) { _name = name; }
 
 		virtual void render() = 0;
 
@@ -157,6 +159,8 @@ class AvlObject
 		std::mutex mtx;
 
 		const AvlVisualizer *_vi;
+
+		std::string _name;
 };
 
 inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, float seconds)
@@ -371,6 +375,7 @@ class AvlInt : public AvlObject
 class AvlIndex : public AvlObject {
 private:
 	size_t value;
+	char name;
 	const AvlObject* array;
 	template<typename T> friend class AvlArray;
 
@@ -466,8 +471,6 @@ class AvlArray : public AvlObject
 		T& operator[](size_t index) { return *arr[index]; }
 		const T& operator[](size_t index) const { return *arr[index]; }
 
-		/***********************************************************************/
-
 		// subscript operator with AvlIndex type
 		T& operator[] (AvlIndex index) {
 			index.array = this;
@@ -478,9 +481,6 @@ class AvlArray : public AvlObject
 			index.array = this;
 			return (*(this->array))[index.value];
 		}
-
-		/***********************************************************************/
-
 
 		// size
 		size_t size() const { return arr.size(); }
@@ -576,7 +576,6 @@ class AvlArray : public AvlObject
 		}
 
 	private:
-
 		void auxiliary_display() {
 			// display "Content"
 			unsigned int red = AVL_AUXILIARY_COLOR / 0x10000;
@@ -584,8 +583,8 @@ class AvlArray : public AvlObject
 			unsigned int blue = AVL_AUXILIARY_COLOR % 0x100;
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
-			glRasterPos2f(x() - 80, y());
-			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string("Content: ").c_str()));
+			glRasterPos2f(x() - 9*(name().length() + 2), y());
+			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string(this->name() + ":").c_str()));
 
 			// display "Index" and index 
 			glRasterPos2f(x() - 63, y() - 20);
