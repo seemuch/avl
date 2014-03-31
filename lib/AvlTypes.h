@@ -19,12 +19,15 @@ const int FPS = 20;
 typedef unsigned int AvlColor;
 const AvlColor AVL_RED = 0xFF0000;
 const AvlColor AVL_GREEN = 0x00FF00;
+const AvlColor AVL_WIGHT = 0xFFFFFF;
 const AvlColor AVL_COLOR_HIGHLIGHT = AVL_GREEN;
 const AvlColor AVL_COLOR_DEFAULT = AVL_RED;
+const AvlColor AVL_AUXILIARY_COLOR = AVL_WIGHT;
 
 class AvlFont
 {
 	public:
+		// constructor
 		AvlFont(void *font = GLUT_BITMAP_9_BY_15)
 		{
 			_font = font;
@@ -38,6 +41,7 @@ class AvlFont
 			}
 		}
 
+		// assignment operator 
 		const AvlFont& operator=(void *font)
 		{
 			_font = font;
@@ -52,7 +56,8 @@ class AvlFont
 
 			return *this;
 		}
-
+		
+		// getter functions 
 		GLfloat width() const { return _width; }
 		GLfloat height() const { return _height; }
 		void *font() const { return _font; }
@@ -66,6 +71,7 @@ class AvlFont
 class AvlObject
 {
 	public:
+		// constructor
 		AvlObject(GLfloat x = 0, GLfloat y = 0, const AvlFont &font = GLUT_BITMAP_9_BY_15)
 		{
 			_x = x;
@@ -78,6 +84,7 @@ class AvlObject
 			_vi = NULL;
 		}
 
+		// copy constructor
 		AvlObject(const AvlObject &obj)
 		{
 			_x = obj._x;
@@ -90,6 +97,7 @@ class AvlObject
 			_vi = obj._vi;
 		}
 
+		// assignment operator
 		const AvlObject& operator=(const AvlObject &obj)
 		{
 			_x = obj._x;
@@ -104,8 +112,10 @@ class AvlObject
 			return *this;
 		}
 
+		// destructor (virtual)
 		virtual ~AvlObject() {}
 
+		// getter functions
 		GLfloat x() const { return _x; }
 		GLfloat y() const { return _y; }
 		GLfloat width() const { return _width; }
@@ -113,6 +123,7 @@ class AvlObject
 		AvlFont font() const { return _font; }
 		AvlColor color() const { return _color; }
 
+		// setter functions
 		void set_x(GLfloat x) { _x = x; }
 		void set_y(GLfloat y) { _y = y; }
 		void set_font(const AvlFont &font) { _font = font; }
@@ -120,13 +131,16 @@ class AvlObject
 
 		virtual void render() = 0;
 
+		// locks
 		void lock() { mtx.lock(); }
 		bool try_lock() { return mtx.try_lock(); }
 		void unlock() { mtx.unlock(); }
 
+		// set visualizer
 		void setVisualizer(const AvlVisualizer *vi) { _vi = vi; }
 
 	protected:
+		// position setter
 		void set_width(GLfloat width) { _width = width; }
 		void set_height(GLfloat height) { _height = height; }
 
@@ -163,6 +177,8 @@ inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, flo
 class AvlInt : public AvlObject
 {
 	public:
+
+		// constructor
 		AvlInt(int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
 			: AvlObject(x, y, font)
 		{
@@ -170,16 +186,20 @@ class AvlInt : public AvlObject
 			update();
 		}
 
+		// destructor
 		virtual ~AvlInt() {}
 
+		// assignment operator
 		const AvlInt& operator=(int v) { value = v; update(); return *this; }
 
+		// << operator
 		friend std::ostream& operator<<(std::ostream &os, const AvlInt &v)
 		{
 			os << v.value;
 			return os;
 		}
 
+		// unary plus and minus
 		const AvlInt& operator+() const { return *this; }
 		const AvlInt operator-() const
 		{
@@ -189,6 +209,7 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		// pre-increment and post-increment
 		const AvlInt& operator++() { value++; update(); return *this; }
 		const AvlInt operator++(int)
 		{
@@ -198,6 +219,7 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		// pre-decrement and post-decrement
 		const AvlInt& operator--() { value--; update(); return *this; }
 		const AvlInt operator--(int)
 		{
@@ -207,6 +229,7 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		// binary plus
 		const AvlInt operator+(int v) const
 		{
 			AvlInt ret = *this;
@@ -214,11 +237,17 @@ class AvlInt : public AvlObject
 			ret.update();
 			return ret;
 		}
+
+		// // binary plus
 		const AvlInt operator+(const AvlInt &v) const { return *this + v.value; }
-		const AvlInt& operator+=(int v) { value += v; update(); return *this; }
-		const AvlInt& operator+=(const AvlInt &v) { return *this += v.value; }
 		friend const AvlInt operator+(int v1, const AvlInt &v2) { return v2 + v1; }
 
+		// compound plus 
+		const AvlInt& operator+=(int v) { value += v; update(); return *this; }
+		const AvlInt& operator+=(const AvlInt &v) { return *this += v.value; }
+		
+		
+		// binary minus
 		const AvlInt operator-(int v) const
 		{
 			AvlInt ret = *this;
@@ -227,10 +256,14 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 		const AvlInt operator-(const AvlInt &v) const { return *this - v.value; }
-		const AvlInt& operator-=(int v) { value -= v; update(); return *this; }
-		const AvlInt& operator-=(const AvlInt &v) { return *this -= v.value; }
 		friend const AvlInt operator-(int v1, const AvlInt &v2) { return -v2 + v1; }
 
+		// compound minus
+		const AvlInt& operator-=(int v) { value -= v; update(); return *this; }
+		const AvlInt& operator-=(const AvlInt &v) { return *this -= v.value; }
+
+
+		// multiplication
 		const AvlInt operator*(int v) const
 		{
 			AvlInt ret = *this;
@@ -239,10 +272,13 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 		const AvlInt operator*(const AvlInt &v) const { return *this * v.value; }
+		friend const AvlInt operator*(int v1, const AvlInt &v2) { return v2 * v1; }
+		
+		// compound multiplication
 		const AvlInt& operator*=(int v) { value *= v; update(); return *this; }
 		const AvlInt& operator*=(const AvlInt &v) { return *this *= v.value; }
-		friend const AvlInt operator*(int v1, const AvlInt &v2) { return v2 * v1; }
 
+		// devision
 		const AvlInt operator/(int v) const
 		{
 			AvlInt ret = *this;
@@ -251,8 +287,6 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 		const AvlInt operator/(const AvlInt &v) const { return *this / v.value; }
-		const AvlInt& operator/=(int v) { value /= v; update(); return *this; }
-		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
 		friend const AvlInt operator/(int v1, const AvlInt &v2)
 		{
 			AvlInt ret = v2;
@@ -261,6 +295,11 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
+		// compound division
+		const AvlInt& operator/=(int v) { value /= v; update(); return *this; }
+		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
+	
+		// comparison operators
 		bool operator <(int v) const { return value < v; }
 		bool operator <(const AvlInt &v) const { return value < v.value; }
 		friend bool operator<(int v1, const AvlInt v2) { return v1 < v2.value; }
@@ -285,8 +324,10 @@ class AvlInt : public AvlObject
 		bool operator !=(const AvlInt &v) const { return value != v.value; }
 		friend bool operator!=(int v1, const AvlInt v2) { return v1 != v2.value; }
 
+		// value getter
 		int val() const { return value; }
 
+		// render function
 		virtual void render()
 		{
 			unsigned int red = color() / 0x10000;
@@ -298,8 +339,12 @@ class AvlInt : public AvlObject
 			glutBitmapString(font().font(), (const unsigned char *)(std::to_string(value).c_str()));
 		}
 
-		void highlight() { set_color(AVL_COLOR_HIGHLIGHT); }
-		void lowlight() { set_color(AVL_COLOR_DEFAULT); }
+		void highlight() { 
+			set_color(AVL_COLOR_HIGHLIGHT); 
+		}
+		void lowlight() { 
+			set_color(AVL_COLOR_DEFAULT); 
+		}
 
 	private:
 		void update() { set_width(numOfDigit() * font().width()); }
@@ -323,32 +368,53 @@ class AvlInt : public AvlObject
 		int value;
 };
 
+class AvlIndex : public AvlObject {
+private:
+	size_t value;
+	const AvlObject* array;
+	template<typename T> friend class AvlArray;
+
+public:
+	// constructor 
+	AvlIndex () {
+		this->value = 0;
+		this->array = 0;
+	}
+	
+	// copy constructor
+	AvlIndex (const AvlIndex & that) {
+		this->value = that.value;
+		this->array = that.array;
+	}
+
+	// assignment operator
+	const AvlIndex& operator= (const AvlIndex& that) {
+		this->value = that.value;
+		this->array = that.array;
+		return *this;
+	}
+
+	// assignment operator for integer type
+	const AvlIndex& operator= (int a) {
+		this->value = a;
+		return *this;
+	}
+
+};
+
 // ***NOTE!***: every element in this array is a pointer
 template <typename T>
 class AvlArray : public AvlObject
 {
 	public:
+		// default constructor
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
-				const AvlFont &font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font), arr(size)
+				const AvlFont &font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font), arr(size), index_x(size), index_y(size)
 		{
-			for (auto& v : arr)
-				v = std::shared_ptr<T>(new T);
-
-			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
-			toplevelArray = this;
-
-			update();
-		}
-
-		AvlArray(const std::initializer_list<T> &l) : arr(l.size())
-		{
-			typename std::initializer_list<T>::const_iterator src = l.begin();
-			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
-
-			while (src != l.end()) {
-				*dst = std::shared_ptr<T>(new T(*src));
-				src++;
-				dst++;
+			std::cout << "Default constructor" << std::endl;
+			
+			for (int i = 0; i < arr.size(); i ++) {
+				arr[i] = std::shared_ptr<T>(new T);
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
@@ -357,13 +423,62 @@ class AvlArray : public AvlObject
 			update();
 		}
 
+		// constructor with initializer list
+		AvlArray(const std::initializer_list<T> &l) : arr(l.size()), index_x(l.size()), index_y(l.size())
+		{
+			std::cout << "Initializer list constructor" << std::endl;
+
+			typename std::initializer_list<T>::const_iterator src = l.begin();
+			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
+
+			int count = 0;
+			while (src != l.end()) {
+				*dst = std::shared_ptr<T>(new T(*src));
+				src++;
+				dst++;
+				count ++;
+			}
+
+			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
+			toplevelArray = this;
+
+			update();
+		}
+
+		// destructor
 		virtual ~AvlArray() {}
 
-		T& operator[](size_t index) { return *arr[index]; }
-		const T& operator[](size_t index) const { return *arr[index]; }
+		// subscript operator
+		T& operator[](size_t index) { 
+			return *arr[index]; 
+		}
 
+		const T& operator[](size_t index) const { 
+			return *arr[index];
+		}
+
+
+	
+		/***********************************************************************/
+
+		// subscript operator with AvlIndex type
+		T& operator[] (AvlIndex index) {
+			index.array = this;
+			return (*(this->array))[index.value];
+		}
+
+		const T& operator[] (AvlIndex index) const {
+			index.array = this;
+			return (*(this->array))[index.value];
+		}
+
+		/***********************************************************************/
+
+
+		// size
 		size_t size() const { return arr.size(); }
 
+		// sub-array
 		AvlArray<T> subarray(size_t start, size_t end) const
 		{
 			AvlArray<T> ret(end - start);
@@ -383,6 +498,7 @@ class AvlArray : public AvlObject
 			return ret;
 		}
 
+		// render
 		virtual void render()
 		{
 			if (updateMutex->try_lock()) {
@@ -390,8 +506,12 @@ class AvlArray : public AvlObject
 				updateMutex->unlock();
 			}
 
-			for (auto& v : arr)
+			auxiliary_display();
+			
+
+			for (auto& v : arr) {
 				v->render();
+			}
 		}
 
 		void highlight()
@@ -406,6 +526,7 @@ class AvlArray : public AvlObject
 				v->lowlight();
 		}
 
+		// swap two elements in an array
 		void swap(size_t idx1, size_t idx2)
 		{
 			if (!isDisplaying()) {
@@ -448,8 +569,32 @@ class AvlArray : public AvlObject
 		}
 
 	private:
+
+		void auxiliary_display() {
+			// display "Content"
+			unsigned int red = AVL_AUXILIARY_COLOR / 0x10000;
+			unsigned int green = AVL_AUXILIARY_COLOR % 0x10000 / 0x100;
+			unsigned int blue = AVL_AUXILIARY_COLOR % 0x100;
+			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
+			glRasterPos2f(x() - 80, y());
+			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string("Content: ").c_str()));
+
+			// display "Index" and index 
+			glRasterPos2f(x() - 63, y() - 20);
+			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string("Index: ").c_str()));
+
+			for (int i = 0; i < arr.size(); i ++) {
+				glRasterPos2f(index_x[i], index_y[i]);
+				glutBitmapString(AvlFont().font(), (const unsigned char *)(std::to_string(i).c_str()));
+			}
+
+		}
+
 		void update()
 		{
+			float digit_gat = 1.5;
+
 			GLfloat w = -font().width();
 
 			for (typename std::vector< std::shared_ptr<T> >::iterator it = arr.begin();
@@ -459,13 +604,21 @@ class AvlArray : public AvlObject
 					(*it)->set_y( y() );
 					(*it)->set_font( font() );
 					w += (*it)->width() + font().width();
+					
+					index_x[it - arr.begin()] = x();
+					index_y[it - arr.begin()] = y() - 20;
 				}
+
 				else {
-					(*it)->set_x( (*(it-1))->x() + (*(it-1))->width() + font().width() );
+					(*it)->set_x( (*(it-1))->x() + (*(it-1))->width() + digit_gat * font().width() );
 					(*it)->set_y( (*(it-1))->y() );
 					(*it)->set_font( (*(it-1))->font() );
 					w += (*it)->width() + font().width();
+
+					index_x[it - arr.begin()] = (*(it-1))->x() + (*(it-1))->width() + digit_gat * font().width();
+					index_y[it - arr.begin()] = (*(it-1))->y() - 20;
 				}
+
 			}
 
 			set_width(w);
@@ -475,6 +628,13 @@ class AvlArray : public AvlObject
 		std::shared_ptr<std::mutex> updateMutex;
 
 		AvlArray<T> *toplevelArray;
+
+		std::vector<GLfloat> index_x;
+		std::vector<GLfloat> index_y;
 };
+
+
+
+
 
 #endif // AVL_TYPES_H_
