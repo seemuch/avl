@@ -37,6 +37,8 @@ void randomPermute(int a[])
 int main() {
 	display int a[] = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
 
+	print "before sorting: ", a
+
 	<begin_display>
 	for (display index i = 1; i < len(a); i++) {
 		display index j = i - 1;
@@ -46,9 +48,16 @@ int main() {
 		}
 	}
 
+	print "after bubblesort: ", a
+
 	randomPermute(a);
 
+	print "after permutation: ", a
+
 	quicksort(a);
+
+	print "after quicksort: ", a
+
 	<end_display>
 
 	return 0;
