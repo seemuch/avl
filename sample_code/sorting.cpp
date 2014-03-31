@@ -119,10 +119,8 @@ int main(int argc, char *argv[])
 
 	/* substitude array declaration with the following two lines */
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
+	a.set_name("a");
 	__avl__vi->addObject(&a, "a");
-
-	/* translation rule for print */
-	std::cout << "before sorting: " << a << std::endl;
 
 	/* 1. bubblesort */
 
@@ -138,15 +136,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	std::cout << "after bubblesort: " << a << std::endl;
-
 	/* 2. random permutation */
 
 	/* This function won't be displayed, although it is
 	 * put between <begin_display> and <end_display> */
 	randomPermute(a);
-
-	std::cout << "after permutation: " << a << std::endl;
 
 	/* 3. quicksort */
 
@@ -155,8 +149,6 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	quicksort(a);
-
-	std::cout << "after quicksort: " << a << std::endl;
 
 	/* substitude <end_display> with the following two lines */
 	avlSleep(0.1);
