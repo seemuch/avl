@@ -416,7 +416,7 @@ class AvlArray : public AvlObject
 		AvlArray(size_t size = 0, GLfloat x = 0, GLfloat y = 0,
 				const AvlFont &font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font), arr(size), index_x(size), index_y(size)
 		{
-			std::cout << "Default constructor" << std::endl;
+			//std::cout << "Default constructor" << std::endl;
 			
 			for (int i = 0; i < arr.size(); i ++) {
 				arr[i] = std::shared_ptr<T>(new T);
@@ -431,7 +431,7 @@ class AvlArray : public AvlObject
 		// constructor with initializer list
 		AvlArray(const std::initializer_list<T> &l) : arr(l.size()), index_x(l.size()), index_y(l.size())
 		{
-			std::cout << "Initializer list constructor" << std::endl;
+			//std::cout << "Initializer list constructor" << std::endl;
 
 			typename std::initializer_list<T>::const_iterator src = l.begin();
 			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
