@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "parser.h"
 void count();
+void comment();
 %}
 
 %option debug warn verbose
@@ -80,7 +81,7 @@ int yywrap() {
 	return 1;
 }
 
-comment() {
+void comment() {
 	char c, c1;
 
 loop:
