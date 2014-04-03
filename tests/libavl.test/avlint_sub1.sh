@@ -3,7 +3,7 @@
 SUCCESS=0
 
 program="./avlint_sub1"
-declare -i n=100
+declare -i n=20
 declare -a input=( "0 0" "3 1" "1 3" "-1 -2" "-2 -1" "-1 2" "-2 1" "1 -2")
 
 source genRandom.sh
