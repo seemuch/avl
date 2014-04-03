@@ -1,7 +1,7 @@
 AC_INIT([avl], [0.1], [avl-plt@googlegroups.com], [],
 	[https://github.com/wqfish/avl])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall foreign])
 
 AC_PROG_CC
 AC_PROG_CXX
