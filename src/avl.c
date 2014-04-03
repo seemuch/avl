@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 				printf("%s ", *s++);
 			printf("\n");
 			if (execvp(CXX_OPTIONS[0], CXX_OPTIONS) < 0)
-				die_err("execlp() failed");
+				die_err("execvp() failed");
 		}
 
 		int status;
