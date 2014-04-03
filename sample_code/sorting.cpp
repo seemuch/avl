@@ -6,6 +6,8 @@
 #include <condition_variable>
 #include <cstdlib>
 
+/* Note: these variable names are also reserved words,
+ * so we add a prefix __avl__. */
 AvlVisualizer *__avl__vi = NULL;
 bool __avl__ready() { return __avl__vi != NULL; }
 std::mutex __avl_mtx;
@@ -21,6 +23,7 @@ void __avl__display(int argc, char **argv)
 	__avl__vi->show();
 }
 /* End of Headers */
+
 
 /* User defined function:
  * NOTE: the parameters should be passed by value */
@@ -44,10 +47,14 @@ void quicksort(AvlArray<AvlInt> a)
 		return;
 	}
 
-	/* Currently, just translate type index to int */
-	int i = -1;
-	int j = 0;
-	int k = a.size() - 1;
+	/* Translate type index to AvlIndex,
+	 * we do not support "display index i = -1" currently. */
+	AvlIndex i = -1;
+	i.set_name("i");
+	AvlIndex j = 0;
+	j.set_name("j");
+	AvlIndex k = a.size() - 1;
+	k.set_name("k")
 
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
@@ -92,11 +99,16 @@ void randomPermute(AvlArray<AvlInt> a)
 	a.lowlight();
 	a.highlight();
 
-	for (int i = 0; i < a.size(); i++) {
+	/* !!FIXME!!
+	 * To Shining Sun:
+	 * we cannot translate "index i = 0" to
+	 * "AvlIndex i = 0; i.set_name("i")" here. */
+	for (AvlIndex i = 0; i < a.size(); i++) {
 		/* Should rand be a keyword or a function?
 		 * If function, consider inline C (like inline
 		 * assembly in C) */
-		int j = rand() % a.size();
+		AvlIndex j = rand() % a.size();
+		j.set_name("j");
 		a.swap(i, j);
 	}
 
@@ -120,7 +132,11 @@ int main(int argc, char *argv[])
 	/* substitude array declaration with the following two lines */
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
 	a.set_name("a");
+	/* If the variable should be displayed, the following line is needed */
 	__avl__vi->addObject(&a, "a");
+
+	/* translation rule for print */
+	std::cout << "before sorting: " << a << std::endl;
 
 	/* 1. bubblesort */
 
@@ -128,19 +144,25 @@ int main(int argc, char *argv[])
 	__avl__vi->start();
 	avlSleep(0.5);
 
-	for (int i = 1; i < a.size(); i++) {
-		int j = i - 1;
+	/* !!FIXME!!
+	 * same issue */
+	for (AvlIndex i = 1; i < a.size(); i++) {
+		AvlIndex j = i - 1;
 		while (j >= 0 && a[j] > a[j+1]) {
 			a.swap(j + 1, j);
 			j = j - 1;
 		}
 	}
 
+	std::cout << "after bubble sort: " << a << std::endl;
+
 	/* 2. random permutation */
 
 	/* This function won't be displayed, although it is
 	 * put between <begin_display> and <end_display> */
 	randomPermute(a);
+
+	std::cout << "after permutation: " << a << std::endl;
 
 	/* 3. quicksort */
 
@@ -149,6 +171,8 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	quicksort(a);
+
+	std::cout << "after quicksort: " << a << std::endl;
 
 	/* substitude <end_display> with the following two lines */
 	avlSleep(0.1);
