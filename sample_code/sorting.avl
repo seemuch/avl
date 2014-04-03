@@ -3,9 +3,9 @@ void quicksort(int a[])
 	if (len(a) <= 1)
 		return;
 
-	display index i = -1;
-	display index j = 0;
-	display index k = len(a) - 1;
+	index i = -1;
+	index j = 0;
+	index k = len(a) - 1;
 
 	<begin_display>
 	while (j < k) {
@@ -40,8 +40,8 @@ int main() {
 	print "before sorting: ", a
 
 	<begin_display>
-	for (display index i = 1; i < len(a); i++) {
-		display index j = i - 1;
+	for (index i = 1; i < len(a); i++) {
+		index j = i - 1;
 		while (j >= 0 && a[j] > a[j+1]) {
 			swap(a, j + 1, j);
 			j = j - 1;
