@@ -7,14 +7,20 @@
 struct identifier
 {
 	char name[SYM_LEN];
-	struct identifier *prev;
-	struct identifier *next;
+	/* more attributes to be added */
+};
+
+struct identifier_node
+{
+	struct identifier id;
+	struct identifier_node *prev;
+	struct identifier_node *next;
 };
 
 struct sym_list
 {
-	struct identifier *first;
-	struct identifier *last;
+	struct identifier_node *first;
+	struct identifier_node *last;
 };
 
 /* initialize a symbol list */
@@ -24,16 +30,18 @@ void sym_list_init(struct sym_list *sl);
 void sym_list_destroy(struct sym_list *sl);
 
 /* add an identifier to the head of a list */
-void sym_list_add(struct sym_list *sl, const char *id);
+void sym_list_add(struct sym_list *sl, const struct identifier *id);
 
 /* add an identifier to the tail of a list */
-void sym_list_add_tail(struct sym_list *sl, const char *id);
+void sym_list_add_tail(struct sym_list *sl, const struct identifier *id);
 
 /* delete an identifier */
 void sym_list_del(struct sym_list *sl, const char *id);
 
 /* search for an identifier in a list,
- * return 0 if the id is found, return -1 otherwise */
-int sym_list_find(const struct sym_list *sl, const char *id);
+ * return a pointer if the id is found,
+ * return NULL otherwise */
+struct identifier *
+sym_list_find(const struct sym_list *sl, const char *id);
 
 #endif /* SYM_LIST_H_ */
