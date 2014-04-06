@@ -11,12 +11,20 @@ typedef enum {
 	STRLIT,
 	VARTYPE,
 	ID,
-    DISPLAY,
+   	DISPLAY,
 	OPERATOR;	
 } nodeTypeEnum;
 
 typedef enum {
 	variableDeclaration;
+	func_def
+	array_def
+	inc_op_post
+	dec_op_post
+	dec_op_pre
+	dec_op_pre
+	len
+
 } operatorTypeEnum;
 
 typedef enum {
