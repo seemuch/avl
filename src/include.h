@@ -62,6 +62,15 @@ typedef struct {
 	vector<nodeType*> op;
 } oprNodeType;
 
+
+/* operators */
+typedef struct {
+	int oper;
+	int nops;
+	struct nodeTypeTag **op;
+} oprNodeType;
+
+
 //////////////////////////////////////////////////////////
 
 typedef struct nodeTypeTag {
