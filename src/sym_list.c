@@ -12,61 +12,61 @@ void sym_list_destroy(struct sym_list *sl)
 {
 	while (sl->first)
 	{
-		struct identifier *iden = sl->first->next;
+		struct identifier_node *node = sl->first->next;
 		free(sl->first);
-		sl->first = iden;
+		sl->first = node;
 	}
 
 	sl->last = NULL;
 }
 
-void sym_list_add(struct sym_list *sl, const char *id)
+void sym_list_add(struct sym_list *sl, const struct identifier *id)
 {
-	if (sym_list_find(sl, id) == 0)
+	if (sym_list_find(sl, id->name) != NULL)
 		return;
 
-	struct identifier *iden = (struct identifier *)malloc(sizeof(struct identifier));
-	memset(iden, 0, sizeof(struct identifier));
-	strcpy(iden->name, id);
+	struct identifier_node *node = (struct identifier_node *)malloc(sizeof(struct identifier_node));
+	memset(node, 0, sizeof(struct identifier_node));
+	memcpy(&node->id, id, sizeof(struct identifier));
 
 	if (!sl->first)
 	{
-		sl->first = iden;
-		sl->last = iden;
+		sl->first = node;
+		sl->last = node;
 	}
 	else
 	{
-		iden->next = sl->first;
-		sl->first->prev = iden;
-		sl->first = iden;
+		node->next = sl->first;
+		sl->first->prev = node;
+		sl->first = node;
 	}
 }
 
-void sym_list_add_tail(struct sym_list *sl, const char *id)
+void sym_list_add_tail(struct sym_list *sl, const struct identifier *id)
 {
-	if (sym_list_find(sl, id) == 0)
+	if (sym_list_find(sl, id->name) != NULL)
 		return;
 
-	struct identifier *iden = (struct identifier *)malloc(sizeof(struct identifier));
-	memset(iden, 0, sizeof(struct identifier));
-	strcpy(iden->name, id);
+	struct identifier_node *node = (struct identifier_node *)malloc(sizeof(struct identifier_node));
+	memset(node, 0, sizeof(struct identifier_node));
+	memcpy(&node->id, id, sizeof(struct identifier));
 
 	if (!sl->first)
 	{
-		sl->first = iden;
-		sl->last = iden;
+		sl->first = node;
+		sl->last = node;
 	}
 	else
 	{
-		iden->prev = sl->last;
-		sl->last->next = iden;
-		sl->last = iden;
+		node->prev = sl->last;
+		sl->last->next = node;
+		sl->last = node;
 	}
 }
 
 void sym_list_del(struct sym_list *sl, const char *id)
 {
-	if (sym_list_find(sl, id) < 0)
+	if (sym_list_find(sl, id) == NULL)
 		return;
 
 	if (sl->first == sl->last)
@@ -77,46 +77,46 @@ void sym_list_del(struct sym_list *sl, const char *id)
 		return;
 	}
 
-	struct identifier *iden = sl->first;
+	struct identifier_node *node = sl->first;
 	
-	while (iden)
+	while (node)
 	{
-		if (strcmp(iden->name, id) == 0)
+		if (strcmp(node->id.name, id) == 0)
 		{
-			if (iden == sl->first)
+			if (node == sl->first)
 			{
-				iden->next->prev = NULL;
-				sl->first = iden->next;
+				node->next->prev = NULL;
+				sl->first = node->next;
 			}
-			else if (iden == sl->last)
+			else if (node == sl->last)
 			{
-				iden->prev->next = NULL;
-				sl->last = iden->prev;
+				node->prev->next = NULL;
+				sl->last = node->prev;
 			}
 			else
 			{
-				iden->prev->next = iden->next;
-				iden->next->prev = iden->prev;
+				node->prev->next = node->next;
+				node->next->prev = node->prev;
 			}
-			free(iden);
+			free(node);
 			return;
 		}
 		else
-			iden = iden->next;
+			node = node->next;
 	}
 }
 
-int sym_list_find(const struct sym_list *sl, const char *id)
+struct identifier *sym_list_find(const struct sym_list *sl, const char *id)
 {
-	struct identifier *iden = sl->first;
+	struct identifier_node *node = sl->first;
 
-	while (iden)
+	while (node)
 	{
-		if (strcmp(iden->name, id) == 0)
-			return 0;
+		if (strcmp(node->id.name, id) == 0)
+			return &node->id;
 
-		iden = iden->next;
+		node = node->next;
 	}
 
-	return -1;
+	return NULL;
 }
