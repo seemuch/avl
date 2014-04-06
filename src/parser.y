@@ -43,6 +43,7 @@ void yyerror(const char *msg);
 	int intConVal;
 	string strLitVal;
 	string idVal;
+	nodeType nt;
 }
 
 %token <idVal> 		IDENTIFIER LEN
@@ -200,30 +201,30 @@ initializer_list
 	;
 
 statement
-	: compound_statement
-	| expression_statement
-	| declaration_statement
-	| display_statement
-	| selection_statement
-	| iteration_statement
-	| jump_statement
+	: compound_statement							{ $<nt>$ = $<nt>1; }
+	| expression_statement							{ $<nt>$ = $<nt>1; }
+	| declaration_statement							{ $<nt>$ = $<nt>1; }
+	| display_statement								{ $<nt>$ = $<nt>1; }
+	| selection_statement							{ $<nt>$ = $<nt>1; }
+	| iteration_statement							{ $<nt>$ = $<nt>1; }
+	| jump_statement								{ $<nt>$ = $<nt>1; }
 	;
 
 expression_statement
-	: expression ';'
+	: expression ';'								{ $<nt>$ = $<nt>1; }
 	;
 
 declaration_statement
-	: declaration ';'
+	: declaration ';'								{ $<nt>$ = $<nt>1; }
 	;
 
 compound_statement 
 	: '{' '}'
-	| '{' statement_list '}'
+	| '{' statement_list '}'						{ $<nt>$ = $<nt>2; }
 	;
 
 statement_list
-	: statement
+	: statement										{ $<nt>$ = $<nt>1; }
 	| statement_list statement
 	;
 

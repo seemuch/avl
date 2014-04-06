@@ -33,13 +33,12 @@ typedef struct {
 // string literal
 typedef struct {
 	string value;
-}strLitNodeType;
+} strLitNodeType;
 
 // type specifier
 typedef struct {
 	variableTypeEnum;	
 } typeSpecNodeType;
-
 
 // variable types
 typedef struct {
