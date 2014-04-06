@@ -1,5 +1,14 @@
 %{
 #include <stdio.h>
+#include <string>
+#include "include.h"
+
+using std::string;
+
+nodeType* intConNode (int val);
+nodeType* strLitNode (string str);
+nodeType* varTypeNode(string type);
+nodeType* idNode (string value);
 
 int yylex();
 void yyerror(const char *msg);
@@ -7,8 +16,16 @@ void yyerror(const char *msg);
 
 %debug
 
+%union {
+	int intConVal;
+	string strLitVal;
+	string idVal;
+}
 
-%token IDENTIFIER CONSTANT STRING_LITERAL LEN
+%token <idVal> 		IDENTIFIER LEN
+%token <intConVal> 	CONSTANT 
+%token <strLitVal> 	STRING_LITERAL 
+
 %token INC_OP DEC_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP
 
@@ -25,8 +42,8 @@ void yyerror(const char *msg);
 
 primary_expression
 	: IDENTIFIER
-	| CONSTANT
-	| STRING_LITERAL
+	| CONSTANT 							{ $$ = intConNode ($1); }
+	| STRING_LITERAL 					{ $$ = strLitNode ($1); }
 	| '(' conditional_expression ')'
 	;
 
@@ -113,12 +130,12 @@ assignment_expression
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| INT
-	| STRING
-	| INDEX
-	| BOOL
+	: VOID 						{ $$ = varTypeNode("void"); }
+	| CHAR 						{ $$ = varTypeNode("char"); }
+	| INT 						{ $$ = varTypeNode("int"); }
+	| STRING 					{ $$ = varTypeNode("string"); }
+	| INDEX 					{ $$ = varTypeNode("index"); }
+	| BOOL 						{ $$ = varTypeNode("bool"); }
 	| type_specifier '[' ']'
 	;
 
@@ -133,13 +150,13 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator_list
-	| DISPLAY type_specifier init_declarator_list
-	| HIDE type_specifier init_declarator_list
+	: type_specifier init_declarator_list 			{ $$ = variableIdNode ($1, $2, 0); } 
+	| DISPLAY type_specifier init_declarator_list   { $$ = variableIdNode ($1, $2, 1); }
+	| HIDE type_specifier init_declarator_list 		{ $$ = variableIdNode ($1, $2, -1); }
 	;
 
 init_declarator_list
-	: init_declarator
+	: init_declarator 								
 	| init_declarator_list ',' init_declarator
 	;
 
@@ -149,8 +166,8 @@ init_declarator
 	;
 
 declarator
-	: IDENTIFIER
-	| IDENTIFIER '[' conditional_expression ']'
+	: IDENTIFIER 									{ $$ = idNode($1); }
+	| IDENTIFIER '[' conditional_expression ']' 	
 	| IDENTIFIER '[' ']'
 	;
 
@@ -244,3 +261,53 @@ parameter_declaration
 
 
 %%
+
+nodeType* intConNode (int value) {
+	nodeType *p;
+
+	// allocating memory
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+
+	p->type = intCon;
+	p->intCon.value = value;
+
+	return p;
+}
+
+nodeType* strLitNode (string value) {
+	nodeType* p;
+
+	// allocating memory
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+	
+	p->type = strLit;
+	p->strLit.value = value;
+
+	return p;
+}
+
+nodeType* varTypeNode (string type) {
+	nodeType* p;
+
+	// allocating memory
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+	
+	p->type = varType;
+	p->varType.type = type;
+
+	return p;
+
+}
+
+nodeType* idNode(string value) {
+	nodeType* p;
+
+
+}
+
+
+
+

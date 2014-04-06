@@ -1,5 +1,7 @@
 %{
 #include <stdlib.h>
+#include <string>
+using std::string;
 #include "parser.h"
 void count();
 void comment();
@@ -36,12 +38,26 @@ H			[a-fA-F0-9]
 "<begin_display>"	{ count(); return(BEGIN_DISPLAY); }
 "<end_display>"		{ count(); return(END_DISPLAY); }
 
-{L}({L}|{D})*		{ count(); return(IDENTIFIER); }
+{L}({L}|{D})*		{ 	count(); 
+						yylval.idval = string(yytext);
+						return(IDENTIFIER);
+					}
 
-{D}+			{ count(); return(CONSTANT); }
-'(\\.|[^\\'])+'		{ count(); return(CONSTANT); }
+{D}+				{ 
+						count(); 
+						yylval.intConVal = atoi(yytext);
+						return(CONSTANT); 
+					}
+'(\\.|[^\\'])+'		{ 	count(); 
+						yylval.intConVal = atoi(yytext);
+						return(CONSTANT); 
+					}
 
-\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
+\"(\\.|[^\\"])*\"	{ 	
+						count(); 
+						yylval.strLitVal = string(yytext);
+						return(STRING_LITERAL); 
+					}
 
 "++"			{ count(); return(INC_OP); }
 "--"			{ count(); return(DEC_OP); }
