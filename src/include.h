@@ -7,11 +7,12 @@ using std::string;
 using std::vector;
 
 typedef enum {
-	intCon,
-	strLit,
-	varType,
-	idType,
-	operatorType;	
+	INTCON,
+	STRLIT,
+	VARTYPE,
+	ID,
+    DISPLAY,
+	OPERATOR;	
 } nodeTypeEnum;
 
 typedef enum {
@@ -19,47 +20,46 @@ typedef enum {
 } operatorTypeEnum;
 
 typedef enum {
-	INT,
+	VOID,
 	CHAR,
+	INT,
 	STRING,
+	INDEX,
 	BOOL
-} variableTypeEnum;
+} varTypeEnum;
 
 // integer constants
 typedef struct {
 	int value;
-} intConNodeType;
+} intConNode;
 
 // string literal
 typedef struct {
 	string value;
-} strLitNodeType;
+} strLitNode;
 
 // type specifier
 typedef struct {
-	variableTypeEnum;	
-} typeSpecNodeType;
-
-// variable types
-typedef struct {
-	string type;
-} varTypeNodeType;
+	varTypeEnum value;	
+} varTypeNode;
 
 // identifiers
 typedef struct {
-	string name;
-} idNodeType;
+	string value;
+} idNode;
 
 // display
 typedef struct {
-	bool whetheDisplay;
-} displayNodeType;
+	bool value;
+} displayNode;
+
+//////////////////////////////////////////////////////////
 
 // operators
 typedef struct {
 	operatorTypeEnum opType;
 	vector<nodeType*> op;
-} oprNodeType;
+} oprNode;
 
 
 //////////////////////////////////////////////////////////
@@ -68,12 +68,12 @@ typedef struct nodeTypeTag {
 	nodeTypeEnum type;
 
 	union {
-		intConNodeType intCon;
-		strLitNodeType strLit;
-		typeSpecNodeType typeSpec;
-		idNodeType id;
-
-		oprNodeType opr;
+		intConNode intCon;
+		strLitNode strLit;
+		varTypeNode varType;
+		idNode id;
+        displayNode disp;
+		oprNode opr;
 	};
 
 } nodeType;
