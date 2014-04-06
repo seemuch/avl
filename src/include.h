@@ -1,13 +1,22 @@
 #ifndef _INCLUDE_H_
 #define _INCLUDE_H_
 
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
+
 typedef enum {
 	intCon,
 	strLit,
 	varType,
 	idType,
-	variableType
+	operatorType;	
 } nodeTypeEnum;
+
+typedef enum {
+	variableDeclaration;
+} operatorTypeEnum;
 
 typedef enum {
 	INT,
@@ -42,12 +51,16 @@ typedef struct {
 	string name;
 } idNodeType;
 
-// variables 
+// display
 typedef struct {
-	variableTypeEnum type;
-	idNodeType* id;
-	int display; // 0 for default; 1 for display; -1 for hide
-} variableNodeType;
+	bool whetheDisplay;
+} displayNodeType;
+
+// operators
+typedef struct {
+	operatorTypeEnum opType;
+	vector<nodeType*> op;
+} oprNodeType;
 
 //////////////////////////////////////////////////////////
 
@@ -58,9 +71,9 @@ typedef struct nodeTypeTag {
 		intConNodeType intCon;
 		strLitNodeType strLit;
 		typeSpecNodeType typeSpec;
-		varTypeNodeType varType;
 		idNodeType id;
-		variableNodeType var;
+
+		oprNodeType opr;
 	};
 
 } nodeType;
