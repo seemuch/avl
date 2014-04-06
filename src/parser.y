@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <stdarg.h>
 #include "include.h"
 
 using std::string;
@@ -43,7 +44,8 @@ void yyerror(const char *msg);
 	int intConVal;
 	string strLitVal;
 	string idVal;
-	nodeType nt;
+
+	nodeType* nt;
 }
 
 %token <idVal> 		IDENTIFIER LEN
@@ -66,8 +68,8 @@ void yyerror(const char *msg);
 
 primary_expression
 	: IDENTIFIER
-	| CONSTANT 							{ $$ = intConNode ($1); }
-	| STRING_LITERAL 					{ $$ = strLitNode ($1); }
+	| CONSTANT 							{ $<nt>$ = intConNode ($<nt>1); }
+	| STRING_LITERAL 					{ $<nt>$ = strLitNode ($<nt>1); }
 	| '(' conditional_expression ')'
 	;
 
@@ -154,12 +156,12 @@ assignment_expression
 	;
 
 type_specifier
-	: VOID 						{ $$ = varTypeNode("void"); }
-	| CHAR 						{ $$ = varTypeNode("char"); }
-	| INT 						{ $$ = varTypeNode("int"); }
-	| STRING 					{ $$ = varTypeNode("string"); }
-	| INDEX 					{ $$ = varTypeNode("index"); }
-	| BOOL 						{ $$ = varTypeNode("bool"); }
+	: VOID 						{ $<nt>$ = varTypeNode(0); }
+	| CHAR 						{ $<nt>$ = varTypeNode(1); }
+	| INT 						{ $<nt>$ = varTypeNode(2); }
+	| STRING 					{ $<nt>$ = varTypeNode(3); }
+	| INDEX 					{ $<nt>$ = varTypeNode(4); }
+	| BOOL 						{ $<nt>$ = varTypeNode(5); }
 	| type_specifier '[' ']'
 	;
 
@@ -174,9 +176,9 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $$ = variableIdNode ($1, $2, 0);  } 
-	| DISPLAY type_specifier init_declarator 		{ $$ = variableIdNode ($1, $2, 1);  }
-	| HIDE type_specifier init_declarator 			{ $$ = variableIdNode ($1, $2, -1); }
+	: type_specifier init_declarator 				{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 0);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 1);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, -1); }
 	;
 
 init_declarator
@@ -313,7 +315,7 @@ nodeType* strLitNode (string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* varTypeNode (string type) {
+nodeType* varTypeNode (int type) {
 	nodeType* p;
 
 	// allocating memory
@@ -321,10 +323,9 @@ nodeType* varTypeNode (string type) {
 		yyerror("out of memory");
 	
 	p->type = varType;
-	p->varType.type = type;
+	p->typeSpec.typeType = type;
 
 	return p;
-
 }
 
 ///////////////////////////////////////////////////////////////
@@ -338,19 +339,12 @@ nodeType* idNode(string value) {
 
 	p->type = idType; 
 	p->id.name = value;
+
+	return p;
 }
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* variableIdNode (nodeType* type, nodeType* id, int display) {
-	nodeType* p;
-
-	// allocating memory
-	if ((p = malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
+nodeType* operatorNode (int operator, int numOperands, ...) {
 	
-	p->type = variableType;
-	p->var.type = type->varType.type;
-	p->var.display = display;
-	p->var.value = 
 }
