@@ -49,6 +49,15 @@ typedef struct {
 	int display; // 0 for default; 1 for display; -1 for hide
 } variableNodeType;
 
+
+/* operators */
+typedef struct {
+	int oper;
+	int nops;
+	struct nodeTypeTag **op;
+} oprNodeType;
+
+
 //////////////////////////////////////////////////////////
 
 typedef struct nodeTypeTag {
@@ -61,6 +70,7 @@ typedef struct nodeTypeTag {
 		varTypeNodeType varType;
 		idNodeType id;
 		variableNodeType var;
+		oprNodeType opr;
 	};
 
 } nodeType;
