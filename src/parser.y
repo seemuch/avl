@@ -12,6 +12,7 @@ nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
 
+/*
 typedef struct {
 	typeEnum type;
 	union {
@@ -26,8 +27,10 @@ typedef struct {
 typedef typename unordered_map<string, const nodeType*> symbolTable;
 vector<symbolTable> symStack;
 
+
 symbolTable global;
 symStack.push_back(global);
+*/
 
 int yylex();
 void yyerror(const char *msg);
@@ -169,19 +172,14 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator_list 			{ $$ = variableIdNode ($1, $2, 0); } 
-	| DISPLAY type_specifier init_declarator_list   { $$ = variableIdNode ($1, $2, 1); }
-	| HIDE type_specifier init_declarator_list 		{ $$ = variableIdNode ($1, $2, -1); }
-	;
-
-init_declarator_list
-	: init_declarator 								
-	| init_declarator_list ',' init_declarator
+	: type_specifier init_declarator 				{ $$ = variableIdNode ($1, $2, 0); } 
+	| DISPLAY type_specifier init_declarator 		{ $$ = variableIdNode ($1, $2, 1); }
+	| HIDE type_specifier init_declarator 			{ $$ = variableIdNode ($1, $2, -1); }
 	;
 
 init_declarator
-	: declarator
-	| declarator '=' initializer
+	: declarator 									{ $$ = $1; }
+	| declarator '=' initializer 					{ $$ = assign($1, $3); }
 	;
 
 declarator
@@ -191,8 +189,8 @@ declarator
 	;
 
 initializer
-	: conditional_expression
-	| '{' initializer_list '}'
+	: conditional_expression 						{ $$ = $1; }
+	| '{' initializer_list '}' 						{ $$ = $2; }
 	;
 
 initializer_list
@@ -281,6 +279,8 @@ parameter_declaration
 
 %%
 
+///////////////////////////////////////////////////////////////
+
 nodeType* intConNode (int value) {
 	nodeType *p;
 
@@ -294,6 +294,8 @@ nodeType* intConNode (int value) {
 	return p;
 }
 
+///////////////////////////////////////////////////////////////
+
 nodeType* strLitNode (string value) {
 	nodeType* p;
 
@@ -306,6 +308,8 @@ nodeType* strLitNode (string value) {
 
 	return p;
 }
+
+///////////////////////////////////////////////////////////////
 
 nodeType* varTypeNode (string type) {
 	nodeType* p;
@@ -334,6 +338,8 @@ nodeType* idNode(string value) {
 	
 }
 
+///////////////////////////////////////////////////////////////
+
 nodeType* variableIdNode (nodeType* type, nodeType* id, int display) {
 	nodeType* p;
 
@@ -341,5 +347,8 @@ nodeType* variableIdNode (nodeType* type, nodeType* id, int display) {
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 	
-
+	p->type = variableType;
+	p->var.type = type->varType.type;
+	p->var.display = display;
+	p->var.value = 
 }
