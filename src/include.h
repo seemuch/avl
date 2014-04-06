@@ -1,48 +1,68 @@
-typedef enum {  
-	type_specifier_node,
-	identifier_node,
-	constant_node,
-	string_literal_node
-} nodeEnum;
+#ifndef _INCLUDE_H_
+#define _INCLUDE_H_
 
 typedef enum {
-	int_type,
-	char_type,
-	bool_type,
-	string_type,
-	index_type,
-	array_type
-} typeEnum;
+	intCon,
+	strLit,
+	varType,
+	idType,
+	variableType
+} nodeTypeEnum;
 
-// type specifier
-typedef struct {
-	typeEnum typeName;	
-} typeSpecNodeType;
-
-// identifiers
-typedef struct {
-	char* idName;
-} identifierNodeType;
+typedef enum {
+	INT,
+	CHAR,
+	STRING,
+	BOOL
+} variableTypeEnum;
 
 // integer constants
 typedef struct {
 	int value;
-} constantNodeType
+} intConNodeType;
 
-// string literals
+// string literal
 typedef struct {
-	char* str;
-} strLitNodeType;
+	string value;
+}strLitNodeType;
+
+// type specifier
+typedef struct {
+	variableTypeEnum;	
+} typeSpecNodeType;
 
 
-/***********************************************/
+// variable types
+typedef struct {
+	string type;
+} varTypeNodeType;
+
+// identifiers
+typedef struct {
+	string name;
+} idNodeType;
+
+// variables 
+typedef struct {
+	variableTypeEnum type;
+	idNodeType* id;
+	int display; // 0 for default; 1 for display; -1 for hide
+} variableNodeType;
+
+//////////////////////////////////////////////////////////
 
 typedef struct nodeTypeTag {
-	nodeEnum type;
+	nodeTypeEnum type;
+
 	union {
-		typeSpecNodeType type_spec;
-		identifierNodeType id;
-		constantNodeType con;
-		strLitNodeType sln;
+		intConNodeType intCon;
+		strLitNodeType strLit;
+		typeSpecNodeType typeSpec;
+		varTypeNodeType varType;
+		idNodeType id;
+		variableNodeType var;
 	};
-}nodeType;
+
+} nodeType;
+
+#endif
