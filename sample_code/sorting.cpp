@@ -48,8 +48,8 @@ void quicksort(AvlArray<AvlInt> a)
 	}
 
 	/* Translate type index to AvlIndex,
-	 * we do not support "display index i = -1" currently. */
-	AvlIndex i = -1;
+	 * index should be non-negative */
+	AvlIndex i = 0;
 	i.set_name("i");
 	AvlIndex j = 0;
 	j.set_name("j");
@@ -66,18 +66,19 @@ void quicksort(AvlArray<AvlInt> a)
 		}
 		else {
 			/* swap(a, i, j) -> a.swap(i, j) */
-			a.swap(i + 1, j);
+			a.swap(i, j);
 			i = i + 1;
 			j++;
 		}
 	}
 
 	/* same as above */
-	a.swap(i+1, k);
+	a.swap(i, k);
 
-	/* translation rule for subarrys */
-	quicksort(a.subarray(0, (i+1)));
-	quicksort(a.subarray((i+2), (k+1)));
+	/* translation rule for subarrys,
+	 * TODO: operator precedence? ':' and '+-' */
+	quicksort(a.subarray(0, i));
+	quicksort(a.subarray((i+1), (k+1)));
 
 	/* substitude <end_display> with the following two lines */
 	avlSleep(0.1);
@@ -145,9 +146,10 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	/* !!FIXME!!
-	 * same issue */
+	 * same issue as in randomPermute */
 	for (AvlIndex i = 1; i < a.size(); i++) {
 		AvlIndex j = i - 1;
+		j.set_name("j");
 		while (j >= 0 && a[j] > a[j+1]) {
 			a.swap(j + 1, j);
 			j = j - 1;
