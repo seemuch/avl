@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 #include <string>
+#include <unordered_map>
+#include <vector>
 #include "include.h"
 
 using std::string;
@@ -9,6 +11,23 @@ nodeType* intConNode (int val);
 nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
+
+typedef struct {
+	typeEnum type;
+	union {
+		int intValue;
+		char charValue;
+		bool boolValue;
+		string stringvalue;
+	} value;
+
+} variableTokenValue;
+
+typedef typename unordered_map<string, const nodeType*> symbolTable;
+vector<symbolTable> symStack;
+
+symbolTable global;
+symStack.push_back(global);
 
 int yylex();
 void yyerror(const char *msg);
@@ -305,9 +324,22 @@ nodeType* varTypeNode (string type) {
 nodeType* idNode(string value) {
 	nodeType* p;
 
+	// allocating memroy
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
 
+	p->type = idType; 
+	p->id.name = value;
+
+	
 }
 
+nodeType* variableIdNode (nodeType* type, nodeType* id, int display) {
+	nodeType* p;
 
+	// allocating memory
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+	
 
-
+}
