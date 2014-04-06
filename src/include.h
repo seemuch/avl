@@ -20,9 +20,11 @@ typedef enum {
 } operatorTypeEnum;
 
 typedef enum {
-	INT,
+	VOID,
 	CHAR,
+	INT,
 	STRING,
+	INDEX,
 	BOOL
 } varTypeEnum;
 
@@ -50,6 +52,8 @@ typedef struct {
 typedef struct {
 	bool value;
 } displayNode;
+
+//////////////////////////////////////////////////////////
 
 // operators
 typedef struct {

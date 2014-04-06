@@ -43,6 +43,7 @@ void yyerror(const char *msg);
 	int intConVal;
 	string strLitVal;
 	string idVal;
+	nodeType* nt;
 }
 
 %token <idVal> 		IDENTIFIER LEN
@@ -65,8 +66,8 @@ void yyerror(const char *msg);
 
 primary_expression
 	: IDENTIFIER
-	| CONSTANT 							{ $$ = intConNode ($1); }
-	| STRING_LITERAL 					{ $$ = strLitNode ($1); }
+	| CONSTANT 							{ $<nt>$ = intConNode ($<nt>1); }
+	| STRING_LITERAL 					{ $<nt>$ = strLitNode ($<nt>1); }
 	| '(' conditional_expression ')'
 	;
 
@@ -153,12 +154,12 @@ assignment_expression
 	;
 
 type_specifier
-	: VOID 						{ $$ = varTypeNode("void"); }
-	| CHAR 						{ $$ = varTypeNode("char"); }
-	| INT 						{ $$ = varTypeNode("int"); }
-	| STRING 					{ $$ = varTypeNode("string"); }
-	| INDEX 					{ $$ = varTypeNode("index"); }
-	| BOOL 						{ $$ = varTypeNode("bool"); }
+	: VOID 						{ $$ = varTypeNode(0); }
+	| CHAR 						{ $$ = varTypeNode(1); }
+	| INT 						{ $$ = varTypeNode(2); }
+	| STRING 					{ $$ = varTypeNode(3); }
+	| INDEX 					{ $$ = varTypeNode(4); }
+	| BOOL 						{ $$ = varTypeNode(5); }
 	| type_specifier '[' ']'
 	;
 
@@ -312,7 +313,7 @@ nodeType* strLitNode (string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* varTypeNode (string type) {
+nodeType* varTypeNode (int type) {
 	nodeType* p;
 
 	// allocating memory
@@ -320,7 +321,7 @@ nodeType* varTypeNode (string type) {
 		yyerror("out of memory");
 	
 	p->type = varType;
-	p->varType.type = type;
+	p->typeSpec.typeType = type;
 
 	return p;
 
