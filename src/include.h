@@ -7,10 +7,11 @@ using std::string;
 using std::vector;
 
 typedef enum {
-	intCon,
-	strLit,
+	intConType,
+	strLitType,
 	varType,
 	idType,
+
 	operatorType;	
 } nodeTypeEnum;
 
@@ -19,9 +20,11 @@ typedef enum {
 } operatorTypeEnum;
 
 typedef enum {
-	INT,
+	VOID,
 	CHAR,
+	INT,
 	STRING,
+	INDEX,
 	BOOL
 } variableTypeEnum;
 
@@ -37,9 +40,8 @@ typedef struct {
 
 // type specifier
 typedef struct {
-	variableTypeEnum;	
+	variableTypeEnum typeType;
 } typeSpecNodeType;
-
 
 // variable types
 typedef struct {
@@ -55,6 +57,8 @@ typedef struct {
 typedef struct {
 	bool whetheDisplay;
 } displayNodeType;
+
+//////////////////////////////////////////////////////////
 
 // operators
 typedef struct {
