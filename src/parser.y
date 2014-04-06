@@ -11,6 +11,7 @@ nodeType* intConNode (int val);
 nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
+nodeType* assignmentNode ()
 
 /*
 typedef struct {
@@ -172,8 +173,8 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $$ = variableIdNode ($1, $2, 0); } 
-	| DISPLAY type_specifier init_declarator 		{ $$ = variableIdNode ($1, $2, 1); }
+	: type_specifier init_declarator 				{ $$ = variableIdNode ($1, $2, 0);  } 
+	| DISPLAY type_specifier init_declarator 		{ $$ = variableIdNode ($1, $2, 1);  }
 	| HIDE type_specifier init_declarator 			{ $$ = variableIdNode ($1, $2, -1); }
 	;
 
@@ -325,6 +326,8 @@ nodeType* varTypeNode (string type) {
 
 }
 
+///////////////////////////////////////////////////////////////
+
 nodeType* idNode(string value) {
 	nodeType* p;
 
@@ -334,8 +337,6 @@ nodeType* idNode(string value) {
 
 	p->type = idType; 
 	p->id.name = value;
-
-	
 }
 
 ///////////////////////////////////////////////////////////////
