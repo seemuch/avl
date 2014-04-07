@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string>
 using std::string;
-#include "parser.h"
+#include "parser.hh"
 void count();
 void comment();
 %}
