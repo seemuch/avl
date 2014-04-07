@@ -13,7 +13,7 @@ nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
 
-nodeType* operatorNodeCreator (int operator, ...);
+nodeType* operatorNodeCreator (int, int, ...);
 
 /*
 typedef struct {
@@ -156,12 +156,12 @@ assignment_expression
 	;
 
 type_specifier
-	: VOID 						{ $<nt>$ = varTypeNode(0); }
-	| CHAR 						{ $<nt>$ = varTypeNode(1); }
-	| INT 						{ $<nt>$ = varTypeNode(2); }
-	| STRING 					{ $<nt>$ = varTypeNode(3); }
-	| INDEX 					{ $<nt>$ = varTypeNode(4); }
-	| BOOL 						{ $<nt>$ = varTypeNode(5); }
+	: VOID 						{ $<nt>$ = varTypeNodeCrator(0); }
+	| CHAR 						{ $<nt>$ = varTypeNodeCrator(1); }
+	| INT 						{ $<nt>$ = varTypeNodeCrator(2); }
+	| STRING 					{ $<nt>$ = varTypeNodeCrator(3); }
+	| INDEX 					{ $<nt>$ = varTypeNodeCrator(4); }
+	| BOOL 						{ $<nt>$ = varTypeNodeCrator(5); }
 	| type_specifier '[' ']'
 	;
 
@@ -176,30 +176,30 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $<nt>$ = (variableDeclaration, 0, $<nt>1, $<nt>2);  } 
-	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = (variableDeclaration, 1, $<nt>2, $<nt>3);  }
-	| HIDE type_specifier init_declarator 			{ $<nt>$ = (variableDeclaration, 0, $<nt>2, $<nt>3); }
+	: type_specifier init_declarator 				{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 0, $<nt>1, $<nt>2);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 1, $<nt>2, $<nt>3);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 0, $<nt>2, $<nt>3);  }
 	;
 
 init_declarator
-	: declarator 									{ $$ = $1; }
-	| declarator '=' initializer 					{ $$ = operatorNodeCreator(assignment, $1, $3); }
+	: declarator 									{ $<nt>$ = $<nt>1; }
+	| declarator '=' initializer 					{ $<nt>$ = operatorNodeCreator(assignment, 2, $<nt>1, $<nt>3); }
 	;
 
 declarator
-	: IDENTIFIER 									{ $$ = idNode($1); }
-	| IDENTIFIER '[' conditional_expression ']' 	
-	| IDENTIFIER '[' ']'
+	: IDENTIFIER 									{ $<nt>$ = idNodeCreator($<nt>1); }
+	| IDENTIFIER '[' conditional_expression ']' 	{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 2, $1, $3); }
+	| IDENTIFIER '[' ']' 							{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 1, $1); }
 	;
 
 initializer
-	: conditional_expression 						{ $$ = $1; }
-	| '{' initializer_list '}' 						{ $$ = $2; }
+	: conditional_expression 						{ $<nt>$ = $<nt>1; }
+	| '{' initializer_list '}' 						{ $<nt>$ = $<nt>2; }
 	;
 
 initializer_list
-	: conditional_expression
-	| initializer_list ',' conditional_expression
+	: conditional_expression 						{ $<nt>$ = $<nt>1; }
+	| initializer_list ',' conditional_expression 	{ $<nt>$ = operatorNodeCreator(concatenate, 2, $1, $3); }
 	;
 
 statement
@@ -292,7 +292,7 @@ nodeType* intConNodeCreator (int value) {
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 
-	p->type = intCon;
+	p->type = INTCON;
 	p->intCon.value = value;
 
 	return p;
@@ -307,7 +307,7 @@ nodeType* strLitNodeCreator (string value) {
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 	
-	p->type = strLit;
+	p->type = STRLIT;
 	p->strLit.value = value;
 
 	return p;
@@ -322,8 +322,8 @@ nodeType* varTypeNodeCrator (int type) {
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 	
-	p->type = varType;
-	p->typeSpec.typeType = type;
+	p->type = VARTYPE;
+	p->varType.value = type;
 
 	return p;
 }
@@ -337,8 +337,8 @@ nodeType* idNodeCreator (string value) {
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 
-	p->type = idType; 
-	p->id.name = value;
+	p->type = ID; 
+	p->id.value = value;
 
 	return p;
 }
