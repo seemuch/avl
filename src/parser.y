@@ -261,23 +261,22 @@ jump_statement
 	;
 
 translation_unit
-	: function_definition	
-	| translation_unit function_definition
+	: function_definition {$<nt>$ = $<nt>1; }
+	| translation_unit function_definition { $<nt>$ = operatorNodeCreator(trans_unit, 2, $<nt>1, $<nt>2); }
 	;
 
 function_definition
-	: type_specifier  IDENTIFIER '(' parameter_list ')'
-	      compound_statement
-	| type_specifier  IDENTIFIER '('  ')' compound_statement
+	: type_specifier  IDENTIFIER '(' parameter_list ')' compound_statement { $<nt>$ = operatorNodeCreator(fun_def, 4, $<nt>1, $<nt>2, $<nt>4, $<nt>6); }
+	| type_specifier  IDENTIFIER '('  ')' compound_statement { $<nt>$ = operatorNodeCreator(func_def, 3, $<nt>1, $<nt>2, $<nt>5); }
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration { $<nt>$ = $<nt>1; }
+	| parameter_list ',' parameter_declaration { $<nt>$ = operatorNodeCreator(concatenate, 2, $<nt>1, $<nt>3); }
 	;
 
 parameter_declaration
-	: type_specifier declarator
+	: type_specifier declarator { $<nt>$ = operatorNodeCreator(para_declar, 2, $<nt>1, $<nt>2); }
 	;
 
 
