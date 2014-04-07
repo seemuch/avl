@@ -12,10 +12,10 @@ typedef enum {
 } nodeTypeEnum;
 
 typedef enum {
-	variableDeclaration,
+	var_decl,
 	func_call,
 	array,
-	arrayDeclaration,
+	arr_decl,
 	inc_op_post,
 	dec_op_post,
 	inc_op_pre,
@@ -35,7 +35,25 @@ typedef enum {
 	assignment,	
     trans_unit,
     func_def,
-    para_declar
+    para_declar,
+	cast,
+	mult,
+	dev,
+	mod,
+	add,
+	minus,
+	lt,
+	gt,
+	le,
+	ge,
+	eq,
+	ne,
+	and_op,
+	or_op,
+	print,
+	unary_op,
+	que_col,
+	swap
 } operatorTypeEnum;
 
 typedef enum {

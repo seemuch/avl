@@ -9,6 +9,7 @@ nodeType* varTypeNodeCreator (varTypeEnum type);
 nodeType* idNodeCreator (char* value);
 
 nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
+nodeType* unaryNodeCreator(char);
 
 /*
 typedef struct {
@@ -66,7 +67,7 @@ primary_expression
 	: IDENTIFIER
 	| CONSTANT 							{ $<nt>$ = intConNodeCreator ($<intConVal>1); }
 	| STRING_LITERAL 					{ $<nt>$ = strLitNodeCreator ($<strLitVal>1); }
-	| '(' conditional_expression ')'
+	| '(' conditional_expression ')' 	{ $<nt>$ = $<nt>2; }
 	;
 
 postfix_expression
@@ -86,67 +87,67 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression				{$<nt>$ = $<nt>1;}
-	| INC_OP unary_expression			{$<nt>$ = operatorNodeCreator (inc_op_pre,1, $<nt>2 );}
-	| DEC_OP unary_expression			{$<nt>$ = operatorNodeCreator (dec_op_pre,1, $<nt>2 );}
-	| unary_operator cast_expression
+	| INC_OP unary_expression			{$<nt>$ = operatorNodeCreator (inc_op_pre, 1, $<nt>2 );}
+	| DEC_OP unary_expression			{$<nt>$ = operatorNodeCreator (dec_op_pre, 1, $<nt>2 );}
+	| unary_operator cast_expression 	{$<nt>$ = operatorNodeCreator (unary_op, 2, $<nt>1, $<nt>2); }
 	| LEN '(' unary_expression ')'		{$<nt>$ = operatorNodeCreator( len, 1, $<nt>3 ); }
 	;
 
 unary_operator
-	: '+'
-	| '-'
-	| '!'
+	: '+' 		{ $<nt>$ = unaryNodeCreator ('+'); }
+	| '-' 		{ $<nt>$ = unaryNodeCreator ('-'); }
+	| '!' 		{ $<nt>$ = unaryNodeCreator ('!'); }
 	;
 
 cast_expression
-	: unary_expression
-	| '(' type_specifier ')' cast_expression
+	: unary_expression 							{ $<nt>$ = $<nt>1; }
+	| '(' type_specifier ')' cast_expression 	{ $<nt>$ = operatorNodeCreator (cast, 2, $<nt>2, $<nt>4); }
 	;
 
 multiplicative_expression
-	: cast_expression
-	| multiplicative_expression '*' cast_expression
-	| multiplicative_expression '/' cast_expression
-	| multiplicative_expression '%' cast_expression
+	: cast_expression 								{ $<nt>$ = $<nt>1; }
+	| multiplicative_expression '*' cast_expression { $<nt>$ = operatorNodeCreator(mult, 2, $<nt>1, $<nt>3); }
+	| multiplicative_expression '/' cast_expression { $<nt>$ = operatorNodeCreator(dev, 2, $<nt>1, $<nt>3);  }
+	| multiplicative_expression '%' cast_expression { $<nt>$ = operatorNodeCreator(mod, 2, $<nt>1, $<nt>3); }
 	;
 
 additive_expression
-	: multiplicative_expression
-	| additive_expression '+' multiplicative_expression
-	| additive_expression '-' multiplicative_expression
+	: multiplicative_expression 						{ $<nt>$ = $<nt>1; }
+	| additive_expression '+' multiplicative_expression { $<nt>$ = operatorNodeCreator(add, 2, $<nt>1, $<nt>3); }
+	| additive_expression '-' multiplicative_expression { $<nt>$ = operatorNodeCreator(minus, 2, $<nt>1, $<nt>3); }
 	;
 
 relational_expression
-	: additive_expression
-	| relational_expression '<' additive_expression
-	| relational_expression '>' additive_expression
-	| relational_expression LE_OP additive_expression
-	| relational_expression GE_OP additive_expression
+	: additive_expression 								{ $<nt>$ = $<nt>1; }
+	| relational_expression '<' additive_expression 	{ $<nt>$ = operatorNodeCreator(lt, 2, $<nt>1, $<nt>3); }
+	| relational_expression '>' additive_expression 	{ $<nt>$ = operatorNodeCreator(gt, 2, $<nt>1, $<nt>3); }
+	| relational_expression LE_OP additive_expression 	{ $<nt>$ = operatorNodeCreator(le, 2, $<nt>1, $<nt>3); }
+	| relational_expression GE_OP additive_expression 	{ $<nt>$ = operatorNodeCreator(ge, 2, $<nt>1, $<nt>3); }
 	;
 
 equality_expression
-	: relational_expression
-	| equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression
+	: relational_expression 							{ $<nt>$ = $<nt>1; }
+	| equality_expression EQ_OP relational_expression 	{ $<nt>$ = operatorNodeCreator(eq, 2, $<nt>1, $<nt>3); }
+	| equality_expression NE_OP relational_expression 	{ $<nt>$ = operatorNodeCreator(ne, 2, $<nt>1, $<nt>3); }
 	;
 
 logical_and_expression
-	: equality_expression
-	| logical_and_expression AND_OP equality_expression
+	: equality_expression 								{ $<nt>$ = $<nt>1; }
+	| logical_and_expression AND_OP equality_expression { $<nt>$ = operatorNodeCreator(and_op, 2, $<nt>1, $<nt>3); }
 	;
 
 logical_or_expression
-	: logical_and_expression
-	| logical_or_expression OR_OP logical_and_expression
+	: logical_and_expression 								{ $<nt>$ = $<nt>1; }
+	| logical_or_expression OR_OP logical_and_expression 	{ $<nt>$ = operatorNodeCreator(or_op, 2, $<nt>1, $<nt>3); }
 	;
 
 conditional_expression
-	: logical_or_expression
-	| logical_or_expression '?' conditional_expression ':' conditional_expression
+	: logical_or_expression 								{ $<nt>$ = $<nt>1; }
+	| logical_or_expression '?' conditional_expression ':' conditional_expression { $<nt>$ = operatorNodeCreator (que_col, 3, $<nt>1, $<nt>3, $<nt>5); }
 	;
 
 assignment_expression
-	: postfix_expression '=' conditional_expression
+	: postfix_expression '=' conditional_expression 	{ $<nt>$ = operatorNodeCreator(assignment, 2, $<nt>1, $<nt>3); }
 	;
 
 type_specifier
@@ -160,18 +161,18 @@ type_specifier
 	;
 
 expression
-	: conditional_expression 
-	| assignment_expression 
-	| DISPLAY IDENTIFIER 
-	| HIDE IDENTIFIER 
-	| SWAP '(' IDENTIFIER ',' conditional_expression ',' conditional_expression ')' 
-	| PRINT argument_expression_list 
+	: conditional_expression  			{ $<nt>$ = $<nt>1; }
+	| assignment_expression  			{ $<nt>$ = $<nt>1; }
+	| DISPLAY IDENTIFIER  				{ $<nt>$ = $<nt>1; }
+	| HIDE IDENTIFIER  					{ $<nt>$ = $<nt>1; }
+	| SWAP '(' IDENTIFIER ',' conditional_expression ',' conditional_expression ')' { $<nt>$ = operatorNodeCreator(swap, 3, $<nt>3, $<nt>5, $<nt>7); }
+	| PRINT argument_expression_list  	{ $<nt>$ = operatorNodeCreator (print, 1, $<nt>2); }
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 0, $<nt>1, $<nt>2);  } 
-	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 1, $<nt>2, $<nt>3);  }
-	| HIDE type_specifier init_declarator 			{ $<nt>$ = operatorNodeCreator (variableDeclaration, 3, 0, $<nt>2, $<nt>3);  }
+	: type_specifier init_declarator 				{ $<nt>$ = operatorNodeCreator (var_decl, 3, 0, $<nt>1, $<nt>2);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = operatorNodeCreator (var_decl, 3, 1, $<nt>2, $<nt>3);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = operatorNodeCreator (var_decl, 3, 0, $<nt>2, $<nt>3);  }
 	;
 
 init_declarator
@@ -181,8 +182,8 @@ init_declarator
 
 declarator
 	: IDENTIFIER 									{ $<nt>$ = idNodeCreator($<idVal>1); }
-	| IDENTIFIER '[' conditional_expression ']' 	{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 2, $<nt>1, $<nt>3); }
-	| IDENTIFIER '[' ']' 							{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 1, $<nt>1); }
+	| IDENTIFIER '[' conditional_expression ']' 	{ $<nt>$ = operatorNodeCreator(arr_decl, 2, $<nt>1, $<nt>3); }
+	| IDENTIFIER '[' ']' 							{ $<nt>$ = operatorNodeCreator(arr_decl, 1, $<nt>1); }
 	;
 
 initializer
@@ -264,7 +265,7 @@ parameter_list
 	;
 
 parameter_declaration
-	: type_specifier declarator     { $<nt>$ = operatorNodeCreator(para_declar, 2, $<nt>1, $<nt>2); }
+	: type_specifier declarator     			{ $<nt>$ = operatorNodeCreator(para_declar, 2, $<nt>1, $<nt>2); }
 	;
 
 
@@ -347,6 +348,20 @@ nodeType* unaryNodeCreater(char value) {
 
 ///////////////////////////////////////////////////////////////
 
+nodeType* unaryNodeCreator(char op) {
+	nodeType* p;
+	p->type = UNARY_NODE;
+	
+	// allocating memory
+	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+
+	p->unary.value = op;
+	return p;
+}
+
+///////////////////////////////////////////////////////////////
+
 nodeType* operatorNodeCreator (operatorTypeEnum oprtr, int numOperands, ...) {
 	nodeType* p;
 	va_list ap;
@@ -374,3 +389,4 @@ int main(void) {
 	yyparse();
 	return 0;
 }
+
