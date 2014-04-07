@@ -391,7 +391,8 @@ char *concat_nospace(int num_args, ...)
 
 	va_end(ap);
 
-	return ret; }
+	return ret;
+}
 
 void print_line(const char *line)
 {
