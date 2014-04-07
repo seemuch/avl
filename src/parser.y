@@ -76,25 +76,25 @@ primary_expression
 
 postfix_expression
 	: primary_expression
-	| postfix_expression '[' conditional_expression ']'	{ $<nt>$ = operatorNode(array, 2, $<nt>1, $<nt>3);}
-	| postfix_expression '[' conditional_expression ':' conditional_expression ']'   { $<nt>$ = operatorNode(array, 3, $<nt>1, $<nt>3, $<nt>5);}
-	| postfix_expression '(' ')'	{ $<nt>$ = operatorNode(func_cal, 1, $<nt>1);}
-	| postfix_expression '(' argument_expression_list ')' { $<nt>$ = operatorNode(func_cal, 1, $<nt>1);}	
-	| postfix_expression INC_OP	{ $<nt>$ = operatorNode( inc_op_post, 1, $<nt>1);}
-	| postfix_expression DEC_OP	{ $<nt>$ = operatorNode( dec_op_post, 1, $<nt>1);}
+	| postfix_expression '[' conditional_expression ']'								{ $<nt>$ = operatorNodeCreator (array, 2, $<nt>1, $<nt>3);}
+	| postfix_expression '[' conditional_expression ':' conditional_expression ']'  { $<nt>$ = operatorNodeCreator (array, 3, $<nt>1, $<nt>3, $<nt>5);}
+	| postfix_expression '(' ')'													{ $<nt>$ = operatorNodeCreator (func_cal, 1, $<nt>1);}
+	| postfix_expression '(' argument_expression_list ')' 							{ $<nt>$ = operatorNodeCreator (func_cal, 1, $<nt>1);}	
+	| postfix_expression INC_OP														{ $<nt>$ = operatorNodeCreator (inc_op_post, 1, $<nt>1);}
+	| postfix_expression DEC_OP														{ $<nt>$ = operatorNodeCreator (dec_op_post, 1, $<nt>1);}
 	;
 
 argument_expression_list
-	: conditional_expression	{ $<nt>$ = $<nt>1;}
-	| argument_expression_list ',' conditional_expression {$<nt>$ = operatorNode( concatinate, 2, $<nt>1, $<nt>3);}
+	: conditional_expression								{ $<nt>$ = $<nt>1;}
+	| argument_expression_list ',' conditional_expression 	{ $<nt>$ = operatorNodeCreator( concatinate, 2, $<nt>1, $<nt>3);}
 	;
 
 unary_expression
-	: postfix_expression	{$<nt>$ = $<nt>1;}
-	| INC_OP unary_expression	{$<nt>$ = operatorNode( inc_op_pre,1, $<nt>2 );}
-	| DEC_OP unary_expression	{$<nt>$ = operatorNode( dec_op_pre,1, $<nt>2 );}
+	: postfix_expression				{$<nt>$ = $<nt>1;}
+	| INC_OP unary_expression			{$<nt>$ = operatorNodeCreator (inc_op_pre,1, $<nt>2 );}
+	| DEC_OP unary_expression			{$<nt>$ = operatorNodeCreator (dec_op_pre,1, $<nt>2 );}
 	| unary_operator cast_expression
-	| LEN '(' unary_expression ')'	{$<nt>$ = operatorNode( len, 1, $<nt>3 )};
+	| LEN '(' unary_expression ')'		{$<nt>$ = operatorNode( len, 1, $<nt>3 )};
 	;
 
 unary_operator
@@ -188,8 +188,8 @@ init_declarator
 
 declarator
 	: IDENTIFIER 									{ $<nt>$ = idNodeCreator($<nt>1); }
-	| IDENTIFIER '[' conditional_expression ']' 	{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 2, $1, $3); }
-	| IDENTIFIER '[' ']' 							{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 1, $1); }
+	| IDENTIFIER '[' conditional_expression ']' 	{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 2, $<nt>1, $<nt>3); }
+	| IDENTIFIER '[' ']' 							{ $<nt>$ = operatorNodeCreator(arrayDeclaration, 1, $<nt>1); }
 	;
 
 initializer
@@ -199,7 +199,7 @@ initializer
 
 initializer_list
 	: conditional_expression 						{ $<nt>$ = $<nt>1; }
-	| initializer_list ',' conditional_expression 	{ $<nt>$ = operatorNodeCreator(concatenate, 2, $1, $3); }
+	| initializer_list ',' conditional_expression 	{ $<nt>$ = operatorNodeCreator(concatenate, 2, $<nt>1, $<nt>3); }
 	;
 
 statement
