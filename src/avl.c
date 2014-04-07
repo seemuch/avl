@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include "config.h"
 
+void preprocess();
+void postprocess();
 int yyparse();
 
 const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
@@ -161,8 +163,10 @@ int main(int argc, char *argv[])
 			die_err("can not open temporary file");
 	}
 
+	preprocess();
 	if (yyparse() != 0)
 		die("Parsing failed.");
+	postprocess();
 
 	fclose(yyin);
 	fclose(yyout);

@@ -11,8 +11,6 @@ int yylex();
 void yyerror(const char *msg);
 char *concatenate(int num_args, ...);
 char *concat_nospace(int num_args, ...);
-void preprocess();
-void postprocess();
 
 /* a list of symbol tables */
 struct st_list *stables = NULL;
@@ -336,10 +334,8 @@ parameter_declaration
 
 program
     : translation_unit      {
-                                preprocess();
                                 fprintf(yyout, "%s\n", $1);
                                 free($1);
-								postprocess();
                             }
     ;
 
