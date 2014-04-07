@@ -1,121 +1,88 @@
 %{
 #include <stdlib.h>
 #include "parser.h"
-void count();
-void comment();
+
+void yyerror();
 %}
 
 %option debug warn verbose
 
-D			[0-9]
-L			[a-zA-Z_]
-H			[a-fA-F0-9]
+D                   [0-9]
+L                   [a-zA-Z_]
+
+%x COMMENT
 
 %%
 
-"/*"			{ comment(); }
+"/*"                { BEGIN(COMMENT); }
+<COMMENT>"*/"       { BEGIN(INITIAL); }
+<COMMENT>.          { /* disregard all characters in comments */ }
 
-"break"			{ count(); return(BREAK); }
-"char"			{ count(); return(CHAR); }
-"continue"		{ count(); return(CONTINUE); }
-"do"			{ count(); return(DO); }
-"else"			{ count(); return(ELSE); }
-"for"			{ count(); return(FOR); }
-"if"			{ count(); return(IF); }
-"int"			{ count(); return(INT); }
-"index"			{ count(); return(INDEX); }
-"return"		{ count(); return(RETURN); }
-"len"			{ count(); return(LEN); }
-"void"			{ count(); return(VOID); }
-"while"			{ count(); return(WHILE); }
-"swap"			{ count(); return(SWAP); }
-"print"			{ count(); return(PRINT); }
-"bool"			{ count(); return(BOOL); }
-"display"		{ count(); return(DISPLAY); }
-"hide"			{ count(); return(HIDE); }
-"<begin_display>"	{ count(); return(BEGIN_DISPLAY); }
-"<end_display>"		{ count(); return(END_DISPLAY); }
+"bool"              { yylval.strLitVal = strdup(yytext); return BOOL; }
+"break"             { yylval.strLitVal = strdup(yytext); return BREAK; }
+"char"              { yylval.strLitVal = strdup(yytext); return CHAR; }
+"continue"          { yylval.strLitVal = strdup(yytext); return CONTINUE; }
+"display"           { yylval.strLitVal = strdup(yytext); return DISPLAY; }
+"do"                { yylval.strLitVal = strdup(yytext); return DO; }
+"else"              { yylval.strLitVal = strdup(yytext); return ELSE; }
+"for"               { yylval.strLitVal = strdup(yytext); return FOR; }
+"hide"              { yylval.strLitVal = strdup(yytext); return HIDE; }
+"if"                { yylval.strLitVal = strdup(yytext); return IF; }
+"index"             { yylval.strLitVal = strdup(yytext); return INDEX; }
+"int"               { yylval.strLitVal = strdup(yytext); return INT; }
+"len"               { yylval.strLitVal = strdup(yytext); return LEN; }
+"print"             { yylval.strLitVal = strdup(yytext); return PRINT; }
+"return"            { yylval.strLitVal = strdup(yytext); return RETURN; }
+"swap"              { yylval.strLitVal = strdup(yytext); return SWAP; }
+"void"              { yylval.strLitVal = strdup(yytext); return VOID; }
+"while"             { yylval.strLitVal = strdup(yytext); return WHILE; }
+"<begin_display>"   { yylval.strLitVal = strdup(yytext); return BEGIN_DISPLAY; }
+"<end_display>"     { yylval.strLitVal = strdup(yytext); return END_DISPLAY; }
 
-{L}({L}|{D})*		{ count(); return(IDENTIFIER); }
+{L}({L}|{D})*       { yylval.strLitVal = strdup(yytext); return IDENTIFIER; }
+{D}+                { yylval.strLitVal = strdup(yytext); return CONSTANT; }
 
-{D}+			{ count(); return(CONSTANT); }
-'(\\.|[^\\'])+'		{ count(); return(CONSTANT); }
+'(\\.|[^\\'])+'     { yylval.strLitVal = strdup(yytext); return CONSTANT; }
 
-\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
+\"(\\.|[^\\"])*\"   { yylval.strLitVal = strdup(yytext); return STRING_LITERAL; }
 
-"++"			{ count(); return(INC_OP); }
-"--"			{ count(); return(DEC_OP); }
-"&&"			{ count(); return(AND_OP); }
-"||"			{ count(); return(OR_OP); }
-"<="			{ count(); return(LE_OP); }
-">="			{ count(); return(GE_OP); }
-"=="			{ count(); return(EQ_OP); }
-"!="			{ count(); return(NE_OP); }
-";"			{ count(); return(';'); }
-"{"			{ count(); return('{'); }
-"}"			{ count(); return('}'); }
-","			{ count(); return(','); }
-":"			{ count(); return(':'); }
-"="			{ count(); return('='); }
-"("			{ count(); return('('); }
-")"			{ count(); return(')'); }
-"["			{ count(); return('['); }
-"]"			{ count(); return(']'); }
-"!"			{ count(); return('!'); }
-"-"			{ count(); return('-'); }
-"+"			{ count(); return('+'); }
-"*"			{ count(); return('*'); }
-"/"			{ count(); return('/'); }
-"%"			{ count(); return('%'); }
-"<"			{ count(); return('<'); }
-">"			{ count(); return('>'); }
-"?"			{ count(); return('?'); }
+"++"                { yylval.strLitVal = strdup(yytext); return INC_OP; }
+"--"                { yylval.strLitVal = strdup(yytext); return DEC_OP; }
+"&&"                { yylval.strLitVal = strdup(yytext); return AND_OP; }
+"||"                { yylval.strLitVal = strdup(yytext); return OR_OP; }
+"<="                { yylval.strLitVal = strdup(yytext); return LE_OP; }
+">="                { yylval.strLitVal = strdup(yytext); return GE_OP; }
+"=="                { yylval.strLitVal = strdup(yytext); return EQ_OP; }
+"!="                { yylval.strLitVal = strdup(yytext); return NE_OP; }
+";"                 { yylval.strLitVal = strdup(yytext); return ';'; }
+"{"                 { yylval.strLitVal = strdup(yytext); return '{'; }
+"}"                 { yylval.strLitVal = strdup(yytext); return '}'; }
+","                 { yylval.strLitVal = strdup(yytext); return ','; }
+":"                 { yylval.strLitVal = strdup(yytext); return ':'; }
+"="                 { yylval.strLitVal = strdup(yytext); return '='; }
+"("                 { yylval.strLitVal = strdup(yytext); return '('; }
+")"                 { yylval.strLitVal = strdup(yytext); return ')'; }
+"["                 { yylval.strLitVal = strdup(yytext); return '['; }
+"]"                 { yylval.strLitVal = strdup(yytext); return ']'; }
+"!"                 { yylval.strLitVal = strdup(yytext); return '!'; }
+"-"                 { yylval.strLitVal = strdup(yytext); return '-'; }
+"+"                 { yylval.strLitVal = strdup(yytext); return '+'; }
+"*"                 { yylval.strLitVal = strdup(yytext); return '*'; }
+"/"                 { yylval.strLitVal = strdup(yytext); return '/'; }
+"%"                 { yylval.strLitVal = strdup(yytext); return '%'; }
+"<"                 { yylval.strLitVal = strdup(yytext); return '<'; }
+">"                 { yylval.strLitVal = strdup(yytext); return '>'; }
+"?"                 { yylval.strLitVal = strdup(yytext); return '?'; }
 
-[ \t\v\n\f]		{ count(); }
-.			{ /* ignore bad characters */ }
-
-
+[ \t\v\n\f]         { /* disregard white spaces */ }
+.                   { yyerror(yytext); }
 
 %%
-int yywrap() {
+
+int yywrap()
+{
 	return 1;
 }
-
-void comment() {
-	char c, c1;
-
-loop:
-	while ((c = input()) != '*' && c != 0)
-		putchar(c);
-
-	if ((c1 = input()) != '/' && c != 0)
-	{
-		unput(c1);
-		goto loop;
-	}
-
-	if (c != 0)
-		putchar(c1);
-}
-
-int column = 0;
-
-void count()
-{
-	int i;
-
-	for (i = 0; yytext[i] != '\0'; i++)
-		if (yytext[i] == '\n')
-			column = 0;
-		else if (yytext[i] == '\t')
-			column += 8 - (column % 8);
-		else
-			column++;
-
-	ECHO;
-}
-
-
 
 void yyerror(const char *s)
 {
