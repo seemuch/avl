@@ -186,7 +186,7 @@ type_specifier
     | STRING                    { $$ = concatenate(1, $1); }
     | INDEX                     { $$ = concatenate(1, $1); }
     | BOOL                      { $$ = concatenate(1, $1); }
-    | type_specifier '[' ']'    { $$ = concatenate(3, strdup("AvlArray<"), $1, strdup(">")); free($2); free($3); }
+    | type_specifier '[' ']'    { $$ = concatenate(3, $1, $2, $3); }
     ;
 
 expression
