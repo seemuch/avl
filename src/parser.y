@@ -213,7 +213,7 @@ statement
 	;
 
 expression_statement
-	: expression ';'								{ $<nt>$ = $<nt>1; }
+	: expression ';'								{ $<nt>$ = operatorNode(expressionStatement, 1, $<nt>1); }
 	;
 
 declaration_statement
