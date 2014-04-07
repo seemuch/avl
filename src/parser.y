@@ -9,6 +9,8 @@ extern FILE *yyout;
 int yylex();
 void yyerror(const char *msg);
 char *concatenate(int num_args, ...);
+char *concat_nospace(int num_args, ...);
+void print_header();
 %}
 
 %debug
@@ -116,7 +118,7 @@ unary_expression
     | INC_OP unary_expression           { $$ = concatenate(2, $1, $2); }
     | DEC_OP unary_expression           { $$ = concatenate(2, $1, $2); }
     | unary_operator cast_expression    { $$ = concatenate(2, $1, $2); }
-    | LEN '(' unary_expression ')'      { $$ = concatenate(4, $1, $2, $3, $4); }
+    | LEN '(' unary_expression ')'      { $$ = concat_nospace(2, $3, strdup(".size()")); free($1); free($2); free($4); }
     ;
 
 unary_operator
@@ -180,11 +182,11 @@ assignment_expression
 type_specifier
     : VOID                      { $$ = concatenate(1, $1); }
     | CHAR                      { $$ = concatenate(1, $1); }
-    | INT                       { $$ = concatenate(1, $1); }
+    | INT                       { $$ = concatenate(1, strdup("AvlInt")); free($1); }
     | STRING                    { $$ = concatenate(1, $1); }
     | INDEX                     { $$ = concatenate(1, $1); }
     | BOOL                      { $$ = concatenate(1, $1); }
-    | type_specifier '[' ']'    { $$ = concatenate(3, $1, $2, $3); }
+    | type_specifier '[' ']'    { $$ = concatenate(3, strdup("AvlArray<"), $1, strdup(">")); free($2); free($3); }
     ;
 
 expression
@@ -240,16 +242,16 @@ statement
     ;
 
 expression_statement
-    : expression ';'        { $$ = concatenate(2, $1, $2); }
+    : expression ';'        { $$ = concatenate(3, $1, $2, strdup("\n")); }
     ;
 
 declaration_statement
-    : declaration ';'       { $$ = concatenate(2, $1, $2); }
+    : declaration ';'       { $$ = concatenate(3, $1, $2, strdup("\n")); }
     ;
 
 compound_statement 
-    : '{' '}'                   { $$ = concatenate(2, $1, $2); }
-    | '{' statement_list '}'    { $$ = concatenate(3, $1, $2, $3); }
+    : '{' '}'                   { $$ = concatenate(4, $1, strdup("\n"), $2, strdup("\n")); }
+    | '{' statement_list '}'    { $$ = concatenate(6, $1, strdup("\n"), $2, strdup("\n"), $3, strdup("\n")); }
     ;
 
 statement_list
@@ -262,14 +264,14 @@ display_statement
     ;
 
 selection_statement
-    : IF '(' conditional_expression ')' statement   { $$ = concatenate(5, $1, $2, $3, $4, $5); }
+    : IF '(' conditional_expression ')' statement   { $$ = concatenate(6, $1, $2, $3, $4, strdup("\n"), $5); }
     | IF '(' conditional_expression ')' statement
-      ELSE statement                                { $$ = concatenate(6, $1, $2, $3, $4, $5, $6); }
+      ELSE statement                                { $$ = concatenate(9, $1, $2, $3, $4, strdup("\n"), strdup("\n"), $5, strdup("\n"), $6); }
     ;
 
 iteration_statement
     : WHILE '(' conditional_expression ')' statement            { $$ = concatenate(5, $1, $2, $3, $4, $5); }
-    | DO statement WHILE '(' conditional_expression ')' ';'     { $$ = concatenate(7, $1, $2, $3, $4, $5, $6, $7); }
+    | DO statement WHILE '(' conditional_expression ')' ';'     { $$ = concatenate(8, $1, $2, $3, $4, $5, $6, $7, strdup("\n")); }
     | FOR '(' expression ';' conditional_expression ';' ')'
           statement                                             { $$ = concatenate(8, $1, $2, $3, $4, $5, $6, $7, $8); }
     | FOR '(' expression ';' conditional_expression ';'
@@ -281,10 +283,10 @@ iteration_statement
     ;
 
 jump_statement
-    : CONTINUE ';'                          { $$ = concatenate(2, $1, $2); }
-    | BREAK ';'                             { $$ = concatenate(2, $1, $2); }
-    | RETURN ';'                            { $$ = concatenate(2, $1, $2); }
-    | RETURN conditional_expression ';'     { $$ = concatenate(3, $1, $2, $3); }
+    : CONTINUE ';'                          { $$ = concatenate(3, $1, $2, strdup("\n")); }
+    | BREAK ';'                             { $$ = concatenate(3, $1, $2, strdup("\n")); }
+    | RETURN ';'                            { $$ = concatenate(3, $1, $2, strdup("\n")); }
+    | RETURN conditional_expression ';'     { $$ = concatenate(4, $1, $2, $3, strdup("\n")); }
     ;
 
 translation_unit
@@ -308,8 +310,13 @@ parameter_declaration
     ;
 
 program
-	: translation_unit		{ $$ = concatenate(1, $1); fprintf(yyout, "%s\n", $$); free($$); }
-	;
+    : translation_unit      {
+                                print_header();
+                                $$ = concatenate(1, $1);
+                                fprintf(yyout, "%s\n", $$);
+                                free($$);
+                            }
+    ;
 
 %%
 
@@ -334,8 +341,64 @@ char *concatenate(int num_args, ...)
 		strcat(ret, str);
 		free(str);
 	}
-	
+
 	va_end(ap);
 
 	return ret;
+}
+
+char *concat_nospace(int num_args, ...)
+{
+	va_list ap;
+	char *ret;
+	int i;
+
+	va_start(ap, num_args);
+
+	char *first = va_arg(ap, char *);
+	ret = (char *)malloc(strlen(first) + 1);
+	strcpy(ret, first);
+	free(first);
+
+	for (i = 1; i < num_args; i++)
+	{
+		char *str = va_arg(ap, char *);
+		ret = realloc(ret, strlen(ret) + strlen(str) + 1);
+		strcat(ret, str);
+		free(str);
+	}
+
+	va_end(ap);
+
+	return ret; }
+
+void print_line(const char *line)
+{
+	fprintf(yyout, "%s\n", line);
+}
+
+void print_header()
+{
+	print_line("#include <AvlVisualizer.h>");
+	print_line("#include <AvlTypes.h>");
+	print_line("#include <condition_variable>");
+	print_line("#include <cstdlib>");
+	print_line("");
+
+	print_line("AvlVisualizer *__avl__vi = NULL;");
+	print_line("bool __avl__ready() { return __avl__vi != NULL; }");
+	print_line("std::mutex __avl_mtx;");
+	print_line("std::condition_variable_any __avl__cv;");
+	print_line("");
+
+	print_line("void __avl__display(int argc, char **argv)");
+	print_line("{");
+	print_line("\t__avl_mtx.lock();");
+	print_line("\t__avl__vi = new AvlVisualizer(argc, argv);");
+	print_line("\t__avl__cv.notify_one();");
+	print_line("\t__avl_mtx.unlock();");
+	print_line("");
+	print_line("\t__avl__vi->show();");
+	print_line("}");
+	print_line("");
 }
