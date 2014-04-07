@@ -11,19 +11,22 @@ typedef enum {
 	STRLIT,
 	VARTYPE,
 	ID,
+	UNARY,
    	DISPLAY,
-	OPERATOR;	
+	OPERATOR
 } nodeTypeEnum;
 
 typedef enum {
 	variableDeclaration;
-	func_def
-	array_def
-	inc_op_post
-	dec_op_post
-	dec_op_pre
-	dec_op_pre
-	len
+	func_cal,
+	array,
+	inc_op_post,
+	dec_op_post,
+	inc_op_pre,
+	dec_op_pre,
+	len,
+	concatenate	
+	
 
 } operatorTypeEnum;
 
@@ -61,6 +64,11 @@ typedef struct {
 	bool value;
 } displayNode;
 
+// unary_operator, + - !
+typedef struct {
+	char value;
+} unaryNode
+
 //////////////////////////////////////////////////////////
 
 // operators
@@ -80,8 +88,10 @@ typedef struct nodeTypeTag {
 		strLitNode strLit;
 		varTypeNode varType;
 		idNode id;
+		unaryNode unary;
         displayNode disp;
 		oprNode opr;
+		
 	};
 
 } nodeType;

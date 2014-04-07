@@ -74,26 +74,25 @@ primary_expression
 
 postfix_expression
 	: primary_expression
-	| postfix_expression '[' conditional_expression ']'
-	| postfix_expression '[' conditional_expression ':'
-	      conditional_expression ']'
-	| postfix_expression '(' ')'
-	| postfix_expression '(' argument_expression_list ')'
-	| postfix_expression INC_OP
-	| postfix_expression DEC_OP
+	| postfix_expression '[' conditional_expression ']'	{ $<nt>$ = operatorNode(array, 2, $<nt>1, $<nt>3);}
+	| postfix_expression '[' conditional_expression ':' conditional_expression ']'   { $<nt>$ = operatorNode(array, 3, $<nt>1, $<nt>3, $<nt>5);}
+	| postfix_expression '(' ')'	{ $<nt>$ = operatorNode(func_cal, 1, $<nt>1);}
+	| postfix_expression '(' argument_expression_list ')' { $<nt>$ = operatorNode(func_cal, 1, $<nt>1);}	
+	| postfix_expression INC_OP	{ $<nt>$ = operatorNode( inc_op_post, 1, $<nt>1);}
+	| postfix_expression DEC_OP	{ $<nt>$ = operatorNode( dec_op_post, 1, $<nt>1);}
 	;
 
 argument_expression_list
-	: conditional_expression
-	| argument_expression_list ',' conditional_expression
+	: conditional_expression	{ $<nt>$ = $<nt>1;}
+	| argument_expression_list ',' conditional_expression {$<nt>$ = operatorNode( concatinate, 2, $<nt>1, $<nt>3);}
 	;
 
 unary_expression
-	: postfix_expression
-	| INC_OP unary_expression
-	| DEC_OP unary_expression
+	: postfix_expression	{$<nt>$ = $<nt>1;}
+	| INC_OP unary_expression	{$<nt>$ = operatorNode( inc_op_pre,1, $<nt>2 );}
+	| DEC_OP unary_expression	{$<nt>$ = operatorNode( dec_op_pre,1, $<nt>2 );}
 	| unary_operator cast_expression
-	| LEN '(' unary_expression ')'
+	| LEN '(' unary_expression ')'	{$<nt>$ = operatorNode( len, 1, $<nt>3 )};
 	;
 
 unary_operator
@@ -344,6 +343,21 @@ nodeType* idNode(string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* operatorNode (int operator, int numOperands, ...) {
+nodeType* unaryNodeCreater(char value) {
+	nodeType* p;
+
+	// allocating memroy
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
+
+	p->type = UNARY; 
+	p->unary.value = value;
+
+	return p;
+}
+
+///////////////////////////////////////////////////////////////
+
+nodeType* operatorNode (operatorTypeEnum operator, int numOperands, ...) {
 	
 }
