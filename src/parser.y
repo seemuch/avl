@@ -147,8 +147,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression
-	| logical_or_expression '?' conditional_expression ':' 
-	      conditional_expression
+	| logical_or_expression '?' conditional_expression ':' conditional_expression
 	;
 
 assignment_expression
@@ -170,8 +169,7 @@ expression
 	| assignment_expression 
 	| DISPLAY IDENTIFIER 
 	| HIDE IDENTIFIER 
-	| SWAP '(' IDENTIFIER ',' conditional_expression ','
-	      conditional_expression ')' 
+	| SWAP '(' IDENTIFIER ',' conditional_expression ',' conditional_expression ')' 
 	| PRINT argument_expression_list 
 	;
 
@@ -235,22 +233,17 @@ display_statement
 	;
 
 selection_statement
-	: IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 2, $<nt>3, $<nt>5); }
-	| IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 3, $<nt>3, $<nt>5, $<nt>7); }
-      ELSE statement
+	: IF '(' conditional_expression ')' statement					{ $<nt>$ = operatorNodeCreator(select_state, 2, $<nt>3, $<nt>5); }
+	| IF '(' conditional_expression ')' statement ELSE statement	{ $<nt>$ = operatorNodeCreator(select_state, 3, $<nt>3, $<nt>5, $<nt>7); }
 	;
 
 iteration_statement
-	: WHILE '(' conditional_expression ')' statement			{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>3, $<nt>5); }
-	| DO statement WHILE '(' conditional_expression ')' ';'		{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>2, $<nt>5); }
-	| FOR '(' expression ';' conditional_expression ';' ')'		{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
-	      statement
-	| FOR '(' expression ';' conditional_expression ';'			{ $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
-	      expression ')' statement
-	| FOR '(' declaration ';' conditional_expression ';' ')'	{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
-	      statement
-	| FOR '(' declaration ';' conditional_expression ';'		{ $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
-	      expression ')' statement
+	: WHILE '(' conditional_expression ')' statement					{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>3, $<nt>5); }
+	| DO statement WHILE '(' conditional_expression ')' ';'				{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>2, $<nt>5); }
+	| FOR '(' expression ';' conditional_expression ';' ')'	statement	{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
+	| FOR '(' expression ';' conditional_expression ';' expression ')' statement { $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
+	| FOR '(' declaration ';' conditional_expression ';' ')' statement	{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
+	| FOR '(' declaration ';' conditional_expression ';' expression ')' statement	{ $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
 	;
 
 jump_statement
@@ -266,8 +259,7 @@ translation_unit
 	;
 
 function_definition
-	: type_specifier  IDENTIFIER '(' parameter_list ')'
-	      compound_statement
+	: type_specifier  IDENTIFIER '(' parameter_list ')' compound_statement
 	| type_specifier  IDENTIFIER '('  ')' compound_statement
 	;
 
