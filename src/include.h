@@ -24,7 +24,9 @@ typedef enum {
 	dec_op_pre
 	dec_op_pre
 	len
-
+    trans_unit,
+    fun_def,
+    para_declar
 } operatorTypeEnum;
 
 typedef enum {
