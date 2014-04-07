@@ -157,7 +157,6 @@ type_specifier
 	| STRING 					{ $<nt>$ = varTypeNodeCreator(STRING_TYPE); }
 	| INDEX 					{ $<nt>$ = varTypeNodeCreator(INDEX_TYPE); }
 	| BOOL 						{ $<nt>$ = varTypeNodeCreator(BOOL_TYPE); }
-	| type_specifier '[' ']'
 	;
 
 expression
