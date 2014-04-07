@@ -236,7 +236,7 @@ display_statement
 
 selection_statement
 	: IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 2, $<nt>3, $<nt>5); }
-	| IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 3, $<nt>3, $<nt>5), $<nt>7; }
+	| IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 3, $<nt>3, $<nt>5, $<nt>7); }
       ELSE statement
 	;
 
