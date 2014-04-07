@@ -285,7 +285,7 @@ parameter_declaration
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* intConNode (int value) {
+nodeType* intConNodeCreator (int value) {
 	nodeType *p;
 
 	// allocating memory
@@ -300,7 +300,7 @@ nodeType* intConNode (int value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* strLitNode (string value) {
+nodeType* strLitNodeCreator (string value) {
 	nodeType* p;
 
 	// allocating memory
@@ -315,7 +315,7 @@ nodeType* strLitNode (string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* varTypeNode (int type) {
+nodeType* varTypeNodeCrator (int type) {
 	nodeType* p;
 
 	// allocating memory
@@ -330,10 +330,10 @@ nodeType* varTypeNode (int type) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* idNode(string value) {
+nodeType* idNodeCreator (string value) {
 	nodeType* p;
 
-	// allocating memroy
+	// allocating memory
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 
@@ -345,10 +345,11 @@ nodeType* idNode(string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* operatorNode (operatorTypeEnum operator, int numOperands, ...) {
+nodeType* operatorNodeCreator (operatorTypeEnum operator, int numOperands, ...) {
 	nodeType* p;
 	va_list ap;
 
+	// allocating memory
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 	
@@ -360,6 +361,7 @@ nodeType* operatorNode (operatorTypeEnum operator, int numOperands, ...) {
 	for (int i = 0; i < numOperands; i ++) {
 		p->opr.op[i] = va_arg(vl, nodeType*);
 	}
+	va_and(ap);
 
 	return p;
 }
