@@ -1,27 +1,24 @@
 #ifndef _INCLUDE_H_
 #define _INCLUDE_H_
 
-#include <string>
-#include <vector>
-using std::string;
-using std::vector;
-
 typedef enum {
-	INTCON,
-	STRLIT,
-	VARTYPE,
-	ID,
-	UNARY,
-   	DISPLAY,
-	OPERATOR
+	INTCON_NODE,
+	STRLIT_NODE,
+	VARTYPE_NODE,
+	ID_NODE,
+	UNARY_NODE,
+   	DISPLAY_NODE,
+	OPERATOR_NODE
 } nodeTypeEnum;
 
 typedef enum {
-	func_def,
-	array_def,
+	variableDeclaration,
+	func_call,
+	array,
+	arrayDeclaration,
 	inc_op_post,
 	dec_op_post,
-	dec_op_pre,
+	inc_op_pre,
 	dec_op_pre,
 	len,
 	concatenate,	
@@ -37,17 +34,17 @@ typedef enum {
 	jump_ret_state,
 	assignment,	
     trans_unit,
-    fun_def,
+    func_def,
     para_declar
 } operatorTypeEnum;
 
 typedef enum {
-	VOID,
-	CHAR,
-	INT,
-	STRING,
-	INDEX,
-	BOOL
+	VOID_TYPE,
+	CHAR_TYPE,
+	INT_TYPE,
+	STRING_TYPE,
+	INDEX_TYPE,
+	BOOL_TYPE
 } varTypeEnum;
 
 // integer constants
@@ -57,7 +54,7 @@ typedef struct {
 
 // string literal
 typedef struct {
-	string value;
+	char* value;
 } strLitNode;
 
 // type specifier
@@ -67,25 +64,26 @@ typedef struct {
 
 // identifiers
 typedef struct {
-	string value;
+	char* value;
 } idNode;
 
 // display
 typedef struct {
-	bool value;
+	int value;
 } displayNode;
 
 // unary_operator, + - !
 typedef struct {
 	char value;
-} unaryNode
+} unaryNode;
 
 //////////////////////////////////////////////////////////
 
 // operators
 typedef struct {
 	operatorTypeEnum opType;
-	vector<nodeType*> op;
+	int numOperands;
+	struct nodeTypeTag **op;
 } oprNode;
 
 
