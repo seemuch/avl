@@ -357,7 +357,7 @@ nodeType* operatorNodeCreator (operatorTypeEnum operator, int numOperands, ...) 
 	p->opr.opType = operator;
 	p->opr.op = vector<nodeType*> (numOperands, 0);
 
-	va_start(ap,n);
+	va_start(ap, numOperands);
 	for (int i = 0; i < numOperands; i ++) {
 		p->opr.op[i] = va_arg(vl, nodeType*);
 	}
