@@ -12,7 +12,7 @@ typedef enum {
 	VARTYPE,
 	ID,
    	DISPLAY,
-	OPERATOR;	
+	OPERATOR
 } nodeTypeEnum;
 
 typedef enum {
@@ -24,6 +24,16 @@ typedef enum {
 	dec_op_pre,
 	dec_op_pre,
 	len,
+	exp_state,
+	declar_state,
+	comp_state,
+	state_list,
+	display_state,
+	select_state,
+	iter_state,
+	jump_continue_state,
+	jump_break_state,
+	jump_ret_state,
 	assignment	
 } operatorTypeEnum;
 
