@@ -29,7 +29,7 @@ char *concatenate(int num_args, ...);
 
 %token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY
 
-%start translation_unit
+%start program
 
 %type<strLitVal> primary_expression
 %type<strLitVal> postfix_expression
@@ -68,6 +68,7 @@ char *concatenate(int num_args, ...);
 %type<strLitVal> function_definition
 %type<strLitVal> parameter_list
 %type<strLitVal> parameter_declaration
+%type<strLitVal> program
 
 %type<strLitVal> unary_operator
 
@@ -303,6 +304,10 @@ parameter_list
 parameter_declaration
     : type_specifier declarator     { $$ = concatenate(2, $1, $2); }
     ;
+
+program
+	: translation_unit		{ $$ = concatenate(1, $1); printf("%s\n", $$); free($$); }
+	;
 
 %%
 
