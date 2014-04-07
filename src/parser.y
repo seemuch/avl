@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include "st_list.h"
 
 extern FILE *yyout;
 
@@ -10,7 +11,11 @@ int yylex();
 void yyerror(const char *msg);
 char *concatenate(int num_args, ...);
 char *concat_nospace(int num_args, ...);
-void print_header();
+void preprocess();
+void postprocess();
+
+/* a list of symbol tables */
+struct st_list *stables = NULL;
 %}
 
 %debug
@@ -34,6 +39,9 @@ void print_header();
 %token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY
 
 %start program
+
+%type<strLitVal> enter_scope
+%type<strLitVal> leave_scope
 
 %type<strLitVal> primary_expression
 %type<strLitVal> postfix_expression
@@ -89,6 +97,23 @@ void print_header();
 %type<strLitVal> IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY
 
 %%
+
+enter_scope
+    : '{'   {
+                struct sym_table *st = (struct sym_table *)malloc(sizeof(struct sym_table));
+                sym_table_init(st);
+                st_list_add(stables, st);
+            }
+    ;
+
+leave_scope
+    : '}'   {
+                struct sym_table *st = st_list_head(stables);
+                sym_table_destroy(st);
+                free(st);
+                st_list_del(stables);
+            }
+    ;
 
 primary_expression
     : IDENTIFIER                        { $$ = concatenate(1, $1); }
@@ -222,8 +247,8 @@ declarator
     ;
 
 initializer
-    : conditional_expression        { $$ = concatenate(1, $1); }
-    | '{' initializer_list '}'      { $$ = concatenate(3, $1, $2, $3); }
+    : conditional_expression                        { $$ = concatenate(1, $1); }
+    | enter_scope initializer_list leave_scope      { $$ = concatenate(3, $1, $2, $3); }
     ;
 
 initializer_list
@@ -250,8 +275,8 @@ declaration_statement
     ;
 
 compound_statement 
-    : '{' '}'                   { $$ = concatenate(4, $1, strdup("\n"), $2, strdup("\n")); }
-    | '{' statement_list '}'    { $$ = concatenate(6, $1, strdup("\n"), $2, strdup("\n"), $3, strdup("\n")); }
+    : enter_scope leave_scope                  { $$ = concatenate(4, $1, strdup("\n"), $2, strdup("\n")); }
+    | enter_scope statement_list leave_scope   { $$ = concatenate(6, $1, strdup("\n"), $2, strdup("\n"), $3, strdup("\n")); }
     ;
 
 statement_list
@@ -311,10 +336,10 @@ parameter_declaration
 
 program
     : translation_unit      {
-                                print_header();
-                                $$ = concatenate(1, $1);
-                                fprintf(yyout, "%s\n", $$);
-                                free($$);
+                                preprocess();
+                                fprintf(yyout, "%s\n", $1);
+                                free($1);
+								postprocess();
                             }
     ;
 
@@ -401,4 +426,18 @@ void print_header()
 	print_line("\t__avl__vi->show();");
 	print_line("}");
 	print_line("");
+}
+
+void preprocess()
+{
+	print_header();
+
+	stables = (struct st_list *)malloc(sizeof(struct st_list));
+	st_list_init(stables);
+}
+
+void postprocess()
+{
+	st_list_destroy(stables);
+	free(stables);
 }
