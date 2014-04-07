@@ -17,14 +17,23 @@ typedef enum {
 
 typedef enum {
 	variableDeclaration,
-	exp_state,
 	func_def,
 	array_def,
 	inc_op_post,
 	dec_op_post,
 	dec_op_pre,
 	dec_op_pre,
-	len
+	len,
+	exp_state,
+	declar_state,
+	comp_state,
+	state_list,
+	display_state,
+	select_state,
+	iter_state,
+	jump_continue_state,
+	jump_break_state,
+	jump_ret_state
 } operatorTypeEnum;
 
 typedef enum {
