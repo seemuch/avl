@@ -33,7 +33,8 @@ typedef enum {
 	iter_state,
 	jump_continue_state,
 	jump_break_state,
-	jump_ret_state
+	jump_ret_state,
+	assignment	
 } operatorTypeEnum;
 
 typedef enum {
