@@ -1,8 +1,8 @@
 %{
 #include <stdlib.h>
-#include <string>
-using std::string;
-#include "parser.hh"
+#include <stdio.h>
+#include <string.h>
+#include "parser.h"
 void count();
 void comment();
 %}
@@ -39,7 +39,7 @@ H			[a-fA-F0-9]
 "<end_display>"		{ count(); return(END_DISPLAY); }
 
 {L}({L}|{D})*		{ 	count(); 
-						yylval.idval = string(yytext);
+						yylval.idVal = strdup(yytext);
 						return(IDENTIFIER);
 					}
 
@@ -55,7 +55,7 @@ H			[a-fA-F0-9]
 
 \"(\\.|[^\\"])*\"	{ 	
 						count(); 
-						yylval.strLitVal = string(yytext);
+						yylval.strLitVal = strdup(yytext);
 						return(STRING_LITERAL); 
 					}
 
