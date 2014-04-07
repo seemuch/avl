@@ -124,7 +124,7 @@ postfix_expression
     : primary_expression                                    { $$ = concatenate(1, $1); }
     | postfix_expression '[' conditional_expression ']'     { $$ = concatenate(4, $1, $2, $3, $4); }
     | postfix_expression '[' conditional_expression
-        ':' conditional_expression ']'                      { $$ = concatenate(5, $1, $2, $3, $4, $5); }
+        ':' conditional_expression ']'                      { $$ = concatenate(6, $1, $2, $3, $4, $5, $6); }
     | postfix_expression '(' ')'                            { $$ = concatenate(3, $1, $2, $3); }
     | postfix_expression '(' argument_expression_list ')'   { $$ = concatenate(4, $1, $2, $3, $4); }
     | postfix_expression INC_OP                             { $$ = concatenate(2, $1, $2); }
@@ -436,4 +436,15 @@ void postprocess()
 {
 	st_list_destroy(stables);
 	free(stables);
+}
+
+int avl_parse()
+{
+	int ret;
+
+	preprocess();
+	ret = yyparse();
+	postprocess();
+
+	return ret;
 }
