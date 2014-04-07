@@ -13,7 +13,7 @@ nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
 
-nodeType* operatorNode (int operator, ...);
+nodeType* operatorNodeCreator (int operator, ...);
 
 /*
 typedef struct {
@@ -176,14 +176,14 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $<nt>$ = (0, 0, $<nt>1, $<nt>2);  } 
-	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = (0, 1, $<nt>1, $<nt>2);  }
-	| HIDE type_specifier init_declarator 			{ $<nt>$ = (0, 0, $<nt>1, $<nt>2); }
+	: type_specifier init_declarator 				{ $<nt>$ = (variableDeclaration, 0, $<nt>1, $<nt>2);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = (variableDeclaration, 1, $<nt>2, $<nt>3);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = (variableDeclaration, 0, $<nt>2, $<nt>3); }
 	;
 
 init_declarator
 	: declarator 									{ $$ = $1; }
-	| declarator '=' initializer 					{ $$ = assign($1, $3); }
+	| declarator '=' initializer 					{ $$ = operatorNodeCreator(assignment, $1, $3); }
 	;
 
 declarator
