@@ -12,7 +12,8 @@ nodeType* intConNode (int val);
 nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
-nodeType* assignmentNode ()
+
+nodeType* operatorNode (int operator, ...);
 
 /*
 typedef struct {
@@ -175,9 +176,9 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 0);  } 
-	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 1);  }
-	| HIDE type_specifier init_declarator 			{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, -1); }
+	: type_specifier init_declarator 				{ $<nt>$ = (0, 0, $<nt>1, $<nt>2);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = (0, 1, $<nt>1, $<nt>2);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = (0, 0, $<nt>1, $<nt>2); }
 	;
 
 init_declarator
@@ -344,6 +345,21 @@ nodeType* idNode(string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* operatorNode (int operator, int numOperands, ...) {
+nodeType* operatorNode (operatorTypeEnum operator, int numOperands, ...) {
+	nodeType* p;
+	va_list ap;
+
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
 	
+	p->type = OPERATOR;
+	p->opr.opType = operator;
+	p->opr.op = vector<nodeType*> (numOperands, 0);
+
+	va_start(ap,n);
+	for (int i = 0; i < numOperands; i ++) {
+		p->opr.op[i] = va_arg(vl, nodeType*);
+	}
+
+	return p;
 }
