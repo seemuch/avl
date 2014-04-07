@@ -16,15 +16,15 @@ typedef enum {
 } nodeTypeEnum;
 
 typedef enum {
-	variableDeclaration;
-	func_def
-	array_def
-	inc_op_post
-	dec_op_post
-	dec_op_pre
-	dec_op_pre
-	len
-
+	variableDeclaration,
+	func_def,
+	array_def,
+	inc_op_post,
+	dec_op_post,
+	dec_op_pre,
+	dec_op_pre,
+	len,
+	assignment	
 } operatorTypeEnum;
 
 typedef enum {
