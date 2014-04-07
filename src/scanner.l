@@ -5,7 +5,6 @@
 #include "parser.h"
 
 void count();
-void comment();
 %}
 
 %option debug warn verbose
