@@ -17,6 +17,7 @@ typedef enum {
 
 typedef enum {
 	variableDeclaration;
+	expressionStatement;
 } operatorTypeEnum;
 
 typedef enum {
