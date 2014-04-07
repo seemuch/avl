@@ -12,7 +12,8 @@ nodeType* intConNode (int val);
 nodeType* strLitNode (string str);
 nodeType* varTypeNode(string type);
 nodeType* idNode (string value);
-nodeType* assignmentNode ()
+
+nodeType* operatorNodeCreator (int operator, ...);
 
 /*
 typedef struct {
@@ -44,6 +45,7 @@ void yyerror(const char *msg);
 	int intConVal;
 	string strLitVal;
 	string idVal;
+
 	nodeType* nt;
 }
 
@@ -174,14 +176,14 @@ expression
 	;
 
 declaration
-	: type_specifier init_declarator 				{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 0);  } 
-	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, 1);  }
-	| HIDE type_specifier init_declarator 			{ $<nt>$ = variableIdNode ($<nt>1, $<nt>2, -1); }
+	: type_specifier init_declarator 				{ $<nt>$ = (variableDeclaration, 0, $<nt>1, $<nt>2);  } 
+	| DISPLAY type_specifier init_declarator 		{ $<nt>$ = (variableDeclaration, 1, $<nt>2, $<nt>3);  }
+	| HIDE type_specifier init_declarator 			{ $<nt>$ = (variableDeclaration, 0, $<nt>2, $<nt>3); }
 	;
 
 init_declarator
 	: declarator 									{ $$ = $1; }
-	| declarator '=' initializer 					{ $$ = assign($1, $3); }
+	| declarator '=' initializer 					{ $$ = operatorNodeCreator(assignment, $1, $3); }
 	;
 
 declarator
@@ -201,61 +203,61 @@ initializer_list
 	;
 
 statement
-	: compound_statement
-	| expression_statement
-	| declaration_statement
-	| display_statement
-	| selection_statement
-	| iteration_statement
-	| jump_statement
+	: compound_statement							{ $<nt>$ = $<nt>1; }
+	| expression_statement							{ $<nt>$ = $<nt>1; }
+	| declaration_statement							{ $<nt>$ = $<nt>1; }
+	| display_statement								{ $<nt>$ = $<nt>1; }
+	| selection_statement							{ $<nt>$ = $<nt>1; }
+	| iteration_statement							{ $<nt>$ = $<nt>1; }
+	| jump_statement								{ $<nt>$ = $<nt>1; }
 	;
 
 expression_statement
-	: expression ';'
+	: expression ';'								{ $<nt>$ = operatorNodeCreator(exp_state, 1, $<nt>1); }
 	;
 
 declaration_statement
-	: declaration ';'
+	: declaration ';'								{ $<nt>$ = operatorNodeCreator(declar_state, 1, $<nt>1); }
 	;
 
 compound_statement 
-	: '{' '}'
-	| '{' statement_list '}'
+	: '{' '}'										{ $<nt>$ = operatorNodeCreator(comp_state, 0); }
+	| '{' statement_list '}'						{ $<nt>$ = operatorNodeCreator(comp_state, 1, $<nt>2); }
 	;
 
 statement_list
-	: statement
-	| statement_list statement
+	: statement										{ $<nt>$ = $<nt>1; }
+	| statement_list statement						{ $<nt>$ = operatorNodeCreator(state_list, 2, $<nt>1, $<nt>2); }
 	;
 
 display_statement
-	: BEGIN_DISPLAY statement_list END_DISPLAY
+	: BEGIN_DISPLAY statement_list END_DISPLAY		{ $<nt>$ = operatorNodeCreator(display_state, 1, $<nt>2); }
 	;
 
 selection_statement
-	: IF '(' conditional_expression ')' statement
-	| IF '(' conditional_expression ')' statement
+	: IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 2, $<nt>3, $<nt>5); }
+	| IF '(' conditional_expression ')' statement	{ $<nt>$ = operatorNodeCreator(select_state, 3, $<nt>3, $<nt>5), $<nt>7; }
       ELSE statement
 	;
 
 iteration_statement
-	: WHILE '(' conditional_expression ')' statement
-	| DO statement WHILE '(' conditional_expression ')' ';'
-	| FOR '(' expression ';' conditional_expression ';' ')'
+	: WHILE '(' conditional_expression ')' statement			{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>3, $<nt>5); }
+	| DO statement WHILE '(' conditional_expression ')' ';'		{ $<nt>$ = operatorNodeCreator(iter_state, 2, $<nt>2, $<nt>5); }
+	| FOR '(' expression ';' conditional_expression ';' ')'		{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
 	      statement
-	| FOR '(' expression ';' conditional_expression ';'
+	| FOR '(' expression ';' conditional_expression ';'			{ $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
 	      expression ')' statement
-	| FOR '(' declaration ';' conditional_expression ';' ')'
+	| FOR '(' declaration ';' conditional_expression ';' ')'	{ $<nt>$ = operatorNodeCreator(iter_state, 3, $<nt>3, $<nt>5, $<nt>8); }
 	      statement
-	| FOR '(' declaration ';' conditional_expression ';'
+	| FOR '(' declaration ';' conditional_expression ';'		{ $<nt>$ = operatorNodeCreator(iter_state, 4, $<nt>3, $<nt>5, $<nt>7, $<nt>9); }
 	      expression ')' statement
 	;
 
 jump_statement
-	: CONTINUE ';'
-	| BREAK ';'
-	| RETURN ';'
-	| RETURN conditional_expression ';'
+	: CONTINUE ';'									{ $<nt>$ = operatorNodeCreator(jump_continue_state, 0); }
+	| BREAK ';'										{ $<nt>$ = operatorNodeCreator(jump_break_state, 0); }
+	| RETURN ';'									{ $<nt>$ = operatorNodeCreator(jump_ret_state, 0); }
+	| RETURN conditional_expression ';'				{ $<nt>$ = operatorNodeCreator(jump_ret_state, 1, $<nt>2); }
 	;
 
 translation_unit
@@ -283,7 +285,7 @@ parameter_declaration
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* intConNode (int value) {
+nodeType* intConNodeCreator (int value) {
 	nodeType *p;
 
 	// allocating memory
@@ -298,7 +300,7 @@ nodeType* intConNode (int value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* strLitNode (string value) {
+nodeType* strLitNodeCreator (string value) {
 	nodeType* p;
 
 	// allocating memory
@@ -313,7 +315,7 @@ nodeType* strLitNode (string value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* varTypeNode (int type) {
+nodeType* varTypeNodeCrator (int type) {
 	nodeType* p;
 
 	// allocating memory
@@ -328,10 +330,10 @@ nodeType* varTypeNode (int type) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* idNode(string value) {
+nodeType* idNodeCreator (string value) {
 	nodeType* p;
 
-	// allocating memroy
+	// allocating memory
 	if ((p = malloc(sizeof(nodeType))) == NULL)
 		yyerror("out of memory");
 
@@ -358,6 +360,23 @@ nodeType* unaryNodeCreater(char value) {
 
 ///////////////////////////////////////////////////////////////
 
-nodeType* operatorNode (operatorTypeEnum operator, int numOperands, ...) {
+nodeType* operatorNodeCreator (operatorTypeEnum operator, int numOperands, ...) {
+	nodeType* p;
+	va_list ap;
+
+	// allocating memory
+	if ((p = malloc(sizeof(nodeType))) == NULL)
+		yyerror("out of memory");
 	
+	p->type = OPERATOR;
+	p->opr.opType = operator;
+	p->opr.op = vector<nodeType*> (numOperands, 0);
+
+	va_start(ap, numOperands);
+	for (int i = 0; i < numOperands; i ++) {
+		p->opr.op[i] = va_arg(vl, nodeType*);
+	}
+	va_and(ap);
+
+	return p;
 }
