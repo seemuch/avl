@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+extern FILE *yyout;
+
 int yylex();
 void yyerror(const char *msg);
 char *concatenate(int num_args, ...);
@@ -306,7 +308,7 @@ parameter_declaration
     ;
 
 program
-	: translation_unit		{ $$ = concatenate(1, $1); printf("%s\n", $$); free($$); }
+	: translation_unit		{ $$ = concatenate(1, $1); fprintf(yyout, "%s\n", $$); free($$); }
 	;
 
 %%
@@ -327,7 +329,8 @@ char *concatenate(int num_args, ...)
 	for (i = 1; i < num_args; i++)
 	{
 		char *str = va_arg(ap, char *);
-		ret = realloc(ret, strlen(ret) + strlen(str) + 1);
+		ret = realloc(ret, strlen(ret) + strlen(str) + 2);
+		strcat(ret, " ");
 		strcat(ret, str);
 		free(str);
 	}
