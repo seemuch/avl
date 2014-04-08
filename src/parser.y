@@ -267,6 +267,11 @@ parameter_declaration
 	: type_specifier declarator     			{ $<nt>$ = operatorNodeCreator(para_declar, 2, $<nt>1, $<nt>2); }
 	;
 
+program
+	: tranlation_unit 							{ 
+													$<nt>$ = operatorNodeCreator(prog_start, 1. $<nt>1);
+													freeNode($<nt>1);
+												}
 
 %%
 
@@ -383,4 +388,19 @@ nodeType* operatorNodeCreator (operatorTypeEnum oprtr, int numOperands, ...) {
 	va_end(ap);
 
 	return p;
+}
+
+///////////////////////////////////////////////////////////////
+
+void freeNode(nodeType* node) {
+	if (node->type != OPERATOR_NODE)
+		free(node);
+
+	else {
+		int i = 0;
+		for (; i < node->opr.numOperands; i ++) {
+			freeNode(node->opr.op[i]);
+		}
+	}
+	return;
 }
