@@ -376,16 +376,11 @@ nodeType* operatorNodeCreator (operatorTypeEnum oprtr, int numOperands, ...) {
 	p->opr.opType = oprtr;
 
 	va_start(ap, numOperands);
-	for (int i = 0; i < numOperands; i ++) {
+    int i;
+	for (i = 0; i < numOperands; i ++) {
 		p->opr.op[i] = va_arg(ap, nodeType*);
 	}
 	va_end(ap);
 
 	return p;
 }
-
-int main(void) {
-	yyparse();
-	return 0;
-}
-
