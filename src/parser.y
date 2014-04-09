@@ -6,11 +6,13 @@
 #include "st_list.h"
 
 extern FILE *yyout;
+int failure_flag = 0;
 
 int yylex();
 void yyerror(const char *msg);
 char *concatenate(int num_args, ...);
 char *concat_nospace(int num_args, ...);
+void add_symbol(const char *type, const char *decl_list);
 
 /* a list of symbol tables */
 struct st_list *stables = NULL;
@@ -114,7 +116,17 @@ leave_scope
     ;
 
 primary_expression
-    : IDENTIFIER                        { $$ = concatenate(1, $1); }
+    : IDENTIFIER                        {
+                                            $$ = concatenate(1, $1);
+                                            if (st_list_find(stables, $1) == NULL)
+                                            {
+                                                char *msg = (char *)malloc(strlen($1) + 100);
+                                                sprintf(msg, "error: use of undeclared identifier '%s'", $1);
+                                                yyerror(msg);
+                                                failure_flag = 1;
+                                                free(msg);
+                                            }
+                                        }
     | CONSTANT                          { $$ = concatenate(1, $1); }
     | STRING_LITERAL                    { $$ = concatenate(1, $1); }
     | '(' conditional_expression ')'    { $$ = concatenate(3, $1, $2, $3); }
@@ -223,9 +235,18 @@ expression
     ;
 
 declaration
-    : type_specifier init_declarator_list           { $$ = concatenate(2, $1, $2); }
-    | DISPLAY type_specifier init_declarator_list   { $$ = concatenate(3, $1, $2, $3); }
-    | HIDE type_specifier init_declarator_list      { $$ = concatenate(3, $1, $2, $3); }
+    : type_specifier init_declarator_list           {
+                                                        $$ = concatenate(2, $1, $2);
+                                                        add_symbol($1, $2);
+                                                    }
+    | DISPLAY type_specifier init_declarator_list   {
+                                                        $$ = concatenate(3, $1, $2, $3);
+                                                        add_symbol($2, $3);
+                                                    }
+    | HIDE type_specifier init_declarator_list      {
+                                                        $$ = concatenate(3, $1, $2, $3);
+                                                        add_symbol($2, $3);
+                                                    }
     ;
 
 init_declarator_list
@@ -319,8 +340,15 @@ translation_unit
 
 function_definition
     : type_specifier  IDENTIFIER '(' parameter_list ')'
-          compound_statement                                    { $$ = concatenate(6, $1, $2, $3, $4, $5, $6); }
-    | type_specifier  IDENTIFIER '('  ')' compound_statement    { $$ = concatenate(5, $1, $2, $3, $4, $5); }
+          compound_statement                                    {
+                                                                    $$ = concatenate(6, $1, $2, $3, $4, $5, $6);
+                                                                    add_symbol("func", $2);
+                                                                    /* TODO: change "func" to something else */
+                                                                }
+    | type_specifier  IDENTIFIER '('  ')' compound_statement    {
+                                                                    $$ = concatenate(5, $1, $2, $3, $4, $5);
+                                                                    add_symbol("func", $2);
+                                                                }
     ;
 
 parameter_list
@@ -357,7 +385,7 @@ char *concatenate(int num_args, ...)
 	for (i = 1; i < num_args; i++)
 	{
 		char *str = va_arg(ap, char *);
-		ret = realloc(ret, strlen(ret) + strlen(str) + 2);
+		ret = (char *)realloc(ret, strlen(ret) + strlen(str) + 2);
 		strcat(ret, " ");
 		strcat(ret, str);
 		free(str);
@@ -384,7 +412,7 @@ char *concat_nospace(int num_args, ...)
 	for (i = 1; i < num_args; i++)
 	{
 		char *str = va_arg(ap, char *);
-		ret = realloc(ret, strlen(ret) + strlen(str) + 1);
+		ret = (char *)realloc(ret, strlen(ret) + strlen(str) + 1);
 		strcat(ret, str);
 		free(str);
 	}
@@ -392,6 +420,29 @@ char *concat_nospace(int num_args, ...)
 	va_end(ap);
 
 	return ret;
+}
+
+void add_symbol(const char *type, const char *decl_list)
+{
+	struct sym_table *st = st_list_head(stables);
+
+	char *token, *string, *tofree;
+	tofree = string = strdup(decl_list);
+
+	while ((token = strsep(&string, ",")) != NULL)
+	{
+		char *var, *string2, *tofree2;
+		tofree2 = string2 = strdup(token);
+
+		var = strsep(&string2, "= ");
+		struct identifier id;
+		strcpy(id.name, var);
+		sym_table_add(st, &id);
+
+		free(tofree2);
+	}
+
+	free(tofree);
 }
 
 void print_line(const char *line)
@@ -446,6 +497,9 @@ int avl_parse()
 	preprocess();
 	ret = yyparse();
 	postprocess();
+
+	if (ret == 0 && failure_flag)
+		ret = 2;
 
 	return ret;
 }
