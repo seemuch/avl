@@ -98,6 +98,7 @@ void parse_command_line(int argc, char *argv[])
 	memset(output_file, 0, MAX_FILENAME);
 	memset(translate_file, 0, MAX_FILENAME);
 	memset(temp_file, 0, MAX_FILENAME);
+	memset(format_file, 0, MAX_FILENAME);
 	strcpy(output_file, DEFAULT_OUTPUT);
 	strcpy(temp_file, DEFAULT_TEMP);
 
@@ -119,7 +120,7 @@ void parse_command_line(int argc, char *argv[])
 				if (strlen(optarg) <= 0)
 					die("no output filename.");
 				else if (strlen(optarg) >= MAX_FILENAME)
-					die("output filename too long.");
+					die("output filename too long: %s.", optarg);
 				strcpy(output_file, optarg);
 				output_flag = 1;
 				break;
@@ -141,11 +142,11 @@ void parse_command_line(int argc, char *argv[])
 	}
 	if (strlen(argv[optind]) <= strlen(DEFAULT_EXT)
 			|| strlen(argv[optind]) >= MAX_FILENAME)
-		die("invalid input filename.");
+		die("invalid input filename: %s.", argv[optind]);
 	strcpy(input_file, argv[optind]);
 	if (strcmp(input_file + strlen(input_file) - strlen(DEFAULT_EXT),
 				DEFAULT_EXT) != 0)
-		die("not a valid avl source file.");
+		die("not a valid avl source file: %s.", input_file);
 
 	struct stat buf;
 	if (stat(input_file, &buf) != 0)
