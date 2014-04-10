@@ -156,6 +156,8 @@ int main(int argc, char *argv[])
 	}
 	else {
 		int fd = mkstemp(temp_file);
+		if (fd < 0)
+			die_err("mkstemp() failed");
 		yyout = fdopen(fd, "w");
 		if (!yyout)
 			die_err("can not open temporary file");
