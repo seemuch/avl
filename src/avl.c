@@ -4,12 +4,14 @@
 #include <getopt.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include "config.h"
 
 int yyparse();
 
-const char *USAGE = "Usage: " PACKAGE " [-h|-o|-t] file\n"
+const char *const USAGE =
+	"Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"Options:\n"
 	"  -h --help                Display this information\n"
 	"  -o --output=<file>       Compile and place the executable into <file>\n"
@@ -25,6 +27,7 @@ char input_file[MAX_FILENAME];
 char output_file[MAX_FILENAME];
 char translate_file[MAX_FILENAME];
 char temp_file[MAX_FILENAME];
+char format_file[MAX_FILENAME];
 int translate_flag = 0;
 int output_flag = 0;
 
@@ -50,6 +53,13 @@ char *const CXX_OPTIONS[] = {
 	temp_file,
 	NULL
 };
+char *const ASTYLE_OPTIONS[] = {
+	"astyle",
+	"--style=linux",
+	"--suffix=none",
+	format_file,
+	NULL
+};
 
 const struct option long_options[] = {
 	{"help",      no_argument,       NULL, 'h'},
@@ -63,9 +73,16 @@ void usage()
 	fprintf(stderr, "%s", USAGE);
 }
 
-void die(const char *msg)
+void die(const char *format, ...)
 {
-	fprintf(stderr, PACKAGE ": %s\n", msg);
+	va_list ap;
+
+	va_start(ap, format);
+	fprintf(stderr, PACKAGE ": ");
+	vfprintf(stderr, format, ap);
+	fprintf(stderr, "\n");
+	va_end(ap);
+
 	exit(EXIT_FAILURE);
 }
 
@@ -141,6 +158,29 @@ void parse_command_line(int argc, char *argv[])
 	}
 }
 
+void execute_program(char *const *options)
+{
+	pid_t pid = fork();
+
+	if (pid < 0)
+		die_err("fork() failed");
+	else if (pid == 0) {
+		char *const *s = options;
+		while (*s)
+			printf("%s ", *s++);
+		printf("\n");
+
+		if (execvp(options[0], options) < 0)
+			die_err("execvp() failed");
+	}
+
+	int status;
+	if (waitpid(pid, &status, 0) != pid)
+		die_err("waitpid() failed");
+	if (status)
+		die("failed to execute %s.", options[0]);
+}
+
 int main(int argc, char *argv[])
 {
 	parse_command_line(argc, argv);
@@ -169,27 +209,17 @@ int main(int argc, char *argv[])
 	fclose(yyin);
 	fclose(yyout);
 
-	if (!translate_flag) {
-		pid_t pid = fork();
+	/* code formatting */
+	if (translate_flag)
+		strcpy(format_file, translate_file);
+	else
+		strcpy(format_file, temp_file);
 
-		if (pid < 0)
-			die_err("fork() failed");
-		else if (pid == 0) {
-			char *const *s = CXX_OPTIONS;
-			while (*s)
-				printf("%s ", *s++);
-			printf("\n");
-			if (execvp(CXX_OPTIONS[0], CXX_OPTIONS) < 0)
-				die_err("execvp() failed");
-		}
+	execute_program(ASTYLE_OPTIONS);
 
-		int status;
-		if (waitpid(pid, &status, 0) != pid)
-			die_err("waitpid() failed");
-		if (!status) {
-			die("failed to compile the temporary file.");
-		}
-	}
+	/* invoking g++ */
+	if (!translate_flag)
+		execute_program(CXX_OPTIONS);
 
 	return 0;
 }
