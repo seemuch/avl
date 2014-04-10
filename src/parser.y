@@ -268,7 +268,7 @@ parameter_declaration
 	;
 
 program
-	: tranlation_unit 							{ 
+	: translation_unit 							{ 
 													$<nt>$ = operatorNodeCreator(prog_start, 1. $<nt>1);
 													freeNode($<nt>1);
 												}
