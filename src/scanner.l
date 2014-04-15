@@ -14,13 +14,13 @@ D                   [0-9]
 L                   [A-Za-z_]
 C                   [A-Za-z0-9_]
 
-%x C_COMMENT
+%x COMMENT
 
 %%
 
-"/*"                { BEGIN(C_COMMENT); }
-<C_COMMENT>"*/"     { BEGIN(INITIAL); }
-<C_COMMENT>.        { /* disregard all characters in comments. */ }
+"/*"                { BEGIN(COMMENT); }
+<COMMENT>"*/"       { BEGIN(INITIAL); }
+<COMMENT>.          { /* disregard all characters in comments. */ }
 
 break               { return BREAK; }
 char                { return CHAR; }
@@ -43,22 +43,22 @@ hide                { return HIDE; }
 \<begin_display\>   { return BEGIN_DISPLAY; }
 \<end_display\>     { return END_DISPLAY; }
 
-{L}({L}|{D})*       {
+{L}({L}|{D})*       { /* identifier */
                         yylval.idVal = strdup(yytext);
                         return IDENTIFIER;
                     }
 
-{D}+                {
+{D}+                { /* integer */
                         yylval.intConVal = atoi(yytext);
                         return CONSTANT;
                     }
 
-'{C}'               {
+'{C}'               { /* single character, escape characters are not allowed */
                         yylval.strLitVal = strdup(yytext);
                         return CONSTANT;
                     }
 
-\"{C}*\"            {
+\"{C}*\"            { /* string literal, escape characters are not allowed */
                         yylval.strLitVal = strdup(yytext);
                         return STRING_LITERAL;
                     }
