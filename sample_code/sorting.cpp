@@ -10,15 +10,15 @@
  * so we add a prefix __avl__. */
 AvlVisualizer *__avl__vi = NULL;
 bool __avl__ready() { return __avl__vi != NULL; }
-std::mutex __avl_mtx;
+std::mutex __avl__mtx;
 std::condition_variable_any __avl__cv;
 
 void __avl__display(int argc, char **argv)
 {
-	__avl_mtx.lock();
+	__avl__mtx.lock();
 	__avl__vi = new AvlVisualizer(argc, argv);
 	__avl__cv.notify_one();
-	__avl_mtx.unlock();
+	__avl__mtx.unlock();
 
 	__avl__vi->show();
 }
@@ -125,9 +125,9 @@ int main(int argc, char *argv[])
 	/* only for main:
 	 * insert the following five lines at the beginning of main */
 	std::thread __avl__loop(__avl__display, argc, argv);
-	__avl_mtx.lock();
-	__avl__cv.wait(__avl_mtx, __avl__ready);
-	__avl_mtx.unlock();
+	__avl__mtx.lock();
+	__avl__cv.wait(__avl__mtx, __avl__ready);
+	__avl__mtx.unlock();
 	avlSleep(0.5);
 
 	/* substitude array declaration with the following two lines */
