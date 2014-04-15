@@ -39,7 +39,7 @@ H			[a-fA-F0-9]
 {L}({L}|{D})*		{ count(); return(IDENTIFIER); }
 
 {D}+			{ count(); return(CONSTANT); }
-'(\\.|[^\\'])+'		{ count(); return(CONSTANT); }
+'(\\.|[^\\'])'		{ count(); return(CONSTANT); }
 
 \"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 
