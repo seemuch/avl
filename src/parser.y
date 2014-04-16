@@ -11,7 +11,7 @@ nodeType* idNodeCreator (char* value);
 nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
 nodeType* unaryNodeCreator(char);
 
-extern ex(nodeType*);
+extern int ex(nodeType*);
 
 /*
 typedef struct {
