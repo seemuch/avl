@@ -4,10 +4,6 @@
 #include <GL/freeglut.h>
 #include <initializer_list>
 #include <vector>
-#include <iterator>
-#include <set>
-#include <typeinfo>
-#include <utility>
 #include <string>
 #include <memory>
 #include <thread>
@@ -1271,9 +1267,7 @@ class AvlArray : public AvlObject
 
 		AvlArray<T> *toplevelArray;
 
-		//std::set<AvlIndex*> index_variables;
 		friend class AvlIndex;
-		typedef T arrayType;
 
 		std::vector<GLfloat> index_x;
 		std::vector<GLfloat> index_y;
