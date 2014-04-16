@@ -848,7 +848,7 @@ public:
 
 	// comparison operators
 	bool operator <(int v) const { return value < v; }
-	bool operator <(size_t v) const { return value < v; }
+	bool operator <(size_t v) const { return (size_t)value < v; }
 	bool operator <(char v) const { return value < v; }
 	bool operator <(const AvlInt &v) const { return value < v.val(); }
 	bool operator <(const AvlChar &v) const { return value < v.val(); }
@@ -860,7 +860,7 @@ public:
 
 	bool operator <=(int v) const { return value <= v; }
 	bool operator <=(char v) const { return value <= v; }
-	bool operator <=(size_t v) const { return value <= v; }
+	bool operator <=(size_t v) const { return (size_t)value <= v; }
 	bool operator <=(const AvlInt &v) const { return value <= v.val(); }
 	bool operator <=(const AvlChar &v) const { return value <= v.val(); }
 	bool operator <=(const AvlIndex &v) const { return value <= v.value; }
@@ -871,7 +871,7 @@ public:
 
 	bool operator >(int v) const { return value > v; }
 	bool operator >(char v) const { return value > v; }
-	bool operator >(size_t v) const { return value > v; }
+	bool operator >(size_t v) const { return (size_t)value > v; }
 	bool operator >(const AvlInt &v) const { return value > v.val(); }
 	bool operator >(const AvlChar &v) const { return value > v.val(); }
 	bool operator >(const AvlIndex &v) const { return value > v.value; }
@@ -882,7 +882,7 @@ public:
 
 	bool operator >=(int v) const { return value >= v; }
 	bool operator >=(char v) const { return value >= v; }
-	bool operator >=(size_t v) const { return value >= v; }
+	bool operator >=(size_t v) const { return (size_t)value >= v; }
 	bool operator >=(const AvlInt &v) const { return value >= v.val(); }
 	bool operator >=(const AvlChar &v) const { return value >= v.val(); }
 	bool operator >=(const AvlIndex &v) const { return value >= v.value; }
@@ -893,7 +893,7 @@ public:
 
 	bool operator ==(int v) const { return value == v; }
 	bool operator ==(char v) const { return value == v; }
-	bool operator ==(size_t v) const { return value == v; }
+	bool operator ==(size_t v) const { return (size_t)value == v; }
 	bool operator ==(const AvlInt &v) const { return value == v.val(); }
 	bool operator ==(const AvlChar &v) const { return value == v.val(); }
 	bool operator ==(const AvlIndex &v) const { return value == v.value; }
@@ -904,7 +904,7 @@ public:
 
 	bool operator !=(int v) const { return value != v; }
 	bool operator !=(char v) const { return value != v; }
-	bool operator !=(size_t v) const { return value != v; }
+	bool operator !=(size_t v) const { return (size_t)value != v; }
 	bool operator !=(const AvlInt &v) const { return value != v.val(); }
 	bool operator !=(const AvlChar &v) const { return value != v.val(); }
 	bool operator !=(const AvlIndex &v) const { return value != v.value; }
@@ -939,7 +939,7 @@ public:
 	}
 
 	void add_array(AvlObject* obj, GLfloat a, GLfloat b) {
-		for (int i = 0; i < array_set.size(); i ++) {
+		for (size_t i = 0; i < array_set.size(); i ++) {
 			if (array_set[i].x == a && array_set[i].y == b)
 				return;
 			if (obj == array_set[i].obj)
