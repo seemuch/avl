@@ -4,6 +4,10 @@
 #include <GL/freeglut.h>
 #include <initializer_list>
 #include <vector>
+#include <iterator>
+#include <set>
+#include <typeinfo>
+#include <utility>
 #include <string>
 #include <memory>
 #include <thread>
@@ -66,7 +70,7 @@ class AvlFont
 		void *_font;
 		GLfloat _width;
 		GLfloat _height;
-};
+}; // end of AvlFont
 
 class AvlObject
 {
@@ -161,7 +165,7 @@ class AvlObject
 		const AvlVisualizer *_vi;
 
 		std::string _name;
-};
+}; // end of AvlObject
 
 inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, float seconds)
 {
@@ -242,7 +246,7 @@ class AvlInt : public AvlObject
 			return ret;
 		}
 
-		// // binary plus
+		// binary plus
 		const AvlInt operator+(const AvlInt &v) const { return *this + v.value; }
 		friend const AvlInt operator+(int v1, const AvlInt &v2) { return v2 + v1; }
 
@@ -370,32 +374,296 @@ class AvlInt : public AvlObject
 		}
 
 		int value;
+}; // end of AvlInt
+
+
+class AvlChar: public AvlObject
+{
+	public:
+
+		// constructor
+	 	AvlChar (char v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font)
+		{
+			value = v;
+			update();
+		}
+
+		// destructor
+		virtual ~AvlChar() {}
+
+		// assignment operator
+		const AvlChar & operator=(char v) { value = v; update(); return *this; }
+
+		// << operator
+		friend std::ostream& operator<<(std::ostream &os, const AvlChar &v)
+		{
+			os << v.value;
+			return os;
+		}
+
+		// unary plus and minus
+		const AvlChar & operator+() const { return *this; }
+		const AvlChar operator-() const
+		{
+			AvlChar ret = *this;
+			ret.value = -value;
+			ret.update();
+			return ret;
+		}
+
+		// pre-increment and post-increment
+		const AvlChar & operator++() { value++; update(); return *this; }
+		const AvlChar operator++(int)
+		{
+			AvlChar ret = *this;
+			value++;
+			update();
+			return ret;
+		}
+
+		// pre-decrement and post-decrement
+		const AvlChar & operator--() { value--; update(); return *this; }
+		const AvlChar operator--(int)
+		{
+			AvlChar ret = *this;
+			value--;
+			update();
+			return ret;
+		}
+
+		// binary plus
+		const AvlChar operator+(int v) const
+		{
+			AvlChar ret = *this;
+			ret.value += v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator+(char v) const
+		{
+			AvlChar ret = *this;
+			ret.value += v;
+			ret.update();
+			return ret;
+		}
+
+		// binary plus
+		const AvlChar operator+(const AvlInt &v) const { return *this + v.val(); }
+		const AvlChar operator+(const AvlChar &v) const { return *this +  v.val(); }
+		friend const AvlChar operator+(int v1, const AvlChar &v2) { return v2 + v1; }
+		friend const AvlChar operator+(char v1, const AvlChar &v2) { return v2 + v1; }
+		friend const AvlChar operator+(AvlInt v1, const AvlChar &v2) { return v2 + v1.val(); }
+		friend const AvlChar operator+(AvlChar v1, const AvlChar &v2) { return v2 + v1.val(); }
+
+		// compound plus 
+		const AvlChar & operator+=(int v) { value += v; update(); return *this; }
+		const AvlChar & operator+=(char v) { value += v; update(); return *this; }
+		const AvlChar & operator+=(const AvlInt &v) { return *this += v.val(); }
+		const AvlChar & operator+=(const AvlChar &v) { return *this += v.val(); }
+
+		
+		// binary minus
+		const AvlChar operator-(int v) const
+		{
+			AvlChar ret = *this;
+			ret.value -= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator-(char v) const
+		{
+			AvlChar ret = *this;
+			ret.value -= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator-(const AvlInt &v) const { return *this - v.val(); }
+		const AvlChar operator-(const AvlChar &v) const { return *this - v.val(); }
+		friend const AvlChar operator-(int v1, const AvlChar &v2) { return -v2 + v1; }
+		friend const AvlChar operator-(char v1, const AvlChar &v2) { return -v2 + v1; }
+		friend const AvlChar operator-(AvlInt v1, const AvlChar &v2) { return -v2 + v1.val(); }
+		friend const AvlChar operator-(AvlChar v1, const AvlChar &v2) { return -v2 + v1.val(); }
+
+		// compound minus
+		const AvlChar & operator-=(int v) { value -= v; update(); return *this; }
+		const AvlChar & operator-=(char v) { value -= v; update(); return *this; }
+		const AvlChar & operator-=(const AvlInt &v) { return *this -= v.val(); }
+		const AvlChar & operator-=(const AvlChar &v) { return *this -= v.val(); }
+
+
+		// multiplication
+		const AvlChar operator*(int v) const
+		{
+			AvlChar ret = *this;
+			ret.value *= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator*(char v) const
+		{
+			AvlChar ret = *this;
+			ret.value *= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator*(const AvlInt &v) const { return *this * v.val(); }
+		const AvlChar operator*(const AvlChar &v) const { return *this * v.val(); }
+		friend const AvlChar operator*(int v1, const AvlChar &v2) { return v2 * v1; }
+		friend const AvlChar operator*(char v1, const AvlChar &v2) { return v2 * v1; }
+		friend const AvlChar operator*(AvlInt v1, const AvlChar &v2) { return v2 * v1.val(); }
+		friend const AvlChar operator*(AvlChar v1, const AvlChar &v2) { return v2 * v1.val(); }
+		
+		// compound multiplication
+		const AvlChar & operator*=(int v) { value *= v; update(); return *this; }
+		const AvlChar & operator*=(char v) { value *= v; update(); return *this; }
+		const AvlChar & operator*=(const AvlInt &v) { return *this *= v.val(); }
+		const AvlChar & operator*=(const AvlChar &v) { return *this *= v.val(); }
+
+		// division
+		const AvlChar operator/(int v) const
+		{
+			AvlChar ret = *this;
+			ret.value /= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator/(char v) const
+		{
+			AvlChar ret = *this;
+			ret.value /= v;
+			ret.update();
+			return ret;
+		}
+
+		const AvlChar operator/(const AvlInt &v) const { return *this / v.val(); }
+		const AvlChar operator/(const AvlChar &v) const { return *this / v.val(); }
+		friend const AvlChar operator/(int v1, const AvlChar &v2) { return v2 / v1; }
+		friend const AvlChar operator/(char v1, const AvlChar &v2) { return v2 / v1; }
+		friend const AvlChar operator/(AvlInt v1, const AvlChar &v2) { return v2 / v1.val(); }
+		friend const AvlChar operator/(AvlChar v1, const AvlChar &v2) { return v2 / v1.val(); }
+
+		/*
+		friend const AvlChar operator/(int v1, const AvlChar &v2)
+		{
+			AvlChar ret = v2;
+			ret.value = v1 / v2.value;
+			ret.update();
+			return ret;
+		}
+		*/
+		// compound division
+		const AvlChar & operator/=(int v) { value /= v; update(); return *this; }
+		const AvlChar & operator/=(char v) { value /= v; update(); return *this; }
+		const AvlChar & operator/=(const AvlInt &v) { return *this /= v.val(); }
+		const AvlChar & operator/=(const AvlChar &v) { return *this /= v.val(); }
+	
+		// comparison operators
+		bool operator <(int v) const { return value < v; }
+		bool operator <(char v) const { return value < v; }
+		bool operator <(const AvlInt &v) const { return value < v.val(); }
+		bool operator <(const AvlChar &v) const { return value < v.value; }
+		friend bool operator<(int v1, const AvlChar v2) { return v1 < v2.value; }
+		friend bool operator<(AvlInt v1, const AvlChar v2) { return v1.val() < v2.value; }
+
+		bool operator <=(int v) const { return value <= v; }
+		bool operator <=(char v) const { return value <= v; }
+		bool operator <=(const AvlInt &v) const { return value <= v.val(); }
+		bool operator <=(const AvlChar &v) const { return value <= v.val(); }
+		friend bool operator<=(int v1, const AvlChar v2) { return v1 <= v2.value; }
+		friend bool operator<=(AvlInt v1, const AvlChar v2) { return v1.val() <= v2.value; }
+
+		bool operator >(int v) const { return value > v; }
+		bool operator >(char v) const { return value > v; }
+		bool operator >(const AvlInt &v) const { return value > v.val(); }
+		bool operator >(const AvlChar &v) const { return value > v.value; }
+		friend bool operator>(int v1, const AvlChar v2) { return v1 > v2.value; }
+		friend bool operator>(AvlInt v1, const AvlChar v2) { return v1.val() > v2.value; }
+
+		bool operator >=(int v) const { return value >= v; }
+		bool operator >=(char v) const { return value >= v; }
+		bool operator >=(const AvlInt &v) const { return value >= v.val(); }
+		bool operator >=(const AvlChar &v) const { return value >= v.value; }
+		friend bool operator>=(int v1, const AvlChar v2) { return v1 >= v2.value; }
+		friend bool operator>=(AvlInt v1, const AvlChar v2) { return v1.val() >= v2.value; }
+
+		bool operator ==(int v) const { return value == v; }
+		bool operator ==(char v) const { return value == v; }
+		bool operator ==(const AvlChar &v) const { return value == v.value; }
+		bool operator ==(const AvlInt &v) const { return value == v.val(); }
+		friend bool operator==(char v1, const AvlChar v2) { return v1 == v2.value; }
+		friend bool operator==(AvlInt v1, const AvlChar v2) { return v1.val() == v2.value; }
+
+		bool operator !=(int v) const { return value != v; }
+		bool operator !=(char v) const { return value != v; }
+		bool operator !=(const AvlInt &v) const { return value != v.val(); }
+		bool operator !=(const AvlChar &v) const { return value != v.value; }
+		friend bool operator!=(int v1, const AvlChar v2) { return v1 != v2.value; }
+		friend bool operator!=(AvlInt v1, const AvlChar v2) { return v1.val() != v2.value; }
+
+
+		// value getter
+		char val() const { return value; }
+
+		// render function
+		virtual void render()
+		{
+			unsigned int red = color() / 0x10000;
+			unsigned int green = color() % 0x10000 / 0x100;
+			unsigned int blue = color() % 0x100;
+			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
+			glRasterPos2f(x(), y());
+			glutBitmapString(font().font(), (const unsigned char *)&value );
+		}
+
+		void highlight() { 
+			set_color(AVL_COLOR_HIGHLIGHT); 
+		}
+		void lowlight() { 
+			set_color(AVL_COLOR_DEFAULT); 
+		}
+
+	private:
+		void update() { set_width(font().width()); }
+		char value;
+}; // end of AvlChar
+
+
+class array_entry{
+public:
+	AvlObject* obj;
+	GLfloat x;
+	GLfloat y;
 };
 
-class AvlIndex : public AvlObject {
-private:
-	size_t value;
-	char name;
-	const AvlObject* array;
-	template<typename T> friend class AvlArray;
 
+
+class AvlIndex : public AvlObject {
 public:
 	// constructor 
 	AvlIndex () {
 		this->value = 0;
-		this->array = 0;
 	}
 	
+	AvlIndex (int a) {
+		this->value = a;
+	}
+
 	// copy constructor
 	AvlIndex (const AvlIndex & that) {
 		this->value = that.value;
-		this->array = that.array;
 	}
 
 	// assignment operator
 	const AvlIndex& operator= (const AvlIndex& that) {
 		this->value = that.value;
-		this->array = that.array;
 		return *this;
 	}
 
@@ -405,7 +673,297 @@ public:
 		return *this;
 	}
 
-};
+	// assignment operator for AvlInt type
+	const AvlIndex& operator= (AvlInt a) {
+		this->value = a.val();
+		return *this;
+	}
+
+
+	// unary plus and minus
+	const AvlIndex& operator+() const { return *this; }
+	const AvlIndex operator-() const
+	{
+		AvlIndex ret = *this;
+		ret.value = -value;
+		ret.update();
+		return ret;
+	}
+
+	// pre-increment and post-increment
+	const AvlIndex& operator++() { value++; update(); return *this; }
+	const AvlIndex operator++(int)
+	{
+		AvlIndex ret = *this;
+		value++;
+		update();
+		return ret;
+	}
+
+	// pre-decrement and post-decrement
+	const AvlIndex& operator--() { value--; update(); return *this; }
+	const AvlIndex operator--(int)
+	{
+		AvlIndex ret = *this;
+		value--;
+		update();
+		return ret;
+	}
+
+	// binary plus
+	const AvlIndex operator+(int v) const
+	{
+		AvlIndex ret = *this;
+		ret.value += v;
+		ret.update();
+		return ret;
+	}
+
+	const AvlIndex operator+(char v) const
+	{
+		AvlIndex ret = *this;
+		ret.value += (int) v;
+		ret.update();
+		return ret;
+	}
+
+	// binary plus
+	const AvlIndex operator+(const AvlInt &v) const { return *this + v.val(); }
+	const AvlIndex operator+(const AvlChar &v) const { return *this + v.val(); }
+	const AvlIndex operator+(const AvlIndex &v) const { return *this + v.value; }
+	friend const AvlIndex operator+(int v1, const AvlIndex &v2) { return v2 + v1; }
+	friend const AvlIndex operator+(char v1, const AvlIndex &v2) { return v2 + v1; }
+	friend const AvlIndex operator+(AvlInt v1, const AvlIndex &v2) { return v2 + v1.val(); }
+	friend const AvlIndex operator+(AvlChar v1, const AvlIndex &v2) { return v2 + v1.val(); }
+
+	// compound plus 
+	const AvlIndex& operator+=(int v) { value += v; update(); return *this; }
+	const AvlIndex& operator+=(char v) { value += v; update(); return *this; }
+	const AvlIndex& operator+=(const AvlInt &v) { return *this += v.val(); }
+	const AvlIndex& operator+=(const AvlChar &v) { return *this += v.val(); }
+	const AvlIndex& operator+=(const AvlIndex &v) { return *this += v.value; }
+	
+	// binary minus
+	const AvlIndex operator-(int v) const
+	{
+		AvlIndex ret = *this;
+		ret.value -= v;
+		ret.update();
+		return ret;
+	}
+
+	const AvlIndex operator-(char v) const
+	{
+		AvlIndex ret = *this;
+		ret.value -= v;
+		ret.update();
+		return ret;
+	}
+
+	const AvlIndex operator-(const AvlInt &v) const { return *this - v.val(); }
+	const AvlIndex operator-(const AvlChar &v) const { return *this - v.val(); }
+	const AvlIndex operator-(const AvlIndex &v) const { return *this - v.value; }
+	friend const AvlIndex operator-(int v1, const AvlIndex &v2) { return -v2 + v1; }
+	friend const AvlIndex operator-(char v1, const AvlIndex &v2) { return -v2 + v1; }
+	friend const AvlIndex operator-(AvlInt v1, const AvlIndex &v2) { return -v2 + v1.val(); }
+	friend const AvlIndex operator-(AvlChar v1, const AvlIndex &v2) { return -v2 + v1.val(); }
+
+	// compound minus
+	const AvlIndex& operator-=(int v) { value -= v; update(); return *this; }
+	const AvlIndex& operator-=(char v) { value -= v; update(); return *this; }
+	const AvlIndex& operator-=(const AvlInt &v) { return *this -= v.val(); }
+	const AvlIndex& operator-=(const AvlIndex &v) { return *this -= v.value; }
+	const AvlIndex& operator-=(const AvlChar &v) { return *this -= v.val(); }
+
+	// multiplication
+	const AvlIndex operator*(int v) const
+	{
+		AvlIndex ret = *this;
+		ret.value *= v;
+		ret.update();
+		return ret;
+	}
+	
+	const AvlIndex operator*(char v) const
+	{
+		AvlIndex ret = *this;
+		ret.value *= v;
+		ret.update();
+		return ret;
+	}
+	
+	const AvlIndex operator*(const AvlInt &v) const { return *this * v.val(); }
+	const AvlIndex operator*(const AvlChar &v) const { return *this * v.val(); }
+	const AvlIndex operator*(const AvlIndex &v) const { return *this * v.value; }
+	friend const AvlIndex operator*(int v1, const AvlIndex &v2) { return v2 * v1; }
+	friend const AvlIndex operator*(char v1, const AvlIndex &v2) { return v2 * v1; }
+	friend const AvlIndex operator*(AvlInt v1, const AvlIndex &v2) { return v2 * v1.val(); }
+	friend const AvlIndex operator*(AvlChar v1, const AvlIndex &v2) { return v2 * v1.val(); }
+
+	
+	// compound multiplication
+	const AvlIndex& operator*=(int v) { value *= v; update(); return *this; }
+	const AvlIndex& operator*=(char v) { value *= v; update(); return *this; }
+	const AvlIndex& operator*=(const AvlInt &v) { return *this *= v.val(); }
+	const AvlIndex& operator*=(const AvlChar &v) { return *this *= v.val(); }
+	const AvlIndex& operator*=(const AvlIndex &v) { return *this *= v.value; }
+
+	// devision
+	const AvlIndex operator/(int v) const
+	{
+		AvlIndex ret = *this;
+		ret.value /= v;
+		ret.update();
+		return ret;
+	}
+
+	const AvlIndex operator/(char v) const
+	{
+		AvlIndex ret = *this;
+		ret.value /= v;
+		ret.update();
+		return ret;
+	}
+
+	const AvlIndex operator/(const AvlInt &v) const { return *this / v.val(); }
+	const AvlIndex operator/(const AvlChar &v) const { return *this / v.val(); }
+	const AvlIndex operator/(const AvlIndex &v) const { return *this / v.value; }
+	friend const AvlIndex operator/(int v1, const AvlIndex &v2) { return v2 / v1; }
+	friend const AvlIndex operator/(char v1, const AvlIndex &v2) { return v2 / v1; }
+	friend const AvlIndex operator/(AvlInt v1, const AvlIndex &v2) { return v2 / v1.val(); }
+	friend const AvlIndex operator/(AvlChar v1, const AvlIndex &v2) { return v2 / v1.val(); }
+
+	/*
+	friend const AvlInt operator/(int v1, const AvlInt &v2)
+	{
+		AvlInt ret = v2;
+		ret.value = v1 / v2.value;
+		ret.update();
+		return ret;
+	}
+	*/
+
+	// compound division
+	const AvlIndex & operator/=(int v) { value /= v; update(); return *this; }
+	const AvlIndex & operator/=(char v) { value /= v; update(); return *this; }
+	const AvlIndex & operator/=(const AvlInt &v) { return *this /= v.val(); }
+	const AvlIndex & operator/=(const AvlChar &v) { return *this /= v.val(); }
+	const AvlIndex & operator/=(const AvlIndex &v) { return *this /= v.value; }
+
+	// comparison operators
+	bool operator <(int v) const { return value < v; }
+	bool operator <(size_t v) const { return value < v; }
+	bool operator <(char v) const { return value < v; }
+	bool operator <(const AvlInt &v) const { return value < v.val(); }
+	bool operator <(const AvlChar &v) const { return value < v.val(); }
+	bool operator <(const AvlIndex &v) const { return value < v.val(); }
+	friend bool operator<(int v1, const AvlIndex v2) { return v1 < v2.value; }
+	friend bool operator<(char v1, const AvlIndex v2) { return v1 < v2.value; }
+	friend bool operator<(AvlInt v1, const AvlIndex v2) { return v1.val() < v2.value; }
+	friend bool operator<(AvlChar v1, const AvlIndex v2) { return v1.val() < v2.value; }
+
+	bool operator <=(int v) const { return value <= v; }
+	bool operator <=(char v) const { return value <= v; }
+	bool operator <=(size_t v) const { return value <= v; }
+	bool operator <=(const AvlInt &v) const { return value <= v.val(); }
+	bool operator <=(const AvlChar &v) const { return value <= v.val(); }
+	bool operator <=(const AvlIndex &v) const { return value <= v.value; }
+	friend bool operator<=(int v1, const AvlIndex v2) { return v1 <= v2.value; }
+	friend bool operator<=(char v1, const AvlIndex v2) { return v1 <= v2.value; }
+	friend bool operator<=(AvlInt v1, const AvlIndex v2) { return v1.val() <= v2.value; }
+	friend bool operator<=(AvlChar v1, const AvlIndex v2) { return v1.val() <= v2.value; }
+
+	bool operator >(int v) const { return value > v; }
+	bool operator >(char v) const { return value > v; }
+	bool operator >(size_t v) const { return value > v; }
+	bool operator >(const AvlInt &v) const { return value > v.val(); }
+	bool operator >(const AvlChar &v) const { return value > v.val(); }
+	bool operator >(const AvlIndex &v) const { return value > v.value; }
+	friend bool operator>(int v1, const AvlIndex v2) { return v1 > v2.value; }
+	friend bool operator>(char v1, const AvlIndex v2) { return v1 > v2.value; }
+	friend bool operator>(AvlInt v1, const AvlIndex v2) { return v1.val() > v2.value; }
+	friend bool operator>(AvlChar v1, const AvlIndex v2) { return v1.val() > v2.value; }
+
+	bool operator >=(int v) const { return value >= v; }
+	bool operator >=(char v) const { return value >= v; }
+	bool operator >=(size_t v) const { return value >= v; }
+	bool operator >=(const AvlInt &v) const { return value >= v.val(); }
+	bool operator >=(const AvlChar &v) const { return value >= v.val(); }
+	bool operator >=(const AvlIndex &v) const { return value >= v.value; }
+	friend bool operator>=(int v1, const AvlIndex v2) { return v1 >= v2.value; }
+	friend bool operator>=(char v1, const AvlIndex v2) { return v1 >= v2.value; }
+	friend bool operator>=(AvlInt v1, const AvlIndex v2) { return v1.val() >= v2.value; }
+	friend bool operator>=(AvlChar v1, const AvlIndex v2) { return v1.val() >= v2.value; }
+
+	bool operator ==(int v) const { return value == v; }
+	bool operator ==(char v) const { return value == v; }
+	bool operator ==(size_t v) const { return value == v; }
+	bool operator ==(const AvlInt &v) const { return value == v.val(); }
+	bool operator ==(const AvlChar &v) const { return value == v.val(); }
+	bool operator ==(const AvlIndex &v) const { return value == v.value; }
+	friend bool operator==(int v1, const AvlIndex v2) { return v1 == v2.value; }
+	friend bool operator==(char v1, const AvlIndex v2) { return v1 == v2.value; }
+	friend bool operator==(AvlInt v1, const AvlIndex v2) { return v1.val() == v2.value; }
+	friend bool operator==(AvlChar v1, const AvlIndex v2) { return v1.val() == v2.value; }
+
+	bool operator !=(int v) const { return value != v; }
+	bool operator !=(char v) const { return value != v; }
+	bool operator !=(size_t v) const { return value != v; }
+	bool operator !=(const AvlInt &v) const { return value != v.val(); }
+	bool operator !=(const AvlChar &v) const { return value != v.val(); }
+	bool operator !=(const AvlIndex &v) const { return value != v.value; }
+	friend bool operator!=(int v1, const AvlIndex v2) { return v1 != v2.value; }
+	friend bool operator!=(char v1, const AvlIndex v2) { return v1 != v2.value; }
+	friend bool operator!=(AvlInt v1, const AvlIndex v2) { return v1.val() != v2.value; }
+	friend bool operator!=(AvlChar v1, const AvlIndex v2) { return v1.val() != v2.value; }
+
+	// value getter
+	int val() const { return value; }
+
+	// render function
+	virtual void render()
+	{
+		unsigned int red = color() / 0x10000;
+		unsigned int green = color() % 0x10000 / 0x100;
+		unsigned int blue = color() % 0x100;
+		glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
+		for (std::vector<array_entry>::iterator itr = array_set.begin(); itr != array_set.end(); itr ++) {
+			glRasterPos2f(itr->x, itr->y);
+			glutBitmapString(AvlFont().font(), (const unsigned char *)(name().c_str()));
+
+		}
+	}
+
+	void highlight() { 
+		set_color(AVL_COLOR_HIGHLIGHT); 
+	}
+	void lowlight() { 
+		set_color(AVL_COLOR_DEFAULT); 
+	}
+
+	void add_array(AvlObject* obj, GLfloat a, GLfloat b) {
+		for (int i = 0; i < array_set.size(); i ++) {
+			if (array_set[i].x == a && array_set[i].y == b)
+				return;
+			if (obj == array_set[i].obj)
+				return;
+		}
+		array_entry ae;
+		ae.obj = obj;
+		ae.x = a;
+		ae.y = b;
+		array_set.push_back(ae);
+	}
+
+private:
+	int value;
+	std::vector<array_entry> array_set;
+	void update() { set_width(font().width()); }
+
+
+}; // end of AvlIndex
+
 
 // ***NOTE!***: every element in this array is a pointer
 template <typename T>
@@ -472,14 +1030,16 @@ class AvlArray : public AvlObject
 		const T& operator[](size_t index) const { return *arr[index]; }
 
 		// subscript operator with AvlIndex type
-		T& operator[] (AvlIndex index) {
-			index.array = this;
-			return (*(this->array))[index.value];
+		T& operator[] (AvlIndex &index) {
+			index.add_array(this, index_x[index.val()], index_y[index.val()] - 20);
+			//render();
+			return *arr[index.val()];
 		}
 
-		const T& operator[] (AvlIndex index) const {
-			index.array = this;
-			return (*(this->array))[index.value];
+		const T& operator[] (const AvlIndex &index) const {
+			//index_variables.push_back(&index);
+			//render();
+			return *arr[index.val()];
 		}
 
 		// size
@@ -504,6 +1064,28 @@ class AvlArray : public AvlObject
 
 			return ret;
 		}
+
+		AvlArray<T> subarray(const AvlIndex &a, const AvlIndex &b) const
+		{
+			size_t start = a.val();
+			size_t end = b.val();
+			AvlArray<T> ret(end - start);
+
+			typename std::vector< std::shared_ptr<T> >::const_iterator src = arr.begin() + start;
+			typename std::vector< std::shared_ptr<T> >::iterator dst = ret.arr.begin();
+
+			while (src != arr.begin() + end) {
+				*dst = *src;
+				src++;
+				dst++;
+			}
+
+			ret.updateMutex = updateMutex;
+			ret.toplevelArray = toplevelArray;
+
+			return ret;
+		}
+
 
 		// render
 		virtual void render()
@@ -575,6 +1157,51 @@ class AvlArray : public AvlObject
 			avlSleep(0.1);
 		}
 
+		// swap two elements in an array
+		void swap(const AvlIndex &a, const AvlIndex &b)
+		{
+			size_t idx1 = a.val();
+			size_t idx2 = b.val();
+
+			if (!isDisplaying()) {
+				T tmp = *arr[idx1];
+				*arr[idx1] = *arr[idx2];
+				*arr[idx2] = tmp;
+				return;
+			}
+
+			std::shared_ptr<T> obj[2];
+			std::thread moveThread[2];
+
+			obj[0] = arr[idx1];
+			obj[1] = arr[idx2];
+
+			updateMutex->lock();
+
+			moveThread[0] = std::thread(moveObject, obj[0], 0, obj[0]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[1] = std::thread(moveObject, obj[1], 0, obj[1]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[0].join();
+			moveThread[1].join();
+
+			moveThread[0] = std::thread(moveObject, obj[0], obj[1]->x() - obj[0]->x(), 0, DEFAULT_DELAY * abs(idx1 - idx2));
+			moveThread[1] = std::thread(moveObject, obj[1], obj[0]->x() - obj[1]->x(), 0, DEFAULT_DELAY * abs(idx1 - idx2));
+			moveThread[0].join();
+			moveThread[1].join();
+
+			moveThread[0] = std::thread(moveObject, obj[0], 0, -obj[0]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[1] = std::thread(moveObject, obj[1], 0, -obj[1]->height() * 1.5, DEFAULT_DELAY);
+			moveThread[0].join();
+			moveThread[1].join();
+
+			T tmp = *arr[idx1];
+			*arr[idx1] = *arr[idx2];
+			*arr[idx2] = tmp;
+
+			updateMutex->unlock();
+
+			avlSleep(0.1);
+		}
+
 	private:
 		void auxiliary_display() {
 			// display "Content"
@@ -594,7 +1221,16 @@ class AvlArray : public AvlObject
 				glRasterPos2f(index_x[i], index_y[i]);
 				glutBitmapString(AvlFont().font(), (const unsigned char *)(std::to_string(i).c_str()));
 			}
+			
+			/*
+			// display AvlIndex
+			for (std::set<AvlIndex*>::iterator itr = index_variables.begin(); itr != index_variables.end(); itr ++) {
+				std::string index = (*itr)->name();
+				glRasterPos2f(index_x[std::distance(itr, index_variables.begin())], index_y[std::distance(itr, index_variables.begin())] - 20);
+				glutBitmapString(AvlFont().font(), (const unsigned char *)(index.c_str()));
 
+			}
+			*/
 		}
 
 		void update()
@@ -635,10 +1271,13 @@ class AvlArray : public AvlObject
 
 		AvlArray<T> *toplevelArray;
 
+		//std::set<AvlIndex*> index_variables;
+		friend class AvlIndex;
+		typedef T arrayType;
+
 		std::vector<GLfloat> index_x;
 		std::vector<GLfloat> index_y;
-};
-
+}; //end of AvlArray
 
 
 

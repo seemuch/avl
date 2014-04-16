@@ -54,7 +54,8 @@ void quicksort(AvlArray<AvlInt> a)
 	AvlIndex j = 0;
 	j.set_name("j");
 	AvlIndex k = a.size() - 1;
-	k.set_name("k")
+	k.set_name("k");
+
 
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
@@ -130,7 +131,9 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	/* substitude array declaration with the following two lines */
-	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
+	//AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
+	
+	AvlArray<AvlChar> a = {'c', 'a', 'b'};
 	a.set_name("a");
 	/* If the variable should be displayed, the following line is needed */
 	__avl__vi->addObject(&a, "a");
@@ -146,14 +149,19 @@ int main(int argc, char *argv[])
 
 	/* !!FIXME!!
 	 * same issue */
+
 	for (AvlIndex i = 1; i < a.size(); i++) {
+		i.set_name("i");
+		__avl__vi->addObject(&i, "i");
 		AvlIndex j = i - 1;
+		j.set_name("j");
+		__avl__vi->addObject(&j, "j");
 		while (j >= 0 && a[j] > a[j+1]) {
 			a.swap(j + 1, j);
 			j = j - 1;
 		}
 	}
-
+	
 	std::cout << "after bubble sort: " << a << std::endl;
 
 	/* 2. random permutation */
