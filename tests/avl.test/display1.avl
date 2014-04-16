@@ -1,0 +1,18 @@
+int main(){
+
+	display int i[2] = {1,2};
+
+
+	//only display one array
+	index j = 1;
+	<begin_display>
+
+		j;
+		swap(i,0,1);
+		
+		
+
+	<end_display>
+
+	return 0;
+}

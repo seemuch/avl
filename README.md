@@ -11,7 +11,7 @@ How to build
 		* Install [XQuartz](https://xquartz.macosforge.org/)
 		* Install dependencies
 		```bash
-		sudo port install automake libtool freeglut glew glm glfw
+		sudo port install astyle automake libtool freeglut glew glm glfw
 		```
 	- Linux
 		* Only need to install libraries
