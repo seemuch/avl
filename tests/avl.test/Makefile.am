@@ -6,7 +6,14 @@ TESTS = \
 		hello_world.sh \
 		insertion_sort.sh \
 		quick_sort.sh \
-		kmp.sh
+		kmp.sh \
+		constant.sh \
+		declaration.sh \
+		display1.sh \
+		expression.sh \
+		function1.sh \
+		operator.sh \
+		statement.sh
 
 XFAIL_TESTS = \
 			  empty.sh

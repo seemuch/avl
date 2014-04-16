@@ -2,100 +2,97 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 #include "parser.h"
 
-void count();
+void yyerror(const char *format, ...);
 %}
 
 %option debug warn verbose
 
 D                   [0-9]
-L                   [a-zA-Z_]
-H                   [a-fA-F0-9]
+L                   [A-Za-z_]
+C                   [A-Za-z0-9_]
 
-%x C_COMMENT
+%x COMMENT
 
 %%
 
-"/*"                { BEGIN(C_COMMENT); }
-<C_COMMENT>"*/"     { BEGIN(INITIAL); }
-<C_COMMENT>.        { /* disregard all characters in comments. */ }
+"/*"                { BEGIN(COMMENT); }
+<COMMENT>"*/"       { BEGIN(INITIAL); }
+<COMMENT>.          { /* disregard all characters in comments. */ }
 
-"break"             { count(); return(BREAK); }
-"char"              { count(); return(CHAR); }
-"continue"          { count(); return(CONTINUE); }
-"do"                { count(); return(DO); }
-"else"              { count(); return(ELSE); }
-"for"               { count(); return(FOR); }
-"if"                { count(); return(IF); }
-"int"               { count(); return(INT); }
-"index"             { count(); return(INDEX); }
-"return"            { count(); return(RETURN); }
-"len"               { count(); return(LEN); }
-"void"              { count(); return(VOID); }
-"while"             { count(); return(WHILE); }
-"swap"              { count(); return(SWAP); }
-"print"             { count(); return(PRINT); }
-"bool"              { count(); return(BOOL); }
-"display"           { count(); return(DISPLAY); }
-"hide"              { count(); return(HIDE); }
-"<begin_display>"   { count(); return(BEGIN_DISPLAY); }
-"<end_display>"     { count(); return(END_DISPLAY); }
+break               { return BREAK; }
+char                { return CHAR; }
+continue            { return CONTINUE; }
+do                  { return DO; }
+else                { return ELSE; }
+for                 { return FOR; }
+if                  { return IF; }
+int                 { return INT; }
+index               { return INDEX; }
+return              { return RETURN; }
+len                 { return LEN; }
+void                { return VOID; }
+while               { return WHILE; }
+swap                { return SWAP; }
+print               { return PRINT; }
+bool                { return BOOL; }
+display             { return DISPLAY; }
+hide                { return HIDE; }
+\<begin_display\>   { return BEGIN_DISPLAY; }
+\<end_display\>     { return END_DISPLAY; }
 
-{L}({L}|{D})*       {
-                        count();
+{L}({L}|{D})*       { /* identifier */
                         yylval.idVal = strdup(yytext);
-                        return(IDENTIFIER);
+                        return IDENTIFIER;
                     }
 
-{D}+                {
-                        count();
+{D}+                { /* integer */
                         yylval.intConVal = atoi(yytext);
-                        return(CONSTANT);
+                        return CONSTANT;
                     }
 
-'(\\.|[^\\'])+'     {
-                        count();
-                        yylval.intConVal = atoi(yytext);
-                        return(CONSTANT);
-                    }
-
-\"(\\.|[^\\"])*\"   {
-                        count();
+'{C}'               { /* single character, escape characters are not allowed */
                         yylval.strLitVal = strdup(yytext);
-                        return(STRING_LITERAL);
+                        return CONSTANT;
                     }
 
-"++"                { count(); return(INC_OP); }
-"--"                { count(); return(DEC_OP); }
-"&&"                { count(); return(AND_OP); }
-"||"                { count(); return(OR_OP); }
-"<="                { count(); return(LE_OP); }
-">="                { count(); return(GE_OP); }
-"=="                { count(); return(EQ_OP); }
-"!="                { count(); return(NE_OP); }
-";"                 { count(); return(';'); }
-"{"                 { count(); return('{'); }
-"}"                 { count(); return('}'); }
-","                 { count(); return(','); }
-":"                 { count(); return(':'); }
-"="                 { count(); return('='); }
-"("                 { count(); return('('); }
-")"                 { count(); return(')'); }
-"["                 { count(); return('['); }
-"]"                 { count(); return(']'); }
-"!"                 { count(); return('!'); }
-"-"                 { count(); return('-'); }
-"+"                 { count(); return('+'); }
-"*"                 { count(); return('*'); }
-"/"                 { count(); return('/'); }
-"%"                 { count(); return('%'); }
-"<"                 { count(); return('<'); }
-">"                 { count(); return('>'); }
-"?"                 { count(); return('?'); }
+\"{C}*\"            { /* string literal, escape characters are not allowed */
+                        yylval.strLitVal = strdup(yytext);
+                        return STRING_LITERAL;
+                    }
 
-[ \t\v\n\f]         { count(); }
-.                   { /* ignore bad characters */ }
+"++"                { return INC_OP; }
+"--"                { return DEC_OP; }
+"&&"                { return AND_OP; }
+"||"                { return OR_OP; }
+"<="                { return LE_OP; }
+">="                { return GE_OP; }
+"=="                { return EQ_OP; }
+"!="                { return NE_OP; }
+";"                 { return ';'; }
+"{"                 { return '{'; }
+"}"                 { return '}'; }
+","                 { return ','; }
+":"                 { return ':'; }
+"="                 { return '='; }
+"("                 { return '('; }
+")"                 { return ')'; }
+"["                 { return '['; }
+"]"                 { return ']'; }
+"!"                 { return '!'; }
+"-"                 { return '-'; }
+"+"                 { return '+'; }
+"*"                 { return '*'; }
+"/"                 { return '/'; }
+"%"                 { return '%'; }
+"<"                 { return '<'; }
+">"                 { return '>'; }
+"?"                 { return '?'; }
+
+[ \t\n]             { /* disregard white spaces */ }
+.                   { yyerror("bad character found: %s", yytext); }
 
 %%
 
@@ -104,26 +101,12 @@ int yywrap()
 	return 1;
 }
 
-int column = 0;
-
-void count()
+void yyerror(const char *format, ...)
 {
-	int i;
+	va_list ap;
 
-	for (i = 0; yytext[i] != '\0'; i++)
-	{
-		if (yytext[i] == '\n')
-			column = 0;
-		else if (yytext[i] == '\t')
-			column += 8 - (column % 8);
-		else
-			column++;
-	}
-
-	ECHO;
-}
-
-void yyerror(const char *s)
-{
-	fprintf(stderr, "%s\n", s);
+	va_start(ap, format);
+	vfprintf(stderr, format, ap);
+	fprintf(stderr, "\n");
+	va_end(ap);
 }
