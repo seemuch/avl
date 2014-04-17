@@ -43,6 +43,8 @@ char *const CXX_OPTIONS[] = {
 	"-x",
 	"c++",
 	"-std=c++11",
+	"-Wall",
+	"-Werror",
 	"-o",
 	output_file,
 	"-I/opt/local/include",
