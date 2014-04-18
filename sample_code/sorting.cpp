@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 	/* translation rule for print */
 	std::cout << "before sorting: " << a << std::endl;
 
-	/* 1. bubblesort */
+	/* 1. Insertion Sort */
 
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	std::cout << "after bubble sort: " << a << std::endl;
+	std::cout << "after insertion sort: " << a << std::endl;
 
 	/* 2. random permutation */
 
