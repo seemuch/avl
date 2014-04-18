@@ -181,7 +181,6 @@ inline void moveObject(std::shared_ptr<AvlObject> obj, GLfloat x, GLfloat y, flo
 class AvlInt : public AvlObject
 {
 	public:
-
 		// constructor
 		AvlInt(int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
 			: AvlObject(x, y, font)
@@ -372,11 +371,9 @@ class AvlInt : public AvlObject
 		int value;
 }; // end of AvlInt
 
-
 class AvlChar: public AvlObject
 {
 	public:
-
 		// constructor
 	 	AvlChar (char v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
 			: AvlObject(x, y, font)
@@ -631,15 +628,12 @@ class AvlChar: public AvlObject
 		char value;
 }; // end of AvlChar
 
-
-class array_entry{
+class array_entry {
 public:
 	AvlObject* obj;
 	GLfloat x;
 	GLfloat y;
 };
-
-
 
 class AvlIndex : public AvlObject {
 public:
@@ -960,7 +954,6 @@ private:
 
 }; // end of AvlIndex
 
-
 // ***NOTE!***: every element in this array is a pointer
 template <typename T>
 class AvlArray : public AvlObject
@@ -990,12 +983,13 @@ class AvlArray : public AvlObject
 			typename std::initializer_list<T>::const_iterator src = l.begin();
 			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
 
+			//TODO: what this count for???
 			int count = 0;
 			while (src != l.end()) {
 				*dst = std::shared_ptr<T>(new T(*src));
 				src++;
 				dst++;
-				count ++;
+				count++;
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
@@ -1061,6 +1055,7 @@ class AvlArray : public AvlObject
 			return ret;
 		}
 
+		// sub-array with AvlIndex
 		AvlArray<T> subarray(const AvlIndex &a, const AvlIndex &b) const
 		{
 			size_t start = a.val();
@@ -1081,7 +1076,6 @@ class AvlArray : public AvlObject
 
 			return ret;
 		}
-
 
 		// render
 		virtual void render()
@@ -1153,7 +1147,7 @@ class AvlArray : public AvlObject
 			avlSleep(0.1);
 		}
 
-		// swap two elements in an array
+		// swap two elements in an array using AvlIndex
 		void swap(const AvlIndex &a, const AvlIndex &b)
 		{
 			size_t idx1 = a.val();
@@ -1265,6 +1259,7 @@ class AvlArray : public AvlObject
 		std::vector< std::shared_ptr<T> > arr;
 		std::shared_ptr<std::mutex> updateMutex;
 
+		// array of the previous level, or parent level
 		AvlArray<T> *toplevelArray;
 
 		friend class AvlIndex;
@@ -1273,6 +1268,93 @@ class AvlArray : public AvlObject
 		std::vector<GLfloat> index_y;
 }; //end of AvlArray
 
+class AvlBool: public AvlObject
+{
+	public:
+		// constructor
+		AvlBool(bool v = false, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font)
+		{
+			value = v;
+			update();
+		}
+
+		// destructor
+		virtual ~AvlBool() {}
+
+		// assignment operator
+		const AvlBool& operator=(bool v) { value = v; update(); return *this; }
+
+		// << operator
+		friend std::ostream& operator<<(std::ostream &os, const AvlBool &v)
+		{
+			os << v.value;
+			return os;
+		}
+
+		// unary operator
+		const AvlBool operator!() const
+		{
+			AvlBool ret = *this;
+			ret.value = !value;
+			ret.update();
+			return ret;
+		}
+
+		// comparison operators
+		bool operator==(bool v) const { return value == v; }
+		bool operator==(const AvlBool &v) const { return value == v.value; }
+		friend bool operator==(bool v1, const AvlBool v2) { return v1 == v2.value; }
+
+		bool operator!=(bool v) const { return value != v; }
+		bool operator!=(const AvlBool &v) const { return value != v.value; }
+		friend bool operator!=(bool v1, const AvlBool v2) { return v1 != v2.value; }
+
+		bool operator&&(bool v) const { return value && v; }
+		bool operator&&(const AvlBool &v) const { return value && v.value; }
+		friend bool operator&&(bool v1, const AvlBool v2) { return v1 && v2.value; }
+
+		bool operator||(bool v) const { return value || v; }
+		bool operator||(const AvlBool &v) const { return value || v.value; }
+		friend bool operator||(bool v1, const AvlBool v2) { return v1 || v2.value; }
+
+		// value getter
+		bool val() const { return value; }
+
+		// render function
+		virtual void render()
+		{
+			std::string display_value = "false";
+			if (value) { display_value = "true"; }
+
+			unsigned int red = color() / 0x10000;
+			unsigned int green = color() % 0x10000 / 0x100;
+			unsigned int blue = color() % 0x100;
+			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
+			glRasterPos2f(x(), y());
+			glutBitmapString(font().font(), (const unsigned char *)(display_value.c_str()));
+		}
+
+		void highlight() { 
+			set_color(AVL_COLOR_HIGHLIGHT); 
+		}
+		void lowlight() { 
+			set_color(AVL_COLOR_DEFAULT); 
+		}
+
+	private:
+		void update() { set_width(font().width()); }
+		bool value;
+}; // end of AvlBool
+
+
+// ***NOTE!***: every element in this stack is a pointer
+template <typename T>
+class AvlStack : public AvlObject
+{
+
+}; // end of AvlStack
 
 
 
