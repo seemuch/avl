@@ -983,7 +983,7 @@ class AvlArray : public AvlObject
 			typename std::initializer_list<T>::const_iterator src = l.begin();
 			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
 
-			//TODO: what this count for???
+			//!!!FIXME!!!: what this count for???
 			int count = 0;
 			while (src != l.end()) {
 				*dst = std::shared_ptr<T>(new T(*src));
@@ -1324,8 +1324,8 @@ class AvlBool: public AvlObject
 		// render function
 		virtual void render()
 		{
-			std::string display_value = "false";
-			if (value) { display_value = "true"; }
+			char display_value = 'T';
+			if (value) { display_value = 'F'; }
 
 			unsigned int red = color() / 0x10000;
 			unsigned int green = color() % 0x10000 / 0x100;
@@ -1333,7 +1333,7 @@ class AvlBool: public AvlObject
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			glutBitmapString(font().font(), (const unsigned char *)(display_value.c_str()));
+			glutBitmapString(font().font(), (const unsigned char *)&display_value);
 		}
 
 		void highlight() { 
