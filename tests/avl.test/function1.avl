@@ -6,6 +6,10 @@ int main(){
 
 	print add_();
 	print add__();
+
+
+	empty();	
+
 	return 0;
 }
 
@@ -22,6 +26,11 @@ bool adddd(bool a){
 	return !a;
 }
 
+
+void empty(){
+
+}
+
 //should we return these?
 
 string add_(){
@@ -31,4 +40,5 @@ string add_(){
 index addd__(){
 	return 1;
 }
+
 

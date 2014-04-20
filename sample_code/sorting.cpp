@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 
 	/* substitude array declaration with the following two lines */
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
-	
+
 	a.set_name("a");
 	/* If the variable should be displayed, the following line is needed */
 	__avl__vi->addObject(&a, "a");
@@ -175,6 +175,7 @@ int main(int argc, char *argv[])
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
 	avlSleep(0.5);
+
 
 	quicksort(a);
 
