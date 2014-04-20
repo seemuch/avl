@@ -12,6 +12,8 @@ nodeType* idNodeCreator (char* value);
 nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
 nodeType* mathOpNodeCreator(char*);
 
+extern ex(nodeType*);
+
 /*
 typedef struct {
 	typeEnum type;
@@ -393,4 +395,19 @@ nodeType* operatorNodeCreator (operatorTypeEnum oprtr, int numOperands, ...) {
 	va_end(ap);
 
 	return p;
+}
+
+///////////////////////////////////////////////////////////////
+
+void freeNode(nodeType* node) {
+	if (node->type != OPERATOR_NODE)
+		free(node);
+
+	else {
+		int i = 0;
+		for (; i < node->opr.numOperands; i ++) {
+			freeNode(node->opr.op[i]);
+		}
+	}
+	return;
 }
