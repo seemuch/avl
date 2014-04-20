@@ -3,57 +3,48 @@
 
 typedef enum {
 	INTCON_NODE,
+	CHARCON_NODE,
 	STRLIT_NODE,
 	VARTYPE_NODE,
 	ID_NODE,
-	UNARY_NODE,
-   	DISPLAY_NODE,
+	MATHOP_NODE,
 	OPERATOR_NODE
 } nodeTypeEnum;
 
 typedef enum {
-	var_decl,
-	func_call,
+	parentheses_exp,
 	array,
-	arr_decl,
-	inc_op_post,
-	dec_op_post,
-	inc_op_pre,
-	dec_op_pre,
-	len,
+	func_call,
 	concatenate,	
+	math_op,
+	len,
+	cast,
+	assignment,	
+	disp_exp,
+	hide_exp,
+	swap,
+	print,
+	print_list,
+	var_decl,
+	var_decl_disp,
+	var_decl_hide,
+	arr_decl,
+	init_list,
 	exp_state,
 	declar_state,
 	comp_state,
 	state_list,
 	display_state,
 	select_state,
-	iter_state,
+	while_state,
+	do_while_state,
+	for_state,
 	jump_continue_state,
 	jump_break_state,
 	jump_ret_state,
-	assignment,	
-    trans_unit,
-    func_def,
-    para_declar,
-	cast,
-	mult,
-	dev,
-	mod,
-	add,
-	minus,
-	lt,
-	gt,
-	le,
-	ge,
-	eq,
-	ne,
-	and_op,
-	or_op,
-	print,
-	unary_op,
-	que_col,
-	swap
+	trans_unit,
+	func_def,
+	para_declar
 } operatorTypeEnum;
 
 typedef enum {
@@ -70,6 +61,11 @@ typedef struct {
 	int value;
 } intConNode;
 
+//char constants
+typedef struct {
+	char* value;
+} charConNode;
+
 // string literal
 typedef struct {
 	char* value;
@@ -85,15 +81,10 @@ typedef struct {
 	char* value;
 } idNode;
 
-// display
+// math operator
 typedef struct {
-	int value;
-} displayNode;
-
-// unary_operator, + - !
-typedef struct {
-	char value;
-} unaryNode;
+	char* value;
+} mathOpNode;
 
 //////////////////////////////////////////////////////////
 
@@ -112,15 +103,19 @@ typedef struct nodeTypeTag {
 
 	union {
 		intConNode intCon;
+		charConNode charCon;
 		strLitNode strLit;
 		varTypeNode varType;
 		idNode id;
-		unaryNode unary;
-        displayNode disp;
+		mathOpNode mathOp;
 		oprNode opr;
 		
 	};
 
 } nodeType;
+
+///////////////////////////////////////////////////////////
+
+void avl_compiler( nodeType* );
 
 #endif
