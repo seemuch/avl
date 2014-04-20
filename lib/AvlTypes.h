@@ -954,6 +954,121 @@ private:
 
 }; // end of AvlIndex
 
+
+
+class AvlString: public AvlObject
+{
+	public:
+		// constructor
+	 	AvlString (const char *v, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font)
+		{
+			value = v;
+			update();
+		}
+
+	 	AvlString (char v, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15)
+			: AvlObject(x, y, font)
+		{
+			value = v;
+			update();
+		}
+	
+
+		// destructor
+		virtual ~AvlString() {}
+
+		// assignment operator
+		const AvlString & operator=(const char *v) { value = v; update(); return *this; }
+		const AvlString & operator=(char v) { value = v; update(); return *this; }
+
+		// << operator
+		friend std::ostream& operator<<(std::ostream &os, const AvlString &v)
+		{
+			os << v.value;
+			return os;
+		}
+
+
+
+		// binary plus
+		const AvlString operator+(const char *v) const
+		{
+			AvlString ret = *this;
+			ret.value += v;
+			ret.update();
+			return ret;
+		}
+	
+		const AvlString operator+(char v) const
+		{
+			AvlString ret = *this;
+			ret.value += v;
+			ret.update();
+			return ret;
+		}
+
+		// binary plus
+		const AvlString operator+(const AvlChar &v) const { return *this +  v.val(); }
+		const AvlString operator+(const AvlString &v) const 
+		{ 
+			AvlString ret = *this;
+			ret.value += v.val();
+			ret.update();
+			return ret;
+		}
+		friend const AvlString operator+( char v1, const AvlString &v2 )
+		{
+			AvlString ret = v1;
+			ret.value += v2.val();
+			ret.update();
+			return ret;
+		}
+		friend const AvlString operator+(const char *v1, const AvlString &v2)
+		{
+			AvlString ret = v1;
+			ret.value += v2.val();
+			ret.update();
+			return ret;
+		}
+		friend const AvlString operator+(AvlChar v1, const AvlString &v2) { return v1.val() + v2; }
+
+		// compound plus 
+		const AvlString & operator+=(char v) { value += v; update(); return *this; }
+		const AvlString & operator+=(const AvlChar &v) { return *this += v.val(); }
+		const AvlString & operator+=(const char *v) { value += v; update(); return *this; }
+		const AvlString & operator+=(const AvlString &v) { value += v.val(); update(); return *this; }
+
+
+
+		// value getter
+		std::string val() const { return value; }
+
+		// render function
+		virtual void render()
+		{
+			unsigned int red = color() / 0x10000;
+			unsigned int green = color() % 0x10000 / 0x100;
+			unsigned int blue = color() % 0x100;
+			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
+
+			glRasterPos2f(x(), y());
+			glutBitmapString(font().font(), reinterpret_cast<const unsigned char *> (value.c_str()) );
+		}
+
+		void highlight() { 
+			set_color(AVL_COLOR_HIGHLIGHT); 
+		}
+		void lowlight() { 
+			set_color(AVL_COLOR_DEFAULT); 
+		}
+
+	private:
+		void update() { set_width(font().width()); }
+		std::string value;
+}; // end of AvlChar
+
+
 // ***NOTE!***: every element in this array is a pointer
 template <typename T>
 class AvlArray : public AvlObject
