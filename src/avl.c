@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "config.h"
+#include "include.h"
 
 int yyparse();
 
