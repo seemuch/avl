@@ -10,15 +10,15 @@
  * so we add a prefix __avl__. */
 AvlVisualizer *__avl__vi = NULL;
 bool __avl__ready() { return __avl__vi != NULL; }
-std::mutex __avl_mtx;
+std::mutex __avl__mtx;
 std::condition_variable_any __avl__cv;
 
 void __avl__display(int argc, char **argv)
 {
-	__avl_mtx.lock();
+	__avl__mtx.lock();
 	__avl__vi = new AvlVisualizer(argc, argv);
 	__avl__cv.notify_one();
-	__avl_mtx.unlock();
+	__avl__mtx.unlock();
 
 	__avl__vi->show();
 }
@@ -126,14 +126,14 @@ int main(int argc, char *argv[])
 	/* only for main:
 	 * insert the following five lines at the beginning of main */
 	std::thread __avl__loop(__avl__display, argc, argv);
-	__avl_mtx.lock();
-	__avl__cv.wait(__avl_mtx, __avl__ready);
-	__avl_mtx.unlock();
+	__avl__mtx.lock();
+	__avl__cv.wait(__avl__mtx, __avl__ready);
+	__avl__mtx.unlock();
 	avlSleep(0.5);
 
 	/* substitude array declaration with the following two lines */
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
-	
+
 	a.set_name("a");
 	/* If the variable should be displayed, the following line is needed */
 	__avl__vi->addObject(&a, "a");
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 	/* translation rule for print */
 	std::cout << "before sorting: " << a << std::endl;
 
-	/* 1. bubblesort */
+	/* 1. Insertion Sort */
 
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	std::cout << "after bubble sort: " << a << std::endl;
+	std::cout << "after insertion sort: " << a << std::endl;
 
 	/* 2. random permutation */
 
@@ -176,6 +176,7 @@ int main(int argc, char *argv[])
 	/* substitude <begin_display> with the following two lines */
 	__avl__vi->start();
 	avlSleep(0.5);
+
 
 	quicksort(a);
 

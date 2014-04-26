@@ -12,7 +12,7 @@ nodeType* idNodeCreator (char* value);
 nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
 nodeType* mathOpNodeCreator(char*);
 
-extern ex(nodeType*);
+extern int ex(nodeType*);
 
 /*
 typedef struct {
