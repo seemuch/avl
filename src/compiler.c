@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include.h"
-#include "sym_table.h"
+#include "st_list.h"
 
 void freeTree(nodeType* node);
 int compileOpNode(oprNode* opr);
@@ -16,15 +16,15 @@ void avl_compiler(nodeType* root);
 int newLine = 1;
 int indent = 0;
 extern FILE *yyout;
-st_list stList;
+struct st_list stList;
 
 void avl_compiler(nodeType* root) {
     printf("begin translate.\n");
-    st_list_init(stList);
+    st_list_init(&stList);
     print_header();
     int ret = compileSubtree(root);
     freeTree(root);
-    st_list_destroy(stList);
+    st_list_destroy(&stList);
     if (ret == 0) {
         printf("Succeed\n");
     } else {
