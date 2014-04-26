@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include.h"
+#include "sym_table.h"
 
 void freeTree(nodeType* node);
 int compileOpNode(oprNode* opr);
@@ -15,12 +16,15 @@ void avl_compiler(nodeType* root);
 int newLine = 1;
 int indent = 0;
 extern FILE *yyout;
+st_list stList;
 
 void avl_compiler(nodeType* root) {
     printf("begin translate.\n");
+    st_list_init(stList);
     print_header();
     int ret = compileSubtree(root);
     freeTree(root);
+    st_list_destroy(stList);
     if (ret == 0) {
         printf("Succeed\n");
     } else {
@@ -412,23 +416,25 @@ void freeTree(nodeType* node) {
     int i;
     switch (node->type) {
         case CHARCON_NODE:
-        free(node->charCon.value);
-        break;
+            free(node->charCon.value);
+            break;
         case STRLIT_NODE:
-        free(node->strLit.value);
-        break;
+            free(node->strLit.value);
+            break;
         case ID_NODE:
-        free(node->id.value);
-        break;
+            free(node->id.value);
+            break;
         case MATHOP_NODE:
-        free(node->mathOp.value);
-        break;
+            free(node->mathOp.value);
+            break;
         case OPERATOR_NODE:
-        for (i=0; i<node->opr.numOperands; i++) {
-            freeTree(node->opr.op[i]);
-        }
-        free(node->opr.op);
-        break;
+            for (i=0; i<node->opr.numOperands; i++) {
+                freeTree(node->opr.op[i]);
+            }
+            free(node->opr.op);
+            break;
+        default:
+            break;
     }
     free(node);
 }
