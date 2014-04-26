@@ -1,0 +1,16 @@
+int main() {
+
+	1;
+	"hello world";
+	""
+	'c';
+
+	(1);
+	("hello world");
+	("")
+	('c');	
+	
+	print 1, "hello world", 's', '\n', "";
+	print (1), ("hello world"),('s'), ('\n'), ("");
+	return 0;
+}
