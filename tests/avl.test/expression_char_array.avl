@@ -1,0 +1,12 @@
+int main(){
+
+	char array[5] = {'a','b','c','d','e'};
+	swap(array,1,2);
+	hide array;
+	display array;
+	<begin_display>
+		swap(array,1,2);
+		array[4] = 'f';
+	<end_display>
+	return 0;
+}

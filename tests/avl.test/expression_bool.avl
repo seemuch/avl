@@ -1,0 +1,12 @@
+int main(){
+
+	bool b = true;
+	print b;
+	b  = false;
+
+	hide b;
+	display b;
+
+	print b;
+
+}

@@ -1,0 +1,13 @@
+int main(){
+
+	string s= "hello world";
+	print test(s),s;
+	return 0;
+
+}
+
+void test(string x){
+	
+	x = "hello anthoer world";
+	return;
+}

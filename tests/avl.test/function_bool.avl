@@ -1,0 +1,14 @@
+int main(){
+
+	bool b = true;
+	print test(b);
+	print b;
+	return 0;
+
+}
+
+int test(bool x){
+	x = !x;
+	return x;
+
+}

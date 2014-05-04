@@ -1,0 +1,44 @@
+int main(){
+
+	//empty
+	for(int i = 0; i<10; i++);
+	
+	for(int i = 0; i<10; i++){
+
+	}
+
+	//regular for
+	for(int i = 0; i<10; i++){
+		print i,'\n';
+	}
+	
+	//changing i inside
+	for(int i = 0; i<10;){
+		print i,'\n'
+		i = i+2;
+	}
+
+	//decleare i outside for
+	int i = 0;
+	for(i;i<10;i++)
+		print i,'\n';
+	for(i;i>10;)
+		print i--;
+
+	//testing continue,break
+	for(i;i<10;i++){
+		if(i == 2)
+			continue;
+		else if( i == 5)
+			break;
+		print i,'\n';
+	}
+	//testing return
+	for(i=0;i<10;i++){
+		print i,'\n';
+		if(i==5)
+			return 0;
+	}
+
+	return 0;
+}

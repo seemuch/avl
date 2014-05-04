@@ -1,0 +1,14 @@
+int main(){
+
+	display string s = "hello world";
+	<begin_display>
+		s;
+	<end_display>
+	hide s;
+	
+	<begin_display>
+		s;
+	<end_display>
+	
+	return 0;
+}

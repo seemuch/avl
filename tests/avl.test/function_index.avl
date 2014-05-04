@@ -1,0 +1,14 @@
+int main(){
+
+	index i = 1;
+	print test(i),i;
+	return 0;
+
+}
+
+index test(index x){
+
+	x++;
+	return x;
+
+}
