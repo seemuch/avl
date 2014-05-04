@@ -1,0 +1,14 @@
+int main(){
+
+	display char c = 'd';
+	<begin_display>
+		c;
+	<end_display>
+
+	hide c;	
+	<begin_display>
+		c;
+	<end_display>
+
+	return 0;
+]

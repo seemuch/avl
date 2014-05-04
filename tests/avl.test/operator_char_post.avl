@@ -1,0 +1,10 @@
+int main(){
+
+	char a = 'c';
+	
+	print a++;
+	print a;
+	print a--;
+	print a;
+
+}

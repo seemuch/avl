@@ -1,0 +1,9 @@
+int main(){
+
+	index i = 1;
+	print i++;
+	print i;
+	print i--;
+	print i;
+	return 0;
+}

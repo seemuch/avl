@@ -1,0 +1,13 @@
+int main(){
+
+	display bool array[5] = {true,true,false,false,false};
+	<begin_display>
+		swap(array,1,2);
+	<end_display>
+
+	hide array;
+	<begin_display>
+		swap(array,1,2);
+	<end_display>
+	return 0;
+}

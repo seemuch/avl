@@ -1,0 +1,22 @@
+int main(){
+
+	int a = 1;
+	int b = 3;
+	if(a < b){
+		if(a<b)
+			print a;
+		if(a>b)
+			print b;
+	}else{
+		print "I should be displayed";
+
+	}
+
+	if(a > b){
+		print "I should be displayed";
+	}else{
+		print "correct!";
+	}
+
+	return 0;
+}
