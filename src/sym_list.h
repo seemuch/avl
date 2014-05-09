@@ -11,7 +11,9 @@ struct identifier
 	char* name;
 	/* more attributes to be added */
 	varTypeEnum type;
+	int isArray;
 	varTypeEnum* args;
+	int* argsIsArray;
 };
 
 struct identifier_node
