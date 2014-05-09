@@ -379,14 +379,13 @@ class AvlChar: public AvlObject
 			: AvlObject(x, y, font)
 		{
 			value = v;
-			update();
 		}
 
 		// destructor
 		virtual ~AvlChar() {}
 
 		// assignment operator
-		const AvlChar & operator=(char v) { value = v; update(); return *this; }
+		const AvlChar & operator=(char v) { value = v; return *this; }
 
 		// << operator
 		friend std::ostream& operator<<(std::ostream &os, const AvlChar &v)
@@ -401,27 +400,24 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value = -value;
-			ret.update();
 			return ret;
 		}
 
 		// pre-increment and post-increment
-		const AvlChar & operator++() { value++; update(); return *this; }
+		const AvlChar & operator++() { value++; return *this; }
 		const AvlChar operator++(int)
 		{
 			AvlChar ret = *this;
 			value++;
-			update();
 			return ret;
 		}
 
 		// pre-decrement and post-decrement
-		const AvlChar & operator--() { value--; update(); return *this; }
+		const AvlChar & operator--() { value--; return *this; }
 		const AvlChar operator--(int)
 		{
 			AvlChar ret = *this;
 			value--;
-			update();
 			return ret;
 		}
 
@@ -430,7 +426,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value += v;
-			ret.update();
 			return ret;
 		}
 
@@ -438,7 +433,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value += v;
-			ret.update();
 			return ret;
 		}
 
@@ -451,8 +445,8 @@ class AvlChar: public AvlObject
 		friend const AvlChar operator+(AvlChar v1, const AvlChar &v2) { return v2 + v1.val(); }
 
 		// compound plus 
-		const AvlChar & operator+=(int v) { value += v; update(); return *this; }
-		const AvlChar & operator+=(char v) { value += v; update(); return *this; }
+		const AvlChar & operator+=(int v) { value += v; return *this; }
+		const AvlChar & operator+=(char v) { value += v; return *this; }
 		const AvlChar & operator+=(const AvlInt &v) { return *this += v.val(); }
 		const AvlChar & operator+=(const AvlChar &v) { return *this += v.val(); }
 
@@ -462,7 +456,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value -= v;
-			ret.update();
 			return ret;
 		}
 
@@ -470,7 +463,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value -= v;
-			ret.update();
 			return ret;
 		}
 
@@ -482,8 +474,8 @@ class AvlChar: public AvlObject
 		friend const AvlChar operator-(AvlChar v1, const AvlChar &v2) { return -v2 + v1.val(); }
 
 		// compound minus
-		const AvlChar & operator-=(int v) { value -= v; update(); return *this; }
-		const AvlChar & operator-=(char v) { value -= v; update(); return *this; }
+		const AvlChar & operator-=(int v) { value -= v; return *this; }
+		const AvlChar & operator-=(char v) { value -= v; return *this; }
 		const AvlChar & operator-=(const AvlInt &v) { return *this -= v.val(); }
 		const AvlChar & operator-=(const AvlChar &v) { return *this -= v.val(); }
 
@@ -493,7 +485,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value *= v;
-			ret.update();
 			return ret;
 		}
 
@@ -501,7 +492,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value *= v;
-			ret.update();
 			return ret;
 		}
 
@@ -513,8 +503,8 @@ class AvlChar: public AvlObject
 		friend const AvlChar operator*(AvlChar v1, const AvlChar &v2) { return v2 * v1.val(); }
 		
 		// compound multiplication
-		const AvlChar & operator*=(int v) { value *= v; update(); return *this; }
-		const AvlChar & operator*=(char v) { value *= v; update(); return *this; }
+		const AvlChar & operator*=(int v) { value *= v; return *this; }
+		const AvlChar & operator*=(char v) { value *= v; return *this; }
 		const AvlChar & operator*=(const AvlInt &v) { return *this *= v.val(); }
 		const AvlChar & operator*=(const AvlChar &v) { return *this *= v.val(); }
 
@@ -523,7 +513,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value /= v;
-			ret.update();
 			return ret;
 		}
 
@@ -531,7 +520,6 @@ class AvlChar: public AvlObject
 		{
 			AvlChar ret = *this;
 			ret.value /= v;
-			ret.update();
 			return ret;
 		}
 
@@ -542,18 +530,9 @@ class AvlChar: public AvlObject
 		friend const AvlChar operator/(AvlInt v1, const AvlChar &v2) { return v2 / v1.val(); }
 		friend const AvlChar operator/(AvlChar v1, const AvlChar &v2) { return v2 / v1.val(); }
 
-		/*
-		friend const AvlChar operator/(int v1, const AvlChar &v2)
-		{
-			AvlChar ret = v2;
-			ret.value = v1 / v2.value;
-			ret.update();
-			return ret;
-		}
-		*/
 		// compound division
-		const AvlChar & operator/=(int v) { value /= v; update(); return *this; }
-		const AvlChar & operator/=(char v) { value /= v; update(); return *this; }
+		const AvlChar & operator/=(int v) { value /= v; return *this; }
+		const AvlChar & operator/=(char v) { value /= v; return *this; }
 		const AvlChar & operator/=(const AvlInt &v) { return *this /= v.val(); }
 		const AvlChar & operator/=(const AvlChar &v) { return *this /= v.val(); }
 	
@@ -624,7 +603,6 @@ class AvlChar: public AvlObject
 		}
 
 	private:
-		void update() { set_width(font().width()); }
 		char value;
 }; // end of AvlChar
 
@@ -823,16 +801,6 @@ public:
 	friend const AvlIndex operator/(AvlInt v1, const AvlIndex &v2) { return v2 / v1.val(); }
 	friend const AvlIndex operator/(AvlChar v1, const AvlIndex &v2) { return v2 / v1.val(); }
 
-	/*
-	friend const AvlInt operator/(int v1, const AvlInt &v2)
-	{
-		AvlInt ret = v2;
-		ret.value = v1 / v2.value;
-		ret.update();
-		return ret;
-	}
-	*/
-
 	// compound division
 	const AvlIndex & operator/=(int v) { value /= v; update(); return *this; }
 	const AvlIndex & operator/=(char v) { value /= v; update(); return *this; }
@@ -842,7 +810,7 @@ public:
 
 	// comparison operators
 	bool operator <(int v) const { return value < v; }
-	bool operator <(size_t v) const { return (size_t)value < v; }
+	bool operator <(size_t v) const { return value < v; }
 	bool operator <(char v) const { return value < v; }
 	bool operator <(const AvlInt &v) const { return value < v.val(); }
 	bool operator <(const AvlChar &v) const { return value < v.val(); }
@@ -854,7 +822,7 @@ public:
 
 	bool operator <=(int v) const { return value <= v; }
 	bool operator <=(char v) const { return value <= v; }
-	bool operator <=(size_t v) const { return (size_t)value <= v; }
+	bool operator <=(size_t v) const { return value <= v; }
 	bool operator <=(const AvlInt &v) const { return value <= v.val(); }
 	bool operator <=(const AvlChar &v) const { return value <= v.val(); }
 	bool operator <=(const AvlIndex &v) const { return value <= v.value; }
@@ -865,7 +833,7 @@ public:
 
 	bool operator >(int v) const { return value > v; }
 	bool operator >(char v) const { return value > v; }
-	bool operator >(size_t v) const { return (size_t)value > v; }
+	bool operator >(size_t v) const { return value > v; }
 	bool operator >(const AvlInt &v) const { return value > v.val(); }
 	bool operator >(const AvlChar &v) const { return value > v.val(); }
 	bool operator >(const AvlIndex &v) const { return value > v.value; }
@@ -876,7 +844,7 @@ public:
 
 	bool operator >=(int v) const { return value >= v; }
 	bool operator >=(char v) const { return value >= v; }
-	bool operator >=(size_t v) const { return (size_t)value >= v; }
+	bool operator >=(size_t v) const { return value >= v; }
 	bool operator >=(const AvlInt &v) const { return value >= v.val(); }
 	bool operator >=(const AvlChar &v) const { return value >= v.val(); }
 	bool operator >=(const AvlIndex &v) const { return value >= v.value; }
@@ -887,7 +855,7 @@ public:
 
 	bool operator ==(int v) const { return value == v; }
 	bool operator ==(char v) const { return value == v; }
-	bool operator ==(size_t v) const { return (size_t)value == v; }
+	bool operator ==(size_t v) const { return value == v; }
 	bool operator ==(const AvlInt &v) const { return value == v.val(); }
 	bool operator ==(const AvlChar &v) const { return value == v.val(); }
 	bool operator ==(const AvlIndex &v) const { return value == v.value; }
@@ -898,7 +866,7 @@ public:
 
 	bool operator !=(int v) const { return value != v; }
 	bool operator !=(char v) const { return value != v; }
-	bool operator !=(size_t v) const { return (size_t)value != v; }
+	bool operator !=(size_t v) const { return value != v; }
 	bool operator !=(const AvlInt &v) const { return value != v.val(); }
 	bool operator !=(const AvlChar &v) const { return value != v.val(); }
 	bool operator !=(const AvlIndex &v) const { return value != v.value; }
@@ -949,7 +917,7 @@ public:
 private:
 	int value;
 	std::vector<array_entry> array_set;
-	void update() { set_width(font().width()); }
+	void update() { set_width(name.size() * font().width()); }
 
 
 }; // end of AvlIndex
@@ -1326,16 +1294,6 @@ class AvlArray : public AvlObject
 				glRasterPos2f(index_x[i], index_y[i]);
 				glutBitmapString(AvlFont().font(), (const unsigned char *)(std::to_string(i).c_str()));
 			}
-			
-			/*
-			// display AvlIndex
-			for (std::set<AvlIndex*>::iterator itr = index_variables.begin(); itr != index_variables.end(); itr ++) {
-				std::string index = (*itr)->name();
-				glRasterPos2f(index_x[std::distance(itr, index_variables.begin())], index_y[std::distance(itr, index_variables.begin())] - 20);
-				glutBitmapString(AvlFont().font(), (const unsigned char *)(index.c_str()));
-
-			}
-			*/
 		}
 
 		void update()
@@ -1391,14 +1349,13 @@ class AvlBool: public AvlObject
 			: AvlObject(x, y, font)
 		{
 			value = v;
-			update();
 		}
 
 		// destructor
 		virtual ~AvlBool() {}
 
 		// assignment operator
-		const AvlBool& operator=(bool v) { value = v; update(); return *this; }
+		const AvlBool& operator=(bool v) { value = v; return *this; }
 
 		// << operator
 		friend std::ostream& operator<<(std::ostream &os, const AvlBool &v)
@@ -1412,7 +1369,6 @@ class AvlBool: public AvlObject
 		{
 			AvlBool ret = *this;
 			ret.value = !value;
-			ret.update();
 			return ret;
 		}
 
@@ -1460,18 +1416,8 @@ class AvlBool: public AvlObject
 		}
 
 	private:
-		void update() { set_width(font().width()); }
 		bool value;
 }; // end of AvlBool
-
-
-// ***NOTE!***: every element in this stack is a pointer
-template <typename T>
-class AvlStack : public AvlObject
-{
-
-}; // end of AvlStack
-
 
 
 #endif // AVL_TYPES_H_
