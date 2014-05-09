@@ -1,0 +1,42 @@
+/* merge two sorted array @a and @b
+ * and store the result in @c */
+
+void merge(int a[], int b[], int c[])
+{
+	<begin_display>
+
+	index i = 0;
+	index j = 0;
+	index k = 0;
+
+	while (true) {
+		if (i >= len(a) || j >= len(b))
+			break;
+
+		c[k++] = a[i] < b[j] ? a[i++] : b[j++];
+
+		for (; i < len(a); i++)
+			c[k++] = a[i];
+		for (; j < len(b); j++)
+			c[k++] = b[j];
+	}
+
+	<end_display>
+}
+
+int main()
+{
+	<begin_display>
+
+	display int a[] = {1, 5, 7, 9, 20};
+	display int b[] = {2, 4, 8, 16};
+	display int c[9];
+
+	merge(a, b, c);
+
+	<end_display>
+
+	print c;
+
+	return 0;
+}
