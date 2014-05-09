@@ -592,7 +592,7 @@ class AvlChar: public AvlObject
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			glutBitmapString(font().font(), (const unsigned char *)string(1, value).c_str());
+			glutBitmapString(font().font(), (const unsigned char *)std::string(1, value).c_str());
 		}
 
 		void highlight() { 
@@ -917,7 +917,7 @@ public:
 private:
 	int value;
 	std::vector<array_entry> array_set;
-	void update() { set_width(name.size() * font().width()); }
+	void update() { set_width(name().size() * font().width()); }
 
 
 }; // end of AvlIndex
@@ -1404,7 +1404,7 @@ class AvlBool: public AvlObject
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			string tmp = (value ? "T" : "F");
+			std::string tmp = (value ? "T" : "F");
 			glutBitmapString(font().font(), (const unsigned char *)tmp.c_str());
 		}
 
