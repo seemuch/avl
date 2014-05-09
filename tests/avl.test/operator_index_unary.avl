@@ -1,0 +1,13 @@
+int main(){
+
+	index i = 0;
+	print --i;
+	print i;
+	print ++i;
+	print i;
+	print +i;
+	print -a;	
+
+	return 0;
+
+}

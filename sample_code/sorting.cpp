@@ -27,7 +27,7 @@ void __avl__display(int argc, char **argv)
 
 /* User defined function:
  * NOTE: the parameters should be passed by value */
-void quicksort(AvlArray<AvlChar> a)
+void quicksort(AvlArray<AvlInt> a)
 {
 	/* Insert the following three lines at the
 	 * beginning of each function except main() */
@@ -93,7 +93,7 @@ void quicksort(AvlArray<AvlChar> a)
 /* This is an example of user defined function
  * which does not contain <begin_display> and
  * <end_display>, it should not be displayed */
-void randomPermute(AvlArray<AvlChar> a)
+void randomPermute(AvlArray<AvlInt> a)
 {
 	/* Insert the following three lines at the
 	 * beginning of each function except main */
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	/* substitude array declaration with the following two lines */
-	AvlArray<AvlChar> a = {'c', 'a', 'b', 'd' };
+	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
 
 	a.set_name("a");
 	/* If the variable should be displayed, the following line is needed */
@@ -147,18 +147,8 @@ int main(int argc, char *argv[])
 	__avl__vi->start();
 	avlSleep(0.5);
 
-	{
-		AvlIndex q = 1;
-		q.set_name("q");
-		__avl__vi->addObject(&q, "q");
-		__avl__vi->delObject("q");
-	}
-
-	std::cout << "AA Before Sleep" << std::endl;
-	avlSleep(0.5);
-	std::cout << "BB After Sleep" << std::endl;
-
-	 /* same issue as in randomPermute */
+	/* !!FIXME!!
+	 * same issue as in randomPermute */
 	for (AvlIndex i = 1; i < a.size(); i++) {
 		i.set_name("i");
 		__avl__vi->addObject(&i, "i");
@@ -169,12 +159,9 @@ int main(int argc, char *argv[])
 			a.swap(j + 1, j);
 			j = j - 1;
 		}
-		__avl__vi->delObject("i");
-		__avl__vi->delObject("j");
 	}
 	
 	std::cout << "after insertion sort: " << a << std::endl;
-	
 
 	/* 2. random permutation */
 
@@ -183,10 +170,6 @@ int main(int argc, char *argv[])
 	randomPermute(a);
 
 	std::cout << "after permutation: " << a << std::endl;
-	
-	std::cout << "Before Sleep" << std::endl;
-	avlSleep(0.5);
-	std::cout << "After Sleep" << std::endl;
 
 	/* 3. quicksort */
 

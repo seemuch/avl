@@ -1,0 +1,11 @@
+int main(){
+
+	char c = 'c';
+	print c;
+	c = 'd';
+	print c;
+
+	hide c;
+	display c;
+	return 0;
+}

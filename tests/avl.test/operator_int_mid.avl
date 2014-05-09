@@ -1,0 +1,16 @@
+int main(){
+
+	int a = 3;
+	int b = 2;
+	int c = 3;
+	int d = 4;
+	print a*b, a/b, a%b;
+	print a+b, a-b;
+	print a>b, a<b, a>=b, a<=b;
+	print a!=b, a==b;
+	print a>c, a<c, a>=c, a<=c;
+	print a!=c, a==c;
+	print a>d, a<d, a>=d, a<=d;
+	print a!=d, a==d;	
+	return 0;
+}

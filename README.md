@@ -62,7 +62,14 @@ Suppose you want to test ```if``` control flow.
 	
 	avl -o if1 if1.avl
 	```
-Don't forget ```chmod +x if1.sh```.
+Don't forget ```chmod +x if1.sh```. If the test case is expected to fail, the bash script
+should be as follows:
+	```bash
+	#!/bin/bash
+	
+	avl -t if1.avl
+	```
+since the error should be reported before invoking `g++`.
 
 3. Modify ```tests/avl.test/Makefile.am```, add ```if1.sh``` to ```TESTS``` variable.
 If the test case is expected to fail, also add the script to ```XFAIL_TESTS``` variable.

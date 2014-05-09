@@ -7,6 +7,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "config.h"
+#include "syntax_tree.h"
 
 int yyparse();
 
@@ -180,7 +181,7 @@ void execute_program(char *const *options)
 	int status;
 	if (waitpid(pid, &status, 0) != pid)
 		die_err("waitpid() failed");
-	if (status)
+	if (WEXITSTATUS(status))
 		die("failed to execute %s.", options[0]);
 }
 

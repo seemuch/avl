@@ -1,0 +1,53 @@
+int main(){
+
+	int i = 0;
+
+	//empty while
+	while(i++ < 10);
+	while(i-- > 0){}
+
+	//empty do while
+	do;
+	while(i++<10);
+
+	//normal while
+	while(i>0){
+		print i,'\n';
+		i--;
+	}
+
+	while(i<10)
+		print i++;
+	
+	//normal do while
+	do print i--,'\n';
+	while ( i > 0);
+
+	do{
+		print i,'\n';
+		i++;
+	}while ( i < 10 );
+
+	//break , continue and return
+
+	while(i > 0){
+		i--;
+		if(i == 2)
+			continue;
+		else if(i==5)
+			break;
+		print i,'\n';
+		
+
+	}
+	
+	while(i < 10){
+		print i++;
+		if(i == 5)
+			return 0;
+	}
+
+	
+	
+	return 0;
+}

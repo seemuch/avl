@@ -1,13 +1,19 @@
 #ifndef SYM_LIST_H_
 #define SYM_LIST_H_
 
+#include "syntax_tree.h"
+
 /* the max length of any identifier is SYM_LEN - 1 */
-#define SYM_LEN 32
+//#define SYM_LEN 32
 
 struct identifier
 {
-	char name[SYM_LEN];
+	char* name;
 	/* more attributes to be added */
+	varTypeEnum type;
+	int isArray;
+	varTypeEnum* args;
+	int* argsIsArray;
 };
 
 struct identifier_node
