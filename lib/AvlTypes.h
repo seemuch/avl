@@ -613,7 +613,7 @@ class AvlChar: public AvlObject
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			glutBitmapString(font().font(), (const unsigned char *)&value );
+			glutBitmapString(font().font(), (const unsigned char *)string(1, value).c_str());
 		}
 
 		void highlight() { 
@@ -1448,7 +1448,8 @@ class AvlBool: public AvlObject
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			glutBitmapString(font().font(), (const unsigned char *)&display_value);
+			string tmp = (value ? "T" : "F");
+			glutBitmapString(font().font(), (const unsigned char *)tmp.c_str());
 		}
 
 		void highlight() { 
