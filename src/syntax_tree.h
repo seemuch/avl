@@ -128,6 +128,6 @@ nodeType* mathOpNodeCreator(char* value);
 
 nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
 
-void avl_compiler( nodeType* );
+void avl_code_generator(nodeType* root);
 
 #endif

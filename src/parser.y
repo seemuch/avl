@@ -242,7 +242,7 @@ parameter_declaration
 	;
 
 program
-	: translation_unit                          { avl_compiler($<nt>1); }
+	: translation_unit                          { avl_code_generator($<nt>1); }
 	;
 	
 %%
