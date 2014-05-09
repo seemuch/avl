@@ -22,22 +22,23 @@ struct st_list varList;
 
 void avl_compiler(nodeType* root) {
 	printf("begin translate.\n");
-	sym_table_init(&funTable);
+	/*sym_table_init(&funTable);
 	if (buildFunTable(&funTable, &root->opr)) {
 		printf("Fail\n");
 		return;
 	}
+	*/
 	print_header();
 	int ret = compileSubtree(root);
 	freeTree(root);
-	sym_table_destroy(&funTable);
+	//sym_table_destroy(&funTable);
 	if (ret == 0) {
 		printf("Succeed\n");
 	} else {
 		printf("Fail\n");
 	}
 }
-
+/*
 int buildFunTable(struct sym_table* funTable, oprNode* node) {
 	if (node->opType == trans_unit) {
 		if (buildFunTable(funTable, &node->op[0]->opr)) return 1;
@@ -82,7 +83,7 @@ int numPara(oprNode* node) {
 		return numPara(args, &node->op[0]->opr) + 1;
 	return 1;
 }
-
+*/
 
 int compileSubtree(nodeType* node) {
 	switch (node->type) {
@@ -382,14 +383,14 @@ int compileOpNode(oprNode* opr) {
 		case func_def:
 			if (compileSubtree(opr->op[0])) return 1;
 			if (compileSubtree(opr->op[1])) return 1;
-			st_list_init(varList);
+			//st_list_init(varList);
 			print_append("(", 0);
 			struct sym_table* varTable;
-			sym_table_init(varTable);
+			//sym_table_init(varTable);
 			if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
 			print_append(")", 1);
 			if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
-			st_list_destroy(varList);
+			//st_list_destroy(varList);
 			break;
 		case para_declar:
 			//array deaclar
