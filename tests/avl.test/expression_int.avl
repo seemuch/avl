@@ -1,0 +1,11 @@
+int main(){
+
+	int a = 1;
+	print a;
+	a = 2;
+	print a;
+	hide a;
+	display a;
+
+	return 0;
+}

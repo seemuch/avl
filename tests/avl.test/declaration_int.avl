@@ -1,0 +1,12 @@
+int main(){
+
+
+	int i;
+        int i1 = 1;
+        display i2 = 1;
+        hide i3 = 1;
+        display i4;
+        hide i5;
+
+	return 0;
+}

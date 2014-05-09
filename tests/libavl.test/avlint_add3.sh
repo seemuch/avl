@@ -1,1 +1,27 @@
-avlint_add1.sh
+#!/bin/bash
+
+SUCCESS=0
+
+program="./avlint_add3"
+declare -i n=20
+declare -a input=("0 0" "1 2" "-1 -2" "-1 2" "-2 1")
+
+source genRandom.sh
+genRandom $n 2
+input=("${input[@]}" "${rArray[@]}")
+len=${#input[@]}
+
+for i in $(seq 1 $(( len - 1 )))
+do
+	num1=`echo ${input[$i]} | awk '{print $1}'`
+	num2=`echo ${input[$i]} | awk '{print $2}'`
+	expected=$(( num1 + num2 ))
+	output=`$program ${input[$i]}`
+
+	if [[ "$output" != "$expected" ]]
+	then
+		SUCCESS=1
+	fi
+done
+
+exit $SUCCESS

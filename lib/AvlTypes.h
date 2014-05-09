@@ -1064,9 +1064,9 @@ class AvlString: public AvlObject
 		}
 
 	private:
-		void update() { set_width(font().width()); }
+		void update() { set_width(value.size()*font().width()); }
 		std::string value;
-}; // end of AvlChar
+}; // end of AvlString
 
 
 // ***NOTE!***: every element in this array is a pointer

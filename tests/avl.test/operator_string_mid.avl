@@ -1,0 +1,11 @@
+int main(){
+
+	string a = "hello ";
+	print a;
+	string b = "world";
+	print b;
+	string c = a + b;
+	print c;
+
+	return 0;
+}

@@ -1,0 +1,10 @@
+int main(){
+
+	bool b;
+        bool b1 = true;
+        display bool b2 = true;
+        hide bool b3 = true;
+        display bool b4;
+        display bool b5;
+	return 0;
+}

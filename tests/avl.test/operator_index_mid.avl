@@ -1,0 +1,26 @@
+int main(){
+
+
+	index i = 1;
+	index j = 2;
+	int a = 1;
+
+	print i*j,i/j,i%j;
+	print i*a,i/a,i%a;
+	print i+j, i-j;
+	print i+a, i-a;
+	print i>j, i<j, i>=j, i<=j;
+	print j>i, j<i, j>=i, j<=i;
+	
+	index n = 1;
+	print i>n, i<n, i>=n, i<=n;
+	print i>a, i<a, i>=a, i<=a;
+	print i!=j,i==j;
+	print i!=n,i==n;
+	print i!=a,i==a;
+	
+
+	return 0;
+}
+
+

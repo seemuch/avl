@@ -1,0 +1,12 @@
+int main(){
+
+	char c6[5];
+        char c7[] = "hello world";
+        display char c8[5];
+        hide char c9[6]
+        char c10[6] = "hello";
+        char c11[] = {hello};
+        char c12[5] = {'i','h','e','l','l'};
+
+	return 0;
+}

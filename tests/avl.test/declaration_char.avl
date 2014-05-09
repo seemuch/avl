@@ -1,0 +1,11 @@
+int main(){
+
+	char c;
+        char c1 = 'c';
+        display char c2 = 'c';
+        hide char c3 = 'c';
+        display char c4;
+        hide char c5;
+
+	return 0;
+}
