@@ -27,11 +27,9 @@ void avl_compiler(nodeType* root) {
 		printf("Fail\n");
 		return;
 	}
-	st_list_init(&varList);
 	print_header();
 	int ret = compileSubtree(root);
 	freeTree(root);
-	st_list_destroy(&varList);
 	sym_table_destroy(&funTable);
 	if (ret == 0) {
 		printf("Succeed\n");
@@ -41,16 +39,50 @@ void avl_compiler(nodeType* root) {
 }
 
 int buildFunTable(struct sym_table* funTable, oprNode* node) {
-	struct identifier fun;
-	struct sym_table args;
 	if (node->opType == trans_unit) {
-		if(buildFunTable(funTable, &node->op[0]->opr)) return 1;
+		if (buildFunTable(funTable, &node->op[0]->opr)) return 1;
 		node = &node->op[1]->opr;
 	}
-	fun.name = node->op[1]->id.value;
-	fun.type = node->op[0]->varType.value;
-	sym_table_init(&args);
+	if (node->opType != fuc_def) return 1;
+	struct identifier* fun = (identifier*)malloc(sizeof(identifier));
+	int num;
+	int i;
+	fun->name = node->op[1]->id.value;
+	if (sym_table_fund(fun_Table, fun.name)){
+		printf("err: redefine fuction %s\n", fun.name);
+		free(fun);
+		return 1;
+	}
+	fun->type = node->op[0]->varType.value;
+	fun->isArray = 0;
+	if (node->numOperands == 4) {
+		node = &nude->op[2]->opr;
+		num = numPara(node);
+		fun->args = (varTypeEnum*)malloc(sizeof(varTypeEnum)*num);
+		fun->argsIsArray = (int*)malloc(sizeof(int)*num);
+		for (i=0; i<num-1; i++) {
+			fun.args[i] = node->op[1]->opr.op[0]->varType.value;
+			if (node->op[1]->opr.op[1]->nodeType == OPERATOR_NODE) 
+				fun.argsIsArray[i] = 1;
+			else
+				fun.argsIsArray[i] = 0;
+			node = &node->op[0]->opr;
+		}
+		fun.args[i] = node->op[0]->varType.value;
+		if (node->op[1]->nodeType == OPERATOR_NODE) 
+			fun.argsIsArray[i] = 1;
+		else
+			fun.argsIsArray[i] = 0;
+		sym_table_add(fun_Table, &fun);
+		return 0;
 }
+
+int numPara(oprNode* node) {
+	if (node->opType == concatenate)
+		return numPara(args, &node->op[0]->opr) + 1;
+	return 1;
+}
+
 
 int compileSubtree(nodeType* node) {
 	switch (node->type) {
@@ -350,10 +382,14 @@ int compileOpNode(oprNode* opr) {
 		case func_def:
 			if (compileSubtree(opr->op[0])) return 1;
 			if (compileSubtree(opr->op[1])) return 1;
+			st_list_init(varList);
 			print_append("(", 0);
+			struct sym_table* varTable;
+			sym_table_init(varTable);
 			if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
 			print_append(")", 1);
 			if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
+			st_list_destroy(varList);
 			break;
 		case para_declar:
 			//array deaclar
