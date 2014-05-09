@@ -1,0 +1,14 @@
+int main(){
+
+	display char array[5] = {1,2,3,4,5};
+	<begin_display>
+		swap(array,1,2);
+	<end_display>
+	
+	hide array;
+	<begin_display>
+		swap(array,1,2);
+	<end_display>
+	return 0;
+
+}

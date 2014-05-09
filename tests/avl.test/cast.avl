@@ -1,0 +1,12 @@
+int main(){
+
+	//we only support these two kind of cast?
+	int a = 48;
+	char c = 'a';
+	char b = (char) a;
+	int d = (int) c;
+	print b;
+	print d;
+
+
+}
