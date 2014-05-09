@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "include.h"
+#include "syntax_tree.h"
 #include "st_list.h"
+#include "sym_table.h"
 
 void freeTree(nodeType* node);
 int compileOpNode(oprNode* opr);
@@ -16,371 +17,390 @@ void avl_compiler(nodeType* root);
 int newLine = 1;
 int indent = 0;
 extern FILE *yyout;
-struct st_list stList;
+struct sym_table funTable;
+struct st_list varList;
 
 void avl_compiler(nodeType* root) {
-    printf("begin translate.\n");
-    st_list_init(&stList);
-    print_header();
-    int ret = compileSubtree(root);
-    freeTree(root);
-    st_list_destroy(&stList);
-    if (ret == 0) {
-        printf("Succeed\n");
-    } else {
-        printf("Fail\n");
-    }
+	printf("begin translate.\n");
+	sym_table_init(&funTable);
+	if (buildFunTable(&funTable, &root->opr)) {
+		printf("Fail\n");
+		return;
+	}
+	st_list_init(&varList);
+	print_header();
+	int ret = compileSubtree(root);
+	freeTree(root);
+	st_list_destroy(&varList);
+	sym_table_destroy(&funTable);
+	if (ret == 0) {
+		printf("Succeed\n");
+	} else {
+		printf("Fail\n");
+	}
+}
+
+int buildFunTable(struct sym_table* funTable, oprNode* node) {
+	struct identifier fun;
+	struct sym_table args;
+	if (node->opType == trans_unit) {
+		if(buildFunTable(funTable, &node->op[0]->opr)) return 1;
+		node = &node->op[1]->opr;
+	}
+	fun.name = node->op[1]->id.value;
+	fun.type = node->op[0]->varType.value;
+	sym_table_init(&args);
 }
 
 int compileSubtree(nodeType* node) {
-    switch (node->type) {
-        case INTCON_NODE:
-            print_append_int(node->intCon.value, 1);
-            break;
-        case CHARCON_NODE:
-            print_append(node->charCon.value, 1);
-            break;
-        case STRLIT_NODE:
-            print_append(node->strLit.value, 1);
-            break;
-        case VARTYPE_NODE:
-            switch (node->varType.value) {
-                case VOID_TYPE:
-                    print_append("void", 1);
-                    break;
-                case CHAR_TYPE:
-                    print_append("char", 1);
-                    break;
-                case INT_TYPE:
-                    print_append("AvlInt", 1);
-                    break;
-                case STRING_TYPE:
-                    print_append("string", 1);
-                    break;
-                case INDEX_TYPE:
-                    print_append("AvlIndex", 1);
-                    break;
-                case BOOL_TYPE:
-                    print_append("bool", 1);
-                    break;
-            }
-            break;
-        case ID_NODE:
-            print_append(node->id.value, 1);
-            break;
-        case MATHOP_NODE:
-            print_append(node->mathOp.value, 1);
-            break;
-        case OPERATOR_NODE:
-            if(compileOpNode(&node->opr)) return 1;
-            break;
-    }
-    return 0;
+	switch (node->type) {
+		case INTCON_NODE:
+			print_append_int(node->intCon.value, 1);
+			break;
+		case CHARCON_NODE:
+			print_append(node->charCon.value, 1);
+			break;
+		case STRLIT_NODE:
+			print_append(node->strLit.value, 1);
+			break;
+		case VARTYPE_NODE:
+			switch (node->varType.value) {
+				case VOID_TYPE:
+					print_append("void", 1);
+					break;
+				case CHAR_TYPE:
+					print_append("char", 1);
+					break;
+				case INT_TYPE:
+					print_append("AvlInt", 1);
+					break;
+				case STRING_TYPE:
+					print_append("string", 1);
+					break;
+				case INDEX_TYPE:
+					print_append("AvlIndex", 1);
+					break;
+				case BOOL_TYPE:
+					print_append("bool", 1);
+					break;
+			}
+			break;
+		case ID_NODE:
+			print_append(node->id.value, 1);
+			break;
+		case MATHOP_NODE:
+			print_append(node->mathOp.value, 1);
+			break;
+		case OPERATOR_NODE:
+			if(compileOpNode(&node->opr)) return 1;
+			break;
+	}
+	return 0;
 }
 
 int compileOpNode(oprNode* opr) {
-    int i;
-    char* id;
-    nodeType* temp;
-    switch (opr->opType) {
-        case parentheses_exp:
-            print_append("(", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(")", 1);
-            break;
-        case array:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (opr->numOperands == 2) {
-                print_append("[", 0);
-                if (compileSubtree(opr->op[1])) return 1;
-                print_append("]", 1);
-            } else {
-                print_append(".subarray(", 0);
-                if (compileSubtree(opr->op[1])) return 1;
-                print_append(",", 0);
-                if (compileSubtree(opr->op[2])) return 1;
-                print_append(")", 1);
-            }
-            break;
-        case func_call:
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append("(", 0);
-            if (opr->numOperands == 2 && compileSubtree(opr->op[1])) return 1;
-            print_append(")", 1);
-            break;
-        case concatenate:	
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(",", 0);
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case math_op:
-            for (i=0; i<opr->numOperands; i++) {
-                if (compileSubtree(opr->op[i])) return 1;
-            }
-            break;
-        case len:
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(".size()", 0);
-            break;
-        case cast:
-            print_append("(", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(")", 1);
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case assignment:	
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append("=", 1);
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case disp_exp:
-            break;
-        case hide_exp:
-            break;
-        case swap:
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(".swap(", 0);
-            if (compileSubtree(opr->op[1])) return 1;
-            print_append(",", 0);
-            if (compileSubtree(opr->op[2])) return 1;
-            print_append(")", 1);
-            break;
-        case print:
-            print_append("std::cout <<", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append("<< std::endl", 1);
-            break;
-        case print_list:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (opr->numOperands == 2) {
-                print_append("<<", 1);
-                if (compileSubtree(opr->op[1])) return 1;
-            }
-            break;
-        case var_decl:
-        case var_decl_disp:
-        case var_decl_hide:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case arr_decl:
-            if (compileSubtree(opr->op[0])) return 1;
-            break;
-        case init_list:
-            print_append("{", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append("}", 1);
-            break;
-        case exp_state:
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(";", 0);
-            newLine = 1;
-            break;
-        case declar_state:
-            opr = &opr->op[0]->opr;
-            //array declar
-            if (opr->op[0]->varType.value == INT_TYPE && opr->op[1]->type == OPERATOR_NODE && 
-                    (opr->op[1]->opr.opType == arr_decl || opr->op[1]->opr.op[0]->type != ID_NODE)) {
-                print_append("AvlArray<AVlInt>", 1);
-                if (compileSubtree(opr->op[1])) return 1;
-                print_append(";\n", 0);
-                temp = opr->op[1]->opr.op[0];
-                if (temp->type != ID_NODE) temp = temp->opr.op[0];
-                id = temp->id.value;
-                print_indent();
-                fprintf(yyout, "%s.set_name(\"%s\");\n", id, id);
-                if (opr->opType == var_decl_disp) {
-                    print_indent();
-                    fprintf(yyout, "__avl__vi->addObject(&%s, \"%s\");\n",id, id);
-                }
-                newLine = 1;
-            } else { 
-                if (compileSubtree(opr->op[0])) return 1;
-                if (compileSubtree(opr->op[1])) return 1;
-                print_append(";", 0);
-                newLine = 1;
-            }
-            break;
-        case comp_state:
-            print_append("{", 1);
-            newLine = 1;
-            indent ++;
-            if (opr->numOperands == 1 && compileSubtree(opr->op[0])) return 1;
-            indent --;
-            print_append("}", 0);
-            newLine = 1;
-            break;
-        case state_list:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case display_state:
-            print_append("__avl__vi->start();", 1);
-            newLine = 1;
-            print_append("avlSleep(0.5);", 0);
-            newLine = 1;
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append("avlSleep(0.1);", 1);
-            newLine = 1;
-            print_append("__avl__vi->stop();", 0);
-            newLine = 1;
-            break;
-        case select_state:
-            print_append("if (", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(")", 1);
-            if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType != comp_state) {
-                print_append("{", 1);
-                newLine = 1;
-                indent ++;
-                if (compileSubtree(opr->op[1])) return 1;
-                indent --;
-                print_append("}", 0);
-                newLine = 1;
-            } else {
-                if (compileSubtree(opr->op[1])) return 1;
-            }
-            if (opr->numOperands == 3) {
-                print_append("else", 1);
-                if (opr->op[2]->type == OPERATOR_NODE && opr->op[2]->opr.opType != comp_state) {
-                    print_append("{", 1);
-                    newLine = 1;
-                    indent ++;
-                    if (compileSubtree(opr->op[2])) return 1;
-                    indent --;
-                    print_append("}", 0);
-                    newLine = 1;
-                } else {
-                    if (compileSubtree(opr->op[2])) return 1;
-                }
-            }
-            break;
-        case while_state:
-            print_append("while (", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(")", 1);
-            if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType != comp_state) {
-                print_append("{", 1);
-                newLine = 1;
-                indent ++;
-                if (compileSubtree(opr->op[1])) return 1;
-                indent --;
-                print_append("}", 0);
-                newLine = 1;
-            } else {
-                if (compileSubtree(opr->op[1])) return 1;
-            }
-            break;
-        case do_while_state:
-            print_append("do", 1);
-            if (opr->op[0]->type == OPERATOR_NODE && opr->op[0]->opr.opType != comp_state) {
-                print_append("{", 1);
-                newLine = 1;
-                indent ++;
-                if (compileSubtree(opr->op[0])) return 1;
-                indent --;
-                print_append("}", 0);
-                newLine = 1;
-            } else {
-                if (compileSubtree(opr->op[0])) return 1;
-            }
-            print_append("while (", 1);
-            if (compileSubtree(opr->op[1])) return 1;
-            print_append(");", 1);
-            newLine = 1;
-            break;
-        case for_state:
-            print_append("for (", 1);
-            if (compileSubtree(opr->op[0])) return 1;
-            print_append(";", 0);
-            if (compileSubtree(opr->op[1])) return 1;
-            print_append(";", 0);
-            if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
-            print_append(")", 1);
-            if (opr->op[opr->numOperands-1]->type == OPERATOR_NODE && opr->op[opr->numOperands-1]->opr.opType != comp_state) {
-                print_append("{", 1);
-                newLine = 1;
-                indent ++;
-                if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
-                indent --;
-                print_append("}", 0);
-                newLine = 1;
-            } else {
-                if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
-            }
-            break;
-        case jump_continue_state:
-            print_append("continue;", 1);
-            newLine = 1;
-            break;
-        case jump_break_state:
-            print_append("break;", 1);
-            newLine = 1;
-            break;
-        case jump_ret_state:
-            print_append("return", 1);
-            if (opr->numOperands == 1 && compileSubtree(opr->op[0])) return 1;
-            print_append(";", 0);
-            newLine = 1;
-            break;
-        case trans_unit:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (compileSubtree(opr->op[1])) return 1;
-            break;
-        case func_def:
-            if (compileSubtree(opr->op[0])) return 1;
-            if (compileSubtree(opr->op[1])) return 1;
-            print_append("(", 0);
-            if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
-            print_append(")", 1);
-            if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
-            break;
-        case para_declar:
-            //array deaclar
-            if (opr->op[0]->varType.value == INT_TYPE && opr->op[1]->type == OPERATOR_NODE && 
-                    opr->op[1]->opr.opType == arr_decl) {
-                print_append("AvlArray<AVlInt>", 1);
-                if (compileSubtree(opr->op[1])) return 1;
-            } else { 
-                if (compileSubtree(opr->op[0])) return 1;
-                if (compileSubtree(opr->op[1])) return 1;
-            }
-            break;
-    }
-    return 0;
+	int i;
+	char* id;
+	nodeType* temp;
+	switch (opr->opType) {
+		case parentheses_exp:
+			print_append("(", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(")", 1);
+			break;
+		case array:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (opr->numOperands == 2) {
+				print_append("[", 0);
+				if (compileSubtree(opr->op[1])) return 1;
+				print_append("]", 1);
+			} else {
+				print_append(".subarray(", 0);
+				if (compileSubtree(opr->op[1])) return 1;
+				print_append(",", 0);
+				if (compileSubtree(opr->op[2])) return 1;
+				print_append(")", 1);
+			}
+			break;
+		case func_call:
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append("(", 0);
+			if (opr->numOperands == 2 && compileSubtree(opr->op[1])) return 1;
+			print_append(")", 1);
+			break;
+		case concatenate:	
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(",", 0);
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case math_op:
+			for (i=0; i<opr->numOperands; i++) {
+				if (compileSubtree(opr->op[i])) return 1;
+			}
+			break;
+		case len:
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(".size()", 0);
+			break;
+		case cast:
+			print_append("(", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(")", 1);
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case assignment:	
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append("=", 1);
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case disp_exp:
+			break;
+		case hide_exp:
+			break;
+		case swap:
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(".swap(", 0);
+			if (compileSubtree(opr->op[1])) return 1;
+			print_append(",", 0);
+			if (compileSubtree(opr->op[2])) return 1;
+			print_append(")", 1);
+			break;
+		case print:
+			print_append("std::cout <<", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append("<< std::endl", 1);
+			break;
+		case print_list:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (opr->numOperands == 2) {
+				print_append("<<", 1);
+				if (compileSubtree(opr->op[1])) return 1;
+			}
+			break;
+		case var_decl:
+		case var_decl_disp:
+		case var_decl_hide:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case arr_decl:
+			if (compileSubtree(opr->op[0])) return 1;
+			break;
+		case init_list:
+			print_append("{", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append("}", 1);
+			break;
+		case exp_state:
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(";", 0);
+			newLine = 1;
+			break;
+		case declar_state:
+			opr = &opr->op[0]->opr;
+			//array declar
+			if (opr->op[0]->varType.value == INT_TYPE && opr->op[1]->type == OPERATOR_NODE && 
+					(opr->op[1]->opr.opType == arr_decl || opr->op[1]->opr.op[0]->type != ID_NODE)) {
+				print_append("AvlArray<AVlInt>", 1);
+				if (compileSubtree(opr->op[1])) return 1;
+				print_append(";\n", 0);
+				temp = opr->op[1]->opr.op[0];
+				if (temp->type != ID_NODE) temp = temp->opr.op[0];
+				id = temp->id.value;
+				print_indent();
+				fprintf(yyout, "%s.set_name(\"%s\");\n", id, id);
+				if (opr->opType == var_decl_disp) {
+					print_indent();
+					fprintf(yyout, "__avl__vi->addObject(&%s, \"%s\");\n",id, id);
+				}
+				newLine = 1;
+			} else { 
+				if (compileSubtree(opr->op[0])) return 1;
+				if (compileSubtree(opr->op[1])) return 1;
+				print_append(";", 0);
+				newLine = 1;
+			}
+			break;
+		case comp_state:
+			print_append("{", 1);
+			newLine = 1;
+			indent ++;
+			if (opr->numOperands == 1 && compileSubtree(opr->op[0])) return 1;
+			indent --;
+			print_append("}", 0);
+			newLine = 1;
+			break;
+		case state_list:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case display_state:
+			print_append("__avl__vi->start();", 1);
+			newLine = 1;
+			print_append("avlSleep(0.5);", 0);
+			newLine = 1;
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append("avlSleep(0.1);", 1);
+			newLine = 1;
+			print_append("__avl__vi->stop();", 0);
+			newLine = 1;
+			break;
+		case select_state:
+			print_append("if (", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(")", 1);
+			if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType != comp_state) {
+				print_append("{", 1);
+				newLine = 1;
+				indent ++;
+				if (compileSubtree(opr->op[1])) return 1;
+				indent --;
+				print_append("}", 0);
+				newLine = 1;
+			} else {
+				if (compileSubtree(opr->op[1])) return 1;
+			}
+			if (opr->numOperands == 3) {
+				print_append("else", 1);
+				if (opr->op[2]->type == OPERATOR_NODE && opr->op[2]->opr.opType != comp_state) {
+					print_append("{", 1);
+					newLine = 1;
+					indent ++;
+					if (compileSubtree(opr->op[2])) return 1;
+					indent --;
+					print_append("}", 0);
+					newLine = 1;
+				} else {
+					if (compileSubtree(opr->op[2])) return 1;
+				}
+			}
+			break;
+		case while_state:
+			print_append("while (", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(")", 1);
+			if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType != comp_state) {
+				print_append("{", 1);
+				newLine = 1;
+				indent ++;
+				if (compileSubtree(opr->op[1])) return 1;
+				indent --;
+				print_append("}", 0);
+				newLine = 1;
+			} else {
+				if (compileSubtree(opr->op[1])) return 1;
+			}
+			break;
+		case do_while_state:
+			print_append("do", 1);
+			if (opr->op[0]->type == OPERATOR_NODE && opr->op[0]->opr.opType != comp_state) {
+				print_append("{", 1);
+				newLine = 1;
+				indent ++;
+				if (compileSubtree(opr->op[0])) return 1;
+				indent --;
+				print_append("}", 0);
+				newLine = 1;
+			} else {
+				if (compileSubtree(opr->op[0])) return 1;
+			}
+			print_append("while (", 1);
+			if (compileSubtree(opr->op[1])) return 1;
+			print_append(");", 1);
+			newLine = 1;
+			break;
+		case for_state:
+			print_append("for (", 1);
+			if (compileSubtree(opr->op[0])) return 1;
+			print_append(";", 0);
+			if (compileSubtree(opr->op[1])) return 1;
+			print_append(";", 0);
+			if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
+			print_append(")", 1);
+			if (opr->op[opr->numOperands-1]->type == OPERATOR_NODE && opr->op[opr->numOperands-1]->opr.opType != comp_state) {
+				print_append("{", 1);
+				newLine = 1;
+				indent ++;
+				if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
+				indent --;
+				print_append("}", 0);
+				newLine = 1;
+			} else {
+				if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
+			}
+			break;
+		case jump_continue_state:
+			print_append("continue;", 1);
+			newLine = 1;
+			break;
+		case jump_break_state:
+			print_append("break;", 1);
+			newLine = 1;
+			break;
+		case jump_ret_state:
+			print_append("return", 1);
+			if (opr->numOperands == 1 && compileSubtree(opr->op[0])) return 1;
+			print_append(";", 0);
+			newLine = 1;
+			break;
+		case trans_unit:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (compileSubtree(opr->op[1])) return 1;
+			break;
+		case func_def:
+			if (compileSubtree(opr->op[0])) return 1;
+			if (compileSubtree(opr->op[1])) return 1;
+			print_append("(", 0);
+			if (opr->numOperands == 4 && compileSubtree(opr->op[2])) return 1;
+			print_append(")", 1);
+			if (compileSubtree(opr->op[opr->numOperands-1])) return 1;
+			break;
+		case para_declar:
+			//array deaclar
+			if (opr->op[0]->varType.value == INT_TYPE && opr->op[1]->type == OPERATOR_NODE && 
+					opr->op[1]->opr.opType == arr_decl) {
+				print_append("AvlArray<AVlInt>", 1);
+				if (compileSubtree(opr->op[1])) return 1;
+			} else { 
+				if (compileSubtree(opr->op[0])) return 1;
+				if (compileSubtree(opr->op[1])) return 1;
+			}
+			break;
+	}
+	return 0;
 }
 
 void print_append(char* s, int space) {
-    if (newLine) {
-        fprintf(yyout, "\n");
-        print_indent();
-        newLine = 0;
-        fprintf(yyout, "%s", s);
-    } else {
-        if (space)
-            fprintf(yyout, " ");
-        fprintf(yyout, "%s", s);
-    }
+	if (newLine) {
+		fprintf(yyout, "\n");
+		print_indent();
+		newLine = 0;
+		fprintf(yyout, "%s", s);
+	} else {
+		if (space)
+			fprintf(yyout, " ");
+		fprintf(yyout, "%s", s);
+	}
 }
 
 void print_append_int(int value, int space) {
-    if (newLine) {
-        fprintf(yyout, "\n");
-        print_indent();
-        newLine = 0;
-        fprintf(yyout, "%d", value);
-    } else {
-        if (space)
-            fprintf(yyout, " ");
-        fprintf(yyout, "%d", value);
-    }
+	if (newLine) {
+		fprintf(yyout, "\n");
+		print_indent();
+		newLine = 0;
+		fprintf(yyout, "%d", value);
+	} else {
+		if (space)
+			fprintf(yyout, " ");
+		fprintf(yyout, "%d", value);
+	}
 }
 
 void print_indent() {
-    int i;
-    for (i=0; i<indent; i++) {
-        fprintf(yyout, "    ");
-    }
+	int i;
+	for (i=0; i<indent; i++) {
+		fprintf(yyout, "\t");
+	}
 }
 
 void print_header() {
@@ -413,28 +433,28 @@ void print_line(const char *line) {
 }
 
 void freeTree(nodeType* node) {
-    int i;
-    switch (node->type) {
-        case CHARCON_NODE:
-            free(node->charCon.value);
-            break;
-        case STRLIT_NODE:
-            free(node->strLit.value);
-            break;
-        case ID_NODE:
-            free(node->id.value);
-            break;
-        case MATHOP_NODE:
-            free(node->mathOp.value);
-            break;
-        case OPERATOR_NODE:
-            for (i=0; i<node->opr.numOperands; i++) {
-                freeTree(node->opr.op[i]);
-            }
-            free(node->opr.op);
-            break;
-        default:
-            break;
-    }
-    free(node);
+	int i;
+	switch (node->type) {
+		case CHARCON_NODE:
+			free(node->charCon.value);
+			break;
+		case STRLIT_NODE:
+			free(node->strLit.value);
+			break;
+		case ID_NODE:
+			free(node->id.value);
+			break;
+		case MATHOP_NODE:
+			free(node->mathOp.value);
+			break;
+		case OPERATOR_NODE:
+			for (i=0; i<node->opr.numOperands; i++) {
+				freeTree(node->opr.op[i]);
+			}
+			free(node->opr.op);
+			break;
+		default:
+			break;
+	}
+	free(node);
 }

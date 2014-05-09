@@ -1,41 +1,7 @@
 %{
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
-#include "include.h"
-
-nodeType* intConNodeCreator (int val);
-nodeType* strLitNodeCreator (char* str);
-nodeType* varTypeNodeCreator (varTypeEnum type);
-nodeType* idNodeCreator (char* value);
-
-nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
-nodeType* mathOpNodeCreator(char*);
-
-extern int ex(nodeType*);
-
-/*
-typedef struct {
-	typeEnum type;
-	union {
-		int intValue;
-		char charValue;
-		bool boolValue;
-		string stringvalue;
-	} value;
-
-} variableTokenValue;
-
-typedef typename unordered_map<string, const nodeType*> symbolTable;
-vector<symbolTable> symStack;
-
-
-symbolTable global;
-symStack.push_back(global);
-*/
+#include "syntax_tree.h"
 
 int yylex();
-void yyerror(const char *msg);
 %}
 
 %debug
@@ -49,8 +15,8 @@ void yyerror(const char *msg);
 
 %token <idVal> IDENTIFIER 
 %token LEN
-%token <intConVal> 	CONSTANT 
-%token <strLitVal> 	STRING_LITERAL 
+%token <intConVal> CONSTANT 
+%token <strLitVal> STRING_LITERAL 
 
 %token INC_OP DEC_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP
@@ -281,133 +247,4 @@ program
 	
 %%
 
-///////////////////////////////////////////////////////////////
 
-nodeType* intConNodeCreator (int value) {
-	nodeType *p;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-
-	p->type = INTCON_NODE;
-	p->intCon.value = value;
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-nodeType* charConNodeCreator (char* value) {
-	nodeType *p;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-
-	p->type = CHARCON_NODE;
-	p->charCon.value = value;
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-nodeType* strLitNodeCreator (char* value) {
-	nodeType* p;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-	
-	p->type = STRLIT_NODE;
-	p->strLit.value = value;
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-nodeType* varTypeNodeCreator (varTypeEnum type) {
-	nodeType* p;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-	
-	p->type = VARTYPE_NODE;
-	p->varType.value = type;
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-nodeType* idNodeCreator (char* value) {
-	nodeType* p;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-
-	p->type = ID_NODE; 
-	p->id.value = value;
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-nodeType* mathOpNodeCreator(char* value) {
-	nodeType* p;
-
-	// allocating memroy
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-
-	p->type = MATHOP_NODE; 
-	p->mathOp.value = strdup(value);
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-nodeType* operatorNodeCreator (operatorTypeEnum oprtr, int numOperands, ...) {
-	nodeType* p;
-	va_list ap;
-
-	// allocating memory
-	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
-		yyerror("out of memory");
-	
-	if ((p->opr.op = (nodeType**)malloc(numOperands * sizeof(nodeType*))) == NULL)
-		yyerror("out of memory");
-	
-	p->type = OPERATOR_NODE;
-	p->opr.opType = oprtr;
-	p->opr.numOperands = numOperands;
-
-	va_start(ap, numOperands);
-	int i;
-	for (i = 0; i < numOperands; i ++) {
-		p->opr.op[i] = va_arg(ap, nodeType*);
-	}
-	va_end(ap);
-
-	return p;
-}
-
-///////////////////////////////////////////////////////////////
-
-void freeNode(nodeType* node) {
-	if (node->type != OPERATOR_NODE)
-		free(node);
-
-	else {
-		int i = 0;
-		for (; i < node->opr.numOperands; i ++) {
-			freeNode(node->opr.op[i]);
-		}
-	}
-	return;
-}
