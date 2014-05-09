@@ -7,7 +7,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "config.h"
-#include "include.h"
+#include "syntax_tree.h"
 
 int yyparse();
 
