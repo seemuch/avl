@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	avlSleep(0.5);
 
 	/* substitude array declaration with the following two lines */
-	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11, 5, 9};
+	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11}
 
 	a.set_name("a");
 	/* If the variable should be displayed, the following line is needed */
