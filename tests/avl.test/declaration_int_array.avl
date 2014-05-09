@@ -1,0 +1,10 @@
+int main(){
+
+	int i6[5];
+        display int i7[5];
+        hide int i8[6]
+        int i9[3] = {1,2,3};
+
+	return 0;
+
+}

@@ -1,0 +1,9 @@
+int main(){
+
+	bool b6[5];
+        display bool b7[5];
+        hide bool b8[6]
+        bool b9[3] = {true, true, false};
+
+	return 0;
+}

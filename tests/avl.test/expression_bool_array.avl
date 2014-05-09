@@ -1,0 +1,11 @@
+int main(){
+
+	bool array[5] = {true, true, false, false, false};
+	swap(array,1,2);
+	hide array;
+	display array;
+	<begin_display>
+		swap(array,1,2);
+		array[4] = true;
+	return 0;
+}

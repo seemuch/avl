@@ -1,0 +1,12 @@
+int main(){
+
+	int array[5] = {1, 2, 3, 4, 5};
+	swap(array,1,2);
+	hide array;
+	display array;
+	<begin_display>
+		swap(array,1,2);
+		array[4] = 6;
+	<end_display>
+	return 0;
+}

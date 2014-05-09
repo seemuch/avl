@@ -1,0 +1,14 @@
+int main(){
+
+	display int i = 1;
+	<begin_display>
+		i;
+	<end_display>
+
+	hide i;
+	<begin_display>
+		i;
+	<end_display>
+
+	return 0;
+}

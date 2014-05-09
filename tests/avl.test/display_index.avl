@@ -1,0 +1,36 @@
+int main(){
+
+	display int array[5] = {1,2,3,4,5};
+	index i = 1;
+	index j = 2;
+	<begin_display>
+		array[i];
+		array[j];//do we need this step?
+	
+		swap(array,i,j);
+	<end_display>
+
+	hide array;
+
+	//hide array but does not hide index
+	<begin_display>
+		swap(array,i,j);
+	<end_display>
+
+	hide i;
+	hide j;
+	
+	//both hide
+	<begin_display>
+		swap(array,i,j);
+	<end_display>
+
+	//display only index
+	display array;
+	<begin_display>
+		swap(array,i,j);
+	<end_display>
+	
+
+	return 0;
+}
