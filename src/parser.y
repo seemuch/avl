@@ -2,6 +2,7 @@
 #include "syntax_tree.h"
 
 int yylex();
+void yyerror(const char *format, ...);
 %}
 
 %debug
