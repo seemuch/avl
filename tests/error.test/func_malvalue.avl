@@ -1,0 +1,8 @@
+int test(bool b) {
+	return b;
+}
+
+int main() {
+	test(true);
+	return 0;
+}
