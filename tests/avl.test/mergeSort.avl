@@ -1,0 +1,64 @@
+void merge(int A[], index s, index m, index e) {
+	display int L[m - s + 1];
+	display int R[e - m];
+	for (index i = 0; i < m - s + 1; i++) {
+		L[i] = A[i + s];
+	}
+
+	for (index i = 0; i < e - m; i++) {
+		R[i] = A[i + m + 1];
+	}
+	
+	display index l = 0;
+	display index r = 0;
+
+	<begin_display>
+	for (index i = s; i <= e; i++) {
+		if (l == m - s + 1) {
+			while (r < e - m) {
+				A[i] = R[r];
+				++i;
+				++r;
+			}
+			break;
+		}
+
+		if (r == e - m) {
+			while (l < m - s + 1) {
+				A[i] = L[l];
+				++i;
+				++l;
+			}
+			break;
+		}
+
+		if (L[l] <= R[r]) {
+			A[i] = L[l];
+			++l;
+		} esle {
+			A[i] = R[r];
+			++r;
+		}
+	}
+	<end_display>
+}
+
+void mergeSort(int A[], index s, index e) {
+	if (s >= e)
+		return;
+	
+	<begin_display>
+	index m = (s + e) / 2;
+	mergeSort(A, s, m);
+	mergeSort(A, m+1, e);
+	merge(A, s, m , e);
+	<end_display>
+}
+
+int main() {
+	<begin_display>
+	display int A[] = {2, 4, 1, 10, 8, 7, 5, 5, 3, 3};
+	mergeSort(A, 0, len(A)-1);
+	<end_display>
+	return 0;
+}
