@@ -57,6 +57,12 @@ int generateSubtree(nodeType* node) {
 		case CHARCON_NODE:
 			print_append(node->charCon.value, 1);
 			break;
+		case BOOLCON_NODE:
+			if (node->boolCon.value)
+				print_append("true", 1);
+			else
+				print_append("false", 1);
+			break;
 		case STRLIT_NODE:
 			print_append(node->strLit.value, 1);
 			break;
