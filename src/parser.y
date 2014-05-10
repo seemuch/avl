@@ -27,7 +27,7 @@ void yyerror(const char *format, ...);
 %token CHAR INT VOID BOOL INDEX STRING
 %token DISPLAY HIDE
 
-%token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY
+%token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY TRUE FALSE
 
 %start program
 
@@ -36,6 +36,8 @@ void yyerror(const char *format, ...);
 primary_expression
 	: IDENTIFIER                        { $<nt>$ = idNodeCreator($<idVal>1); }
 	| CONSTANT                          { $<nt>$ = intConNodeCreator($<intConVal>1); }
+	| TRUE                              { $<nt>$ = boolConNodeCreator(1); }
+	| FALSE                             { $<nt>$ = boolConNodeCreator(0); }
 	| STRING_LITERAL                    { $<nt>$ = strLitNodeCreator($<strLitVal>1); }
 	| '(' conditional_expression ')'    { $<nt>$ = operatorNodeCreator(parentheses_exp, 1, $<nt>2); }
 	;
