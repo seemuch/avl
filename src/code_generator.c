@@ -151,8 +151,14 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case disp_exp:
+			if (opr->op[0]->type != ID_NODE) return 1;
+			print_indent();
+			fprintf(yyout, "__avl__vi->addObject(&%s, \"%s\")", opr->op[0]->id.value, opr->op[0]->id.value);
 			break;
 		case hide_exp:
+			if (opr->op[0]->type != ID_NODE) return 1;
+			print_indent();
+			fprintf(yyout, "__avl__vi->delObject(\"%s\")", opr->op[0]->id.value);
 			break;
 		case swap:
 			if (generateSubtree(opr->op[0])) return 1;
@@ -163,14 +169,14 @@ int generateOpNode(oprNode* opr) {
 			print_append(")", 1);
 			break;
 		case print:
-			print_append("std::cout <<", 1);
+			print_append("std::cout << (", 1);
 			if (generateSubtree(opr->op[0])) return 1;
-			print_append("<< std::endl", 1);
+			print_append(") << std::endl", 1);
 			break;
 		case print_list:
 			if (generateSubtree(opr->op[0])) return 1;
 			if (opr->numOperands == 2) {
-				print_append("<<", 1);
+				print_append(") << (", 1);
 				if (generateSubtree(opr->op[1])) return 1;
 			}
 			break;
@@ -229,6 +235,9 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append("}", 1);
 			break;
+		case empty_state:
+			print_append(";", 0);
+			newLine = 1;
 		case exp_state:
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(";", 0);
