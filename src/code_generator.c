@@ -395,12 +395,17 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case func_def:
-			if (generateSubtree(opr->op[0])) return 1;
-			if (generateSubtree(opr->op[1])) return 1;
 			if (strcmp(opr->op[1]->id.value,"main") == 0)
 				mainFun = 1;
 			else
 				mainFun = 0;
+			if (mainFun) {
+				if (opr->op[0]->varType.value == INT_TYPE) print_append("int", 0);
+				else print_append("void", 0);
+			} else {
+				if (generateSubtree(opr->op[0])) return 1;
+			}
+			if (generateSubtree(opr->op[1])) return 1;
 			print_append("(", 0);
 			if (paraList) free(paraList);
 			paraCount = 0;
