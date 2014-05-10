@@ -616,19 +616,10 @@ public:
 class AvlIndex : public AvlObject {
 public:
 	// constructor 
-	AvlIndex () {
-		this->value = 0;
+	AvlIndex (int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
+		this->value = v;
 	}
 	
-	AvlIndex (int a) {
-		this->value = a;
-	}
-
-	// copy constructor
-	AvlIndex (const AvlIndex & that) {
-		this->value = that.value;
-	}
-
 	// assignment operator
 	const AvlIndex& operator= (const AvlIndex& that) {
 		this->value = that.value;
