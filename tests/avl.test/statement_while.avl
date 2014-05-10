@@ -2,33 +2,33 @@ int main(){
 
 	int i = 0;
 
-	//empty while
+	/*empty while, failed*/
 	while(i++ < 10);
 	while(i-- > 0){}
 
-	//empty do while
+	/*empty do while, failed*/
 	do;
 	while(i++<10);
 
-	//normal while
+	/*normal while*/
 	while(i>0){
-		print i,'\n';
+		print i;
 		i--;
 	}
 
 	while(i<10)
 		print i++;
 	
-	//normal do while
-	do print i--,'\n';
+	/*normal do while*/
+	do print i--;
 	while ( i > 0);
 
 	do{
-		print i,'\n';
+		print i;
 		i++;
 	}while ( i < 10 );
 
-	//break , continue and return
+	/*break , continue and return*/
 
 	while(i > 0){
 		i--;
@@ -36,10 +36,19 @@ int main(){
 			continue;
 		else if(i==5)
 			break;
-		print i,'\n';
+		print i;
 		
 
 	}
+
+	i = 0;
+	while(i++<3){
+		int j = 0;
+		while(j<2)
+			print j++;
+	}
+	i=0;
+
 	
 	while(i < 10){
 		print i++;
