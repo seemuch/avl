@@ -2,7 +2,7 @@ int main() {
 
 	1;
 	"hello world";
-	""
+	"";
 	'c';
 
 	(1);
@@ -11,6 +11,5 @@ int main() {
 	('c');	
 	
 	print 1, "hello world", 's', "";
-	print (1), ("hello world"),('s'), ("");
 	return 0;
 }

@@ -84,13 +84,41 @@ void AvlVisualizer::delObject(const std::string &name)
 
 void AvlVisualizer::placeObject()
 {
-	// only consider the easiest case
-	if (objects.size() == 1) {
-		AvlObject *obj = objects.begin()->second;
-		obj->lock();
-		obj->set_x(-obj->width() / 2);
-		obj->set_y(obj->height() / 2);
-		obj->unlock();
+	std::vector<AvlObject *> arrays;
+	std::vector<AvlObject *> others;
+
+	for (auto& o : objects) {
+		AvlObject *obj = o.second;
+		if (typeid(*obj) == typeid(AvlArray<AvlInt>) || typeid(*obj) == typeid(AvlArray<AvlChar>) || typeid(*obj) == typeid(AvlArray<AvlBool>))
+			arrays.push_back(obj);
+		else {
+			if (typeid(*obj) != typeid(AvlIndex))
+				others.push_back(obj);
+		}
+	}
+
+	if (!arrays.empty()) {
+		int h = Default_Height / arrays.size() / 2;
+		for (size_t i = 0; i < arrays.size(); i++) {
+			arrays[i]->lock();
+			int x = -arrays[i]->width() / 2;
+			int y = h * (int(arrays.size()) / 2 - i);
+			arrays[i]->set_x(x);
+			arrays[i]->set_y(y);
+			arrays[i]->unlock();
+		}
+	}
+
+	if (!others.empty()) {
+		int w = Default_Width / others.size() / 2;
+		for (size_t i = 0; i < others.size(); i++) {
+			others[i]->lock();
+			int x = w * (int(others.size() / 2) - i);
+			int y = Default_Height / 2 - AvlFont().height() * 2;
+			others[i]->set_x(x);
+			others[i]->set_y(y);
+			others[i]->unlock();
+		}
 	}
 }
 
