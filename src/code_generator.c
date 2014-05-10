@@ -395,12 +395,17 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case func_def:
-			if (generateSubtree(opr->op[0])) return 1;
-			if (generateSubtree(opr->op[1])) return 1;
 			if (strcmp(opr->op[1]->id.value,"main") == 0)
 				mainFun = 1;
 			else
 				mainFun = 0;
+			if (mainFun) {
+				if (opr->op[0]->varType.value == INT_TYPE) print_append("int", 0);
+				else print_append("void", 0);
+			} else {
+				if (generateSubtree(opr->op[0])) return 1;
+			}
+			if (generateSubtree(opr->op[1])) return 1;
 			print_append("(", 0);
 			if (paraList) free(paraList);
 			paraCount = 0;
@@ -511,16 +516,16 @@ void print_header() {
 
 	print_line("AvlVisualizer *__avl__vi = NULL;");
 	print_line("bool __avl__ready() { return __avl__vi != NULL; }");
-	print_line("std::mutex __avl_mtx;");
+	print_line("std::mutex __avl__mtx;");
 	print_line("std::condition_variable_any __avl__cv;");
 	print_line("");
 
 	print_line("void __avl__display(int argc, char **argv)");
 	print_line("{");
-	print_line("\t__avl_mtx.lock();");
+	print_line("\t__avl__mtx.lock();");
 	print_line("\t__avl__vi = new AvlVisualizer(argc, argv);");
 	print_line("\t__avl__cv.notify_one();");
-	print_line("\t__avl_mtx.unlock();");
+	print_line("\t__avl__mtx.unlock();");
 	print_line("");
 	print_line("\t__avl__vi->show();");
 	print_line("}");
