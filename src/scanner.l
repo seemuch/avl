@@ -22,6 +22,8 @@ C                   [A-Za-z0-9,.?!:; ]
 <COMMENT>"*/"       { BEGIN(INITIAL); }
 <COMMENT>.          { /* disregard all characters in comments. */ }
 
+true				{ return TRUE; }
+false				{ return FALSE; }
 break               { return BREAK; }
 char                { return CHAR; }
 continue            { return CONTINUE; }
