@@ -1054,7 +1054,7 @@ class AvlArray : public AvlObject
 		{
 			//std::cout << "Default constructor" << std::endl;
 			
-			for (int i = 0; i < arr.size(); i ++) {
+			for (size_t i = 0; i < arr.size(); i ++) {
 				arr[i] = std::shared_ptr<T>(new T);
 			}
 
@@ -1296,7 +1296,7 @@ class AvlArray : public AvlObject
 			glRasterPos2f(x() - 63, y() - 20);
 			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string("Index: ").c_str()));
 
-			for (int i = 0; i < arr.size(); i ++) {
+			for (size_t i = 0; i < arr.size(); i ++) {
 				glRasterPos2f(index_x[i], index_y[i]);
 				glutBitmapString(AvlFont().font(), (const unsigned char *)(std::to_string(i).c_str()));
 			}
