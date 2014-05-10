@@ -1,10 +1,3 @@
-int main(){
-
-	index i = 1;
-	print test(i),i;
-	return 0;
-
-}
 
 index test(index x){
 
@@ -12,3 +5,13 @@ index test(index x){
 	return x;
 
 }
+
+int main(){
+
+	index i = 1;
+	test(i);
+	print i;
+	return 0;
+
+}
+
