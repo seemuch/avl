@@ -1,4 +1,4 @@
-index[] get_overlap(char[] pattern) {
+index[] get_overlap(char pattern[]) {
 	<begin_display>
 	display index result[len(pattern)];
 	display index k = 0;

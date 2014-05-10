@@ -1,3 +1,9 @@
+string test(string x){
+	
+	x = "hello anthoer world";
+	return x;
+}
+
 int main(){
 
 	string s= "hello world";
@@ -6,8 +12,3 @@ int main(){
 
 }
 
-void test(string x){
-	
-	x = "hello anthoer world";
-	return;
-}

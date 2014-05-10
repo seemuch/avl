@@ -10,7 +10,6 @@ int main(){
 
 	index i = 1;
 	test(i);
-	print i;
 	return 0;
 
 }
