@@ -41,46 +41,7 @@ void avl_code_generator(nodeType* root) {
 		printf("Fail\n");
 	}
 }
-/*
-int buildFunTable(struct sym_table* funTable, oprNode* node) {
-	if (node->opType == trans_unit) {
-		if (buildFunTable(funTable, &node->op[0]->opr)) return 1;
-		node = &node->op[1]->opr;
-	}
-	if (node->opType != fuc_def) return 1;
-	struct identifier* fun = (identifier*)malloc(sizeof(identifier));
-	int num;
-	int i;
-	fun->name = node->op[1]->id.value;
-	if (sym_table_fund(fun_Table, fun.name)){
-		printf("err: redefine fuction %s\n", fun.name);
-		free(fun);
-		return 1;
-	}
-	fun->type = node->op[0]->varType.value;
-	fun->isArray = 0;
-	if (node->numOperands == 4) {
-		node = &nude->op[2]->opr;
-		num = numPara(node);
-		fun->args = (varTypeEnum*)malloc(sizeof(varTypeEnum)*num);
-		fun->argsIsArray = (int*)malloc(sizeof(int)*num);
-		for (i=0; i<num-1; i++) {
-			fun.args[i] = node->op[1]->opr.op[0]->varType.value;
-			if (node->op[1]->opr.op[1]->nodeType == OPERATOR_NODE) 
-				fun.argsIsArray[i] = 1;
-			else
-				fun.argsIsArray[i] = 0;
-			node = &node->op[0]->opr;
-		}
-		fun.args[i] = node->op[0]->varType.value;
-		if (node->op[1]->nodeType == OPERATOR_NODE) 
-			fun.argsIsArray[i] = 1;
-		else
-			fun.argsIsArray[i] = 0;
-		sym_table_add(fun_Table, &fun);
-		return 0;
-}
-*/
+
 int numPara(oprNode* node) {
 	if (node->opType == concatenate)
 		return numPara(&node->op[0]->opr) + 1;
@@ -177,12 +138,6 @@ int generateOpNode(oprNode* opr) {
 		case len:
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(".size()", 0);
-			break;
-		case cast:
-			print_append("(", 1);
-			if (generateSubtree(opr->op[0])) return 1;
-			print_append(")", 1);
-			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case assignment:	
 			if (generateSubtree(opr->op[0])) return 1;

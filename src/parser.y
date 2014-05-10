@@ -59,7 +59,7 @@ unary_expression
 	: postfix_expression                { $<nt>$ = $<nt>1;}
 	| INC_OP unary_expression           { $<nt>$ = operatorNodeCreator(math_op, 2, mathOpNodeCreator("++"), $<nt>2); }
 	| DEC_OP unary_expression           { $<nt>$ = operatorNodeCreator(math_op, 2, mathOpNodeCreator("--"), $<nt>2); }
-	| unary_operator cast_expression    { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, $<nt>2); }
+	| unary_operator unary_expression    { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, $<nt>2); }
 	| LEN '(' unary_expression ')'      { $<nt>$ = operatorNodeCreator(len, 1, $<nt>3); }
 	;
 
@@ -69,16 +69,11 @@ unary_operator
 	| '!'       { $<nt>$ = mathOpNodeCreator("!"); }
 	;
 
-cast_expression
-	: unary_expression                          { $<nt>$ = $<nt>1; }
-	| '(' type_specifier ')' cast_expression    { $<nt>$ = operatorNodeCreator(cast, 2, $<nt>2, $<nt>4); }
-	;
-
 multiplicative_expression
-	: cast_expression                               { $<nt>$ = $<nt>1; }
-	| multiplicative_expression '*' cast_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("*"), $<nt>3); }
-	| multiplicative_expression '/' cast_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("/"), $<nt>3); }
-	| multiplicative_expression '%' cast_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("%"), $<nt>3); }
+	: unary_expression                               { $<nt>$ = $<nt>1; }
+	| multiplicative_expression '*' unary_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("*"), $<nt>3); }
+	| multiplicative_expression '/' unary_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("/"), $<nt>3); }
+	| multiplicative_expression '%' unary_expression { $<nt>$ = operatorNodeCreator(math_op, 3, $<nt>1, mathOpNodeCreator("%"), $<nt>3); }
 	;
 
 additive_expression
