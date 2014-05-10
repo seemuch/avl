@@ -4,6 +4,7 @@ int main(){
 	int b = 2;
 	int c = 3;
 	int d = 4;
+	int e = c%d;
 	print a*b, a/b, a%b;
 	print a+b, a-b;
 	print a>b, a<b, a>=b, a<=b;

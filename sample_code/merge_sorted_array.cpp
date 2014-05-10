@@ -20,26 +20,55 @@ void __avl__display(int argc, char **argv)
 
 void merge(AvlArray<AvlInt> a, AvlArray<AvlInt> b, AvlArray<AvlInt> c)
 {
+	__avl__vi->reset();
+	a.lowlight();
+	a.highlight();
+	b.lowlight();
+	b.highlight();
+	c.lowlight();
+	c.highlight();
+
+	__avl__vi->start();
+	avlSleep(0.5);
+
 	AvlIndex i = 0;
+	i.set_name("i");
+	__avl__vi->addObject(&i, "i");
 	AvlIndex j = 0;
+	j.set_name("j");
+	__avl__vi->addObject(&j, "j");
 	AvlIndex k = 0;
+	k.set_name("k");
+	__avl__vi->addObject(&k, "k");
 
 	while (true) {
 		if (i >= a.size() || j >= b.size())
 			break;
 
-		c[k] = a[i] < b[j] ? a[i++] : b[j++];
+		c[k].assign(a[i] < b[j] ? a[i++] : b[j++]);
 		k++;
 	}
 
 	for (; i < a.size(); i++) {
-		c[k] = a[i];
+		c[k].assign(a[i]);
 		k++;
 	}
 	for (; j < b.size(); j++) {
-		c[k] = b[j];
+		c[k].assign(b[j]);
 		k++;
 	}
+
+	avlSleep(0.1);
+	__avl__vi->stop();
+
+	__avl__vi->delObject("i");
+	__avl__vi->delObject("j");
+	__avl__vi->delObject("k");
+
+	a.lowlight();
+	b.lowlight();
+	c.lowlight();
+	__avl__vi->restore();
 }
 
 int main(int argc, char *argv[])

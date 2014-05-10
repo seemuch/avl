@@ -22,8 +22,11 @@ C                   [A-Za-z0-9,.?!:; ]
 <COMMENT>"*/"       { BEGIN(INITIAL); }
 <COMMENT>.          { /* disregard all characters in comments. */ }
 
+true                { return TRUE; }
+false               { return FALSE; }
 break               { return BREAK; }
 char                { return CHAR; }
+string              { return STRING; }
 continue            { return CONTINUE; }
 do                  { return DO; }
 else                { return ELSE; }
@@ -55,7 +58,7 @@ hide                { return HIDE; }
 
 '{C}'               { /* single character, escape characters are not allowed */
                         yylval.strLitVal = strdup(yytext);
-                        return CONSTANT;
+                        return CHAR_LITERAL;
                     }
 
 \"{C}*\"            { /* string literal, escape characters are not allowed */

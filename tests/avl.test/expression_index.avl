@@ -5,6 +5,7 @@ int main(){
 	
 	hide i;
 	display i;
+	print i;
 	return 0;
 
 }

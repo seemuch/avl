@@ -34,6 +34,18 @@ nodeType* charConNodeCreator (char* value) {
 	return p;
 }
 
+nodeType* boolConNodeCreator (int value) {
+	nodeType *p;
+
+	// allocating memory
+	if ((p = (nodeType*)malloc(sizeof(nodeType))) == NULL)
+		printf("out of memory\n");
+
+	p->type = BOOLCON_NODE;
+	p->boolCon.value = value;
+
+	return p;
+}
 ///////////////////////////////////////////////////////////////
 
 nodeType* strLitNodeCreator (char* value) {

@@ -1,0 +1,8 @@
+int test(int b) {
+	return b + 1;
+}
+
+int main() {
+	test(true);
+	return 0;
+}

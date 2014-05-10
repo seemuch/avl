@@ -3,6 +3,7 @@
 
 typedef enum {
 	INTCON_NODE,
+	BOOLCON_NODE,
 	CHARCON_NODE,
 	STRLIT_NODE,
 	VARTYPE_NODE,
@@ -29,6 +30,7 @@ typedef enum {
 	var_decl_hide,
 	arr_decl,
 	init_list,
+	empty_state,
 	exp_state,
 	declar_state,
 	comp_state,
@@ -64,6 +66,11 @@ typedef struct {
 typedef struct {
 	char* value;
 } charConNode;
+
+// bool constants
+typedef struct {
+	int value;
+} boolConNode;
 
 // string literal
 typedef struct {
@@ -101,6 +108,7 @@ typedef struct nodeTypeTag {
 	union {
 		intConNode intCon;
 		charConNode charCon;
+		boolConNode boolCon;
 		strLitNode strLit;
 		varTypeNode varType;
 		idNode id;
@@ -116,6 +124,8 @@ typedef struct nodeTypeTag {
 nodeType* intConNodeCreator (int value);
 
 nodeType* charConNodeCreator (char* value);
+
+nodeType* boolConNodeCreator (int value);
 
 nodeType* strLitNodeCreator (char* value);
 

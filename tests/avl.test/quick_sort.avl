@@ -4,6 +4,7 @@ void quicksort(int a[]) {
 	display index i = -1;
 	display index j = 0;
 	display index k = len(a) - 1;
+	display index e = k;
 	<begin_display>
 	while (j < k) {
 		if (a[j] >= a[e]) {
