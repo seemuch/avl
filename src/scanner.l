@@ -12,7 +12,7 @@ void yyerror(const char *format, ...);
 
 D                   [0-9]
 L                   [A-Za-z_]
-C                   [A-Za-z0-9_]
+C                   [A-Za-z0-9,.?!:; ]
 
 %x COMMENT
 
