@@ -5,14 +5,14 @@ int main(){
 	index j = 2;
 	<begin_display>
 		array[i];
-		array[j];//do we need this step?
+		array[j];
 	
 		swap(array,i,j);
 	<end_display>
 
 	hide array;
 
-	//hide array but does not hide index
+	
 	<begin_display>
 		swap(array,i,j);
 	<end_display>
@@ -20,12 +20,12 @@ int main(){
 	hide i;
 	hide j;
 	
-	//both hide
+	
 	<begin_display>
 		swap(array,i,j);
 	<end_display>
 
-	//display only index
+
 	display array;
 	<begin_display>
 		swap(array,i,j);

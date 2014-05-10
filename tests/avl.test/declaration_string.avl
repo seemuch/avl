@@ -2,10 +2,10 @@ int main(){
 
 	string s;
         string s1 = "hello world!";
-        display string s2 = "hello world!";
+        /*display string s2 = "hello world!";
         hide string s3 = "hello world!";
         display string s4;
-        hide string s5;
+        hide string s5;*/
 
 	return 0;
 }
