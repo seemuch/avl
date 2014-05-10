@@ -47,12 +47,12 @@ char *const CXX_OPTIONS[] = {
 	"-Wall",
 	"-o",
 	output_file,
+	temp_file,
 	"-I/opt/local/include",
 	"-L/opt/local/lib",
 	"-lavl",
 	"-lGL",
 	"-lglut",
-	temp_file,
 	NULL
 };
 char *const ASTYLE_OPTIONS[] = {
