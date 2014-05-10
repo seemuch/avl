@@ -238,6 +238,7 @@ int generateOpNode(oprNode* opr) {
 		case empty_state:
 			print_append(";", 0);
 			newLine = 1;
+			break;
 		case exp_state:
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(";", 0);
@@ -335,6 +336,7 @@ int generateOpNode(oprNode* opr) {
 			newLine = 1;
 			break;
 		case for_state:
+			//declare in for
 			if (opr->op[0]->opr.opType == var_decl ||opr->op[0]->opr.opType == var_decl_disp || opr->op[0]->opr.opType == var_decl_hide) {
 				print_append("{", 0);
 				newLine = 1;
