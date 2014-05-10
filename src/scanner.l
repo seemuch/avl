@@ -58,7 +58,7 @@ hide                { return HIDE; }
 
 '{C}'               { /* single character, escape characters are not allowed */
                         yylval.strLitVal = strdup(yytext);
-                        return CONSTANT;
+                        return CHAR_LITERAL;
                     }
 
 \"{C}*\"            { /* string literal, escape characters are not allowed */
