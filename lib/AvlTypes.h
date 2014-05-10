@@ -19,10 +19,10 @@ const int FPS = 20;
 typedef unsigned int AvlColor;
 const AvlColor AVL_RED = 0xFF0000;
 const AvlColor AVL_GREEN = 0x00FF00;
-const AvlColor AVL_WIGHT = 0xFFFFFF;
+const AvlColor AVL_WHIGHT = 0xFFFFFF;
 const AvlColor AVL_COLOR_HIGHLIGHT = AVL_GREEN;
 const AvlColor AVL_COLOR_DEFAULT = AVL_RED;
-const AvlColor AVL_AUXILIARY_COLOR = AVL_WIGHT;
+const AvlColor AVL_AUXILIARY_COLOR = AVL_WHIGHT;
 
 class AvlFont
 {
@@ -302,6 +302,24 @@ class AvlInt : public AvlObject
 		const AvlInt& operator/=(int v) { value /= v; update(); return *this; }
 		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
 	
+		// binary mod
+		const AvlInt operator%(int v) const
+		{
+
+			AvlInt ret = *this;
+			ret.value %= v;
+			ret.update();
+			return ret;
+		}
+		const AvlInt operator%(const AvlInt &v) const { return *this % v.value; }
+		friend const AvlInt operator%(int v1, const AvlInt &v2) 
+		{ 
+			AvlInt ret = v2;
+			ret.value = v1 % v2.value;
+			ret.update();
+			return ret;
+		}
+
 		// comparison operators
 		bool operator <(int v) const { return value < v; }
 		bool operator <(const AvlInt &v) const { return value < v.value; }
@@ -347,6 +365,20 @@ class AvlInt : public AvlObject
 		}
 		void lowlight() { 
 			set_color(AVL_COLOR_DEFAULT); 
+		}
+
+		const AvlInt& assign(const AvlInt& v)
+		{
+			if (!isDisplaying()) {
+				*this = v;
+				return *this;
+			}
+
+			avlSleep(DEFAULT_DELAY);
+			*this = v;
+			avlSleep(DEFAULT_DELAY);
+
+			return *this;
 		}
 
 	private:
@@ -618,6 +650,14 @@ public:
 	// constructor 
 	AvlIndex (int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
 		this->value = v;
+	}
+
+	
+	// << operator
+	friend std::ostream& operator<<(std::ostream &os, const AvlIndex &v)
+	{
+		os << v.value;
+		return os;
 	}
 	
 	// assignment operator
@@ -1054,7 +1094,7 @@ class AvlArray : public AvlObject
 		{
 			//std::cout << "Default constructor" << std::endl;
 			
-			for (int i = 0; i < arr.size(); i ++) {
+			for (size_t i = 0; i < arr.size(); i ++) {
 				arr[i] = std::shared_ptr<T>(new T);
 			}
 
@@ -1296,7 +1336,7 @@ class AvlArray : public AvlObject
 			glRasterPos2f(x() - 63, y() - 20);
 			glutBitmapString(AvlFont().font(), (const unsigned char *)(std::string("Index: ").c_str()));
 
-			for (int i = 0; i < arr.size(); i ++) {
+			for (size_t i = 0; i < arr.size(); i ++) {
 				glRasterPos2f(index_x[i], index_y[i]);
 				glutBitmapString(AvlFont().font(), (const unsigned char *)(std::to_string(i).c_str()));
 			}

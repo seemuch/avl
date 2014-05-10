@@ -11,6 +11,7 @@ void yyerror(const char *format, ...);
 	int intConVal;
 	char* strLitVal;
 	char* idVal;
+	char* charLitVal;
 	struct nodeTypeTag* nt;
 }
 
@@ -18,6 +19,7 @@ void yyerror(const char *format, ...);
 %token LEN
 %token <intConVal> CONSTANT 
 %token <strLitVal> STRING_LITERAL 
+%token <charLitVal> CHAR_LITERAL
 
 %token INC_OP DEC_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP
@@ -27,7 +29,7 @@ void yyerror(const char *format, ...);
 %token CHAR INT VOID BOOL INDEX STRING
 %token DISPLAY HIDE
 
-%token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY
+%token IF ELSE WHILE DO FOR CONTINUE BREAK RETURN END_DISPLAY BEGIN_DISPLAY TRUE FALSE
 
 %start program
 
@@ -36,6 +38,9 @@ void yyerror(const char *format, ...);
 primary_expression
 	: IDENTIFIER                        { $<nt>$ = idNodeCreator($<idVal>1); }
 	| CONSTANT                          { $<nt>$ = intConNodeCreator($<intConVal>1); }
+	| TRUE                              { $<nt>$ = boolConNodeCreator(1); }
+	| FALSE                             { $<nt>$ = boolConNodeCreator(0); }
+	| CHAR_LITERAL                      { $<nt>$ = charConNodeCreator($<charLitVal>1); }
 	| STRING_LITERAL                    { $<nt>$ = strLitNodeCreator($<strLitVal>1); }
 	| '(' conditional_expression ')'    { $<nt>$ = operatorNodeCreator(parentheses_exp, 1, $<nt>2); }
 	;
@@ -173,6 +178,7 @@ statement
 	| selection_statement                           { $<nt>$ = $<nt>1; }
 	| iteration_statement                           { $<nt>$ = $<nt>1; }
 	| jump_statement                                { $<nt>$ = $<nt>1; }
+	| ';'                                           { $<nt>$ = operatorNodeCreator(empty_state, 0); }
 	;
 
 expression_statement

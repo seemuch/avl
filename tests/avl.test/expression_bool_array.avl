@@ -7,5 +7,6 @@ int main(){
 	<begin_display>
 		swap(array,1,2);
 		array[4] = true;
+	<end_display>
 	return 0;
 }

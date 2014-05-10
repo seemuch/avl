@@ -5,8 +5,8 @@ int main(){
 	index j = 2;
 	int a = 1;
 
-	print i*j,i/j,i%j;
-	print i*a,i/a,i%a;
+	print i*j,i/j;
+	print i*a,i/a;
 	print i+j, i-j;
 	print i+a, i-a;
 	print i>j, i<j, i>=j, i<=j;

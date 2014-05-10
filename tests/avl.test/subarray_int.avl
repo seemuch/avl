@@ -1,9 +1,24 @@
+void subarray(int x[]){
+	index l = len(x);
+	if(l<=1)
+		return;
+
+	<begin_display>
+		subarray(x[0:l]);
+	<end_display>	
+
+	
+
+}
+
 int main(){
 
 	display int array[10];
-	for(int i = 0; i < 10; i++)
-		array[i] = i;
-
+	int j = 0;
+	for(index i = 0; i < 10; i++) {
+		array[i] = j;
+		j++;
+	}
 	<begin_display>
 		subarray(array);
 	<end_display>
@@ -12,16 +27,5 @@ int main(){
 
 }
 
-void subarray(int[] x){
-	int l = len(a);
-	if(l<=1)
-		return;
 
-	<begin_display>
-		x;
-		subarray(x[0:l])
-	<end_display>	
 
-	
-
-}

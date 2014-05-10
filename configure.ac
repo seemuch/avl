@@ -21,6 +21,7 @@ AC_CONFIG_FILES([
 		 tests/Makefile
 		 tests/libavl.test/Makefile
 		 tests/avl.test/Makefile
+		 tests/error.test/Makefile
 		 ])
 
 AC_OUTPUT

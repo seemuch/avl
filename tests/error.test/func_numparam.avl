@@ -1,0 +1,10 @@
+int test(int a, int b) {
+	return a + b;
+}
+
+int main() {
+	int a = 1;
+	int b = 2;
+	int c = test(a,b,3,4,5);
+	return 0;
+}
