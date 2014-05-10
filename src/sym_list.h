@@ -12,6 +12,7 @@ struct identifier
 	/* more attributes to be added */
 	varTypeEnum type;
 	int isArray;
+	int numArgs;
 	varTypeEnum* args;
 	int* argsIsArray;
 };
