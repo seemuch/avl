@@ -349,6 +349,20 @@ class AvlInt : public AvlObject
 			set_color(AVL_COLOR_DEFAULT); 
 		}
 
+		const AvlInt& assign(const AvlInt& v)
+		{
+			if (!isDisplaying()) {
+				*this = v;
+				return *this;
+			}
+
+			avlSleep(DEFAULT_DELAY);
+			*this = v;
+			avlSleep(DEFAULT_DELAY);
+
+			return *this;
+		}
+
 	private:
 		void update() { set_width(numOfDigit() * font().width()); }
 
