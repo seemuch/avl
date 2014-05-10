@@ -10,7 +10,7 @@ int main() {
 	("")
 	('c');	
 	
-	print 1, "hello world", 's', '\n', "";
-	print (1), ("hello world"),('s'), ('\n'), ("");
+	print 1, "hello world", 's', "";
+	print (1), ("hello world"),('s'), ("");
 	return 0;
 }
