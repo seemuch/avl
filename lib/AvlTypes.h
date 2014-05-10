@@ -652,6 +652,10 @@ public:
 		this->value = v;
 	}
 
+	// constructor 
+	AvlIndex (const AvlInt &v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
+		this->value = v.val();
+	}
 	
 	// << operator
 	friend std::ostream& operator<<(std::ostream &os, const AvlIndex &v)
@@ -673,11 +677,10 @@ public:
 	}
 
 	// assignment operator for AvlInt type
-	const AvlIndex& operator= (AvlInt a) {
+	const AvlIndex& operator= (const AvlInt &a) {
 		this->value = a.val();
 		return *this;
 	}
-
 
 	// unary plus and minus
 	const AvlIndex& operator+() const { return *this; }
@@ -1112,13 +1115,27 @@ class AvlArray : public AvlObject
 			typename std::initializer_list<T>::const_iterator src = l.begin();
 			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
 
-			//!!!FIXME!!!: what this count for???
-			int count = 0;
 			while (src != l.end()) {
 				*dst = std::shared_ptr<T>(new T(*src));
 				src++;
 				dst++;
-				count++;
+			}
+
+			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
+			toplevelArray = this;
+
+			update();
+		}
+
+		// copy constructor
+		AvlArray(const AvlArray<T> &other) : AvlObject(other.x(), other.y(), other.font()), arr(other.arr.size()), 
+			index_x(other.arr.size()), index_y(other.arr.size())
+		{
+			// std::out << "Copy constructor" << std::edl;
+
+			for (size_t i = 0; i < arr.size(); i++) {
+				arr[i] = std::shared_ptr<T>(new T);
+				*arr[i] = *other.arr[i];
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
