@@ -189,9 +189,16 @@ int generateOpNode(oprNode* opr) {
 				print_append(">", 0);
 				if (generateSubtree(temp->opr.op[0])) return 1;
 				if (temp->opr.numOperands == 2) {
-					print_append("(", 0);
-					if (generateSubtree(temp->opr.op[1])) return 1;
-					print_append(")", 0);
+					if (!(opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType == assignment)) {
+					//	print_append("[", 0);
+					//else
+						print_append("(", 0);
+						if (generateSubtree(temp->opr.op[1])) return 1;
+					//if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType == assignment)
+					//	print_append("]", 0);
+					//else
+						print_append(")", 0);
+					}
 				}
 			} else { // not array
 				if (generateSubtree(opr->op[0])) return 1;
