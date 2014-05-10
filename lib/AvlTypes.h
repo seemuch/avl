@@ -1401,17 +1401,14 @@ class AvlBool: public AvlObject
 		// render function
 		virtual void render()
 		{
-			char display_value = 'T';
-			if (value) { display_value = 'F'; }
-
 			unsigned int red = color() / 0x10000;
 			unsigned int green = color() % 0x10000 / 0x100;
 			unsigned int blue = color() % 0x100;
 			glColor4f(red / 255.0, green / 255.0, blue / 255.0, 0.0);
 
 			glRasterPos2f(x(), y());
-			std::string tmp = (value ? "T" : "F");
-			glutBitmapString(font().font(), (const unsigned char *)tmp.c_str());
+			std::string display_value = value ? "T" : "F";
+			glutBitmapString(font().font(), (const unsigned char *)display_value.c_str());
 		}
 
 		void highlight() { 
