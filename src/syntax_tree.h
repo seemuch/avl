@@ -30,6 +30,7 @@ typedef enum {
 	var_decl_hide,
 	arr_decl,
 	init_list,
+	empty_state,
 	exp_state,
 	declar_state,
 	comp_state,

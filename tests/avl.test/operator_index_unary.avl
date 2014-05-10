@@ -6,7 +6,7 @@ int main(){
 	print ++i;
 	print i;
 	print +i;
-	print -a;	
+	print -i;	
 
 	return 0;
 

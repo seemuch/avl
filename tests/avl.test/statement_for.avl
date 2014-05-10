@@ -1,44 +1,53 @@
 int main(){
 
-	//empty
+	/*empty, line 4 failed*/
 	for(int i = 0; i<10; i++);
-	
+
 	for(int i = 0; i<10; i++){
 
 	}
 
-	//regular for
+	/*regular for*/
 	for(int i = 0; i<10; i++){
-		print i,'\n';
+		print i;
 	}
 	
-	//changing i inside
+	/*changing i inside*/
 	for(int i = 0; i<10;){
-		print i,'\n'
+		print i;
 		i = i+2;
 	}
 
-	//decleare i outside for
+	/*decleare i outside for*/
 	int i = 0;
 	for(i;i<10;i++)
-		print i,'\n';
-	for(i;i>10;)
+		print i;
+	for(i;i>0;)
 		print i--;
 
-	//testing continue,break
+	/*testing continue,break*/
 	for(i;i<10;i++){
 		if(i == 2)
 			continue;
 		else if( i == 5)
 			break;
-		print i,'\n';
+		print i;
 	}
-	//testing return
+
+
+	/*testing nested for*/
+	for(i=0;i<3;i++){
+		for(int j = 0; j<2; j++)
+			print j;
+	}
+
+	/*testing return*/
 	for(i=0;i<10;i++){
-		print i,'\n';
+		print i;
 		if(i==5)
 			return 0;
 	}
+
 
 	return 0;
 }

@@ -66,4 +66,4 @@ TESTS = \
 
 XFAIL_TESTS = \
 			statement_scope.sh \
-			empty.sh	
+			empty.sh
