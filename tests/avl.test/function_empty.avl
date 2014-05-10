@@ -1,9 +1,11 @@
+
+void empty(){
+
+}
+
 int main(){
 
 	empty();
 
 }
 
-void empty(){
-
-}
