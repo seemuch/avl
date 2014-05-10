@@ -19,10 +19,10 @@ const int FPS = 20;
 typedef unsigned int AvlColor;
 const AvlColor AVL_RED = 0xFF0000;
 const AvlColor AVL_GREEN = 0x00FF00;
-const AvlColor AVL_WIGHT = 0xFFFFFF;
+const AvlColor AVL_WHIGHT = 0xFFFFFF;
 const AvlColor AVL_COLOR_HIGHLIGHT = AVL_GREEN;
 const AvlColor AVL_COLOR_DEFAULT = AVL_RED;
-const AvlColor AVL_AUXILIARY_COLOR = AVL_WIGHT;
+const AvlColor AVL_AUXILIARY_COLOR = AVL_WHIGHT;
 
 class AvlFont
 {
