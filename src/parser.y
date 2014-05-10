@@ -178,6 +178,7 @@ statement
 	| selection_statement                           { $<nt>$ = $<nt>1; }
 	| iteration_statement                           { $<nt>$ = $<nt>1; }
 	| jump_statement                                { $<nt>$ = $<nt>1; }
+	| ';'                                           { $<nt>$ = operatorNodeCreator(empty_state, 0); }
 	;
 
 expression_statement
