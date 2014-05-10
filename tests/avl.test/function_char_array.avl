@@ -1,32 +1,27 @@
+
+void test(char x[]){
+
+	int l = len(x);
+	if( l <= 1)
+		print x[0];
+	else{
+		print x[l-1];
+		return test(x[0:l-1]);
+	}
+
+	return;
+
+}
+
 int main(){
 
 	char array[] = {'1','2','3','4','5'};
 	<begin_display>
 
-		test2(array);
+		test(array);
 
 	<end_display>
 	return 0;
 }
 
 
-char[] test(char[] x){
-	//if we return an subarray, how to display it?	
-
-	int l = len(x);
-	if( l <= 1 )
-		return x;
-	else
-		return x[0:l-1];
-
-}
-
-char[] test2(char x[]){
-
-	int l = len(x);
-	if( l <= l)
-		return x;
-	else
-		return test(x[0:l-1]);
-
-}
