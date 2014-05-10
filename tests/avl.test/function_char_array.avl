@@ -1,7 +1,7 @@
 
 void test(char x[]){
 
-	int l = len(x);
+	index l = len(x);
 	if( l <= 1)
 		print x[0];
 	else{

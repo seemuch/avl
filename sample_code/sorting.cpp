@@ -131,6 +131,8 @@ int main(int argc, char *argv[])
 	__avl__mtx.unlock();
 	avlSleep(0.5);
 
+
+
 	/* substitude array declaration with the following two lines */
 	AvlArray<AvlInt> a = {5, 51, 2, 42, 7, 3, 6, 8, 10, 3, 11};
 

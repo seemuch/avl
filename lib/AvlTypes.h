@@ -302,6 +302,24 @@ class AvlInt : public AvlObject
 		const AvlInt& operator/=(int v) { value /= v; update(); return *this; }
 		const AvlInt& operator/=(const AvlInt &v) { return *this /= v.value; }
 	
+		// binary mod
+		const AvlInt operator%(int v) const
+		{
+
+			AvlInt ret = *this;
+			ret.value %= v;
+			ret.update();
+			return ret;
+		}
+		const AvlInt operator%(const AvlInt &v) const { return *this % v.value; }
+		friend const AvlInt operator%(int v1, const AvlInt &v2) 
+		{ 
+			AvlInt ret = v2;
+			ret.value = v1 % v2.value;
+			ret.update();
+			return ret;
+		}
+
 		// comparison operators
 		bool operator <(int v) const { return value < v; }
 		bool operator <(const AvlInt &v) const { return value < v.value; }
@@ -632,6 +650,14 @@ public:
 	// constructor 
 	AvlIndex (int v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
 		this->value = v;
+	}
+
+	
+	// << operator
+	friend std::ostream& operator<<(std::ostream &os, const AvlIndex &v)
+	{
+		os << v.value;
+		return os;
 	}
 	
 	// assignment operator
