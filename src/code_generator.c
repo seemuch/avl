@@ -78,7 +78,7 @@ int generateSubtree(nodeType* node) {
 					print_append("AvlInt", 1);
 					break;
 				case STRING_TYPE:
-					print_append("string", 1);
+					print_append("std::string", 1);
 					break;
 				case INDEX_TYPE:
 					print_append("AvlIndex", 1);
@@ -189,9 +189,11 @@ int generateOpNode(oprNode* opr) {
 				print_append(">", 0);
 				if (generateSubtree(temp->opr.op[0])) return 1;
 				if (temp->opr.numOperands == 2) {
-					print_append("(", 0);
-					if (generateSubtree(temp->opr.op[1])) return 1;
-					print_append(")", 0);
+					if (!(opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType == assignment)) {
+						print_append("(", 0);
+						if (generateSubtree(temp->opr.op[1])) return 1;
+						print_append(")", 0);
+					}
 				}
 			} else { // not array
 				if (generateSubtree(opr->op[0])) return 1;
@@ -210,6 +212,8 @@ int generateOpNode(oprNode* opr) {
 			}
 			id = temp->id.value;
 			print_indent();
+			if (opr->op[0]->varType.value == STRING_TYPE)
+				break;
 			fprintf(yyout, "%s.set_name(\"%s\");\n", id, id);
 			if (opr->opType == var_decl_disp) {
 				print_indent();

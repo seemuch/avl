@@ -7,10 +7,9 @@ int main() {
 
 	(1);
 	("hello world");
-	("")
+	("");
 	('c');	
 	
 	print 1, "hello world", 's', "";
-	print (1), ("hello world"),('s'), ("");
 	return 0;
 }

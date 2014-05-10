@@ -11,6 +11,7 @@ void yyerror(const char *format, ...);
 	int intConVal;
 	char* strLitVal;
 	char* idVal;
+	char* charLitVal;
 	struct nodeTypeTag* nt;
 }
 
@@ -18,6 +19,7 @@ void yyerror(const char *format, ...);
 %token LEN
 %token <intConVal> CONSTANT 
 %token <strLitVal> STRING_LITERAL 
+%token <charLitVal> CHAR_LITERAL
 
 %token INC_OP DEC_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP
@@ -38,6 +40,7 @@ primary_expression
 	| CONSTANT                          { $<nt>$ = intConNodeCreator($<intConVal>1); }
 	| TRUE                              { $<nt>$ = boolConNodeCreator(1); }
 	| FALSE                             { $<nt>$ = boolConNodeCreator(0); }
+	| CHAR_LITERAL                      { $<nt>$ = charConNodeCreator($<charLitVal>1); }
 	| STRING_LITERAL                    { $<nt>$ = strLitNodeCreator($<strLitVal>1); }
 	| '(' conditional_expression ')'    { $<nt>$ = operatorNodeCreator(parentheses_exp, 1, $<nt>2); }
 	;
