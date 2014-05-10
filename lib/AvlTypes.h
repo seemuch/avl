@@ -113,7 +113,10 @@ class AvlObject
 		}
 
 		// destructor (virtual)
-		virtual ~AvlObject() {}
+		virtual ~AvlObject()
+		{
+			_vi->delObject(name());
+		}
 
 		// getter functions
 		GLfloat x() const { return _x; }
@@ -139,7 +142,7 @@ class AvlObject
 		void unlock() { mtx.unlock(); }
 
 		// set visualizer
-		void setVisualizer(const AvlVisualizer *vi) { _vi = vi; }
+		void setVisualizer(AvlVisualizer *vi) { _vi = vi; }
 
 	protected:
 		// position setter
@@ -158,7 +161,7 @@ class AvlObject
 
 		std::mutex mtx;
 
-		const AvlVisualizer *_vi;
+		AvlVisualizer *_vi;
 
 		std::string _name;
 }; // end of AvlObject
