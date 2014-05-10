@@ -3,7 +3,7 @@ int main(){
 	char c = 'c';
 	int b = 2;
 	int a  = 'b'; 
-	print c*b, c/b, c%b;
+	print c*b, c/b;
 	print c+b,4-b;
 	print c>a, c<a, c>=a, c<=a;
 	print c!=a, c==a;

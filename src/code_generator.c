@@ -151,8 +151,14 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case disp_exp:
+			if (opr->op[0]->type != ID_NODE) return 1;
+			print_indent();
+			fprintf(yyout, "__avl__vi->addObject(&%s, \"%s\")", opr->op[0]->id.value, opr->op[0]->id.value);
 			break;
 		case hide_exp:
+			if (opr->op[0]->type != ID_NODE) return 1;
+			print_indent();
+			fprintf(yyout, "__avl__vi->delObject(\"%s\")", opr->op[0]->id.value);
 			break;
 		case swap:
 			if (generateSubtree(opr->op[0])) return 1;
@@ -163,14 +169,14 @@ int generateOpNode(oprNode* opr) {
 			print_append(")", 1);
 			break;
 		case print:
-			print_append("std::cout <<", 1);
+			print_append("std::cout << (", 1);
 			if (generateSubtree(opr->op[0])) return 1;
-			print_append("<< std::endl", 1);
+			print_append(") << std::endl", 1);
 			break;
 		case print_list:
 			if (generateSubtree(opr->op[0])) return 1;
 			if (opr->numOperands == 2) {
-				print_append("<<", 1);
+				print_append(") << (", 1);
 				if (generateSubtree(opr->op[1])) return 1;
 			}
 			break;
@@ -228,6 +234,10 @@ int generateOpNode(oprNode* opr) {
 			print_append("{", 1);
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append("}", 1);
+			break;
+		case empty_state:
+			print_append(";", 0);
+			newLine = 1;
 			break;
 		case exp_state:
 			if (generateSubtree(opr->op[0])) return 1;
@@ -326,6 +336,7 @@ int generateOpNode(oprNode* opr) {
 			newLine = 1;
 			break;
 		case for_state:
+			//declare in for
 			if (opr->op[0]->opr.opType == var_decl ||opr->op[0]->opr.opType == var_decl_disp || opr->op[0]->opr.opType == var_decl_hide) {
 				print_append("{", 0);
 				newLine = 1;
@@ -466,18 +477,22 @@ int generateOpNode(oprNode* opr) {
 			print_append("}",0);
 			break;
 		case para_declar:
-			//array deaclar
-			if (opr->op[0]->varType.value == INT_TYPE && opr->op[1]->type == OPERATOR_NODE && 
-					opr->op[1]->opr.opType == arr_decl) {
-				print_append("AvlArray<AVlInt>", 1);
-				temp = opr->op[1];
-				while (temp->type != ID_NODE) temp = temp->opr.op[0];
-				paraList[paraCount] = temp->id.value;
-				paraCount ++;
-				if (generateSubtree(opr->op[1])) return 1;
-			} else { 
+			// whether is an array
+			temp = opr->op[1];
+			while (temp->type == OPERATOR_NODE) {
+				if (temp->opr.opType == arr_decl) break;
+				temp = temp->opr.op[0];
+			}
+			if (temp->opr.opType == arr_decl) { // is array
+				print_append("AvlArray<", 1);
 				if (generateSubtree(opr->op[0])) return 1;
-				if (generateSubtree(opr->op[1])) return 1;
+				print_append(">", 0);
+				if (generateSubtree(temp->opr.op[0])) return 1;
+				paraList[paraCount] = temp->opr.op[0]->id.value;
+				paraCount ++;
+			} else { // not array
+				if (generateSubtree(opr->op[0])) return 1;
+				if (generateSubtree(temp)) return 1;
 			}
 			break;
 	}
