@@ -2,7 +2,7 @@ int main() {
 
 	1;
 	"hello world";
-	""
+	"";
 	'c';
 
 	(1);
