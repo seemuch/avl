@@ -5,20 +5,25 @@ void merge(int a[], int b[], int c[])
 {
 	<begin_display>
 
-	index i = 0;
-	index j = 0;
-	index k = 0;
+	display index i = 0;
+	display index j = 0;
+	display index k = 0;
 
 	while (true) {
 		if (i >= len(a) || j >= len(b))
 			break;
 
-		c[k++] = a[i] < b[j] ? a[i++] : b[j++];
+		c[k] = a[i] < b[j] ? a[i++] : b[j++];
+		k++;
+	}
 
-		for (; i < len(a); i++)
-			c[k++] = a[i];
-		for (; j < len(b); j++)
-			c[k++] = b[j];
+	for (; i < len(a); i++) {
+		c[k] = a[i];
+		k++;
+	}
+	for (; j < len(b); j++) {
+		c[k] = b[j];
+		k++;
 	}
 
 	<end_display>
