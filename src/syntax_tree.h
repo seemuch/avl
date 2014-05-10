@@ -18,7 +18,6 @@ typedef enum {
 	concatenate,
 	math_op,
 	len,
-	cast,
 	assignment,
 	disp_exp,
 	hide_exp,
