@@ -1,0 +1,8 @@
+int main() {
+	<begin_display>
+	int a = 6;
+	print a;
+	<end_display>
+	<end_display>
+	return 0;
+}

@@ -1,0 +1,18 @@
+void test_b() {
+
+	int test_a(int a) {
+		return a+1;
+	}
+
+	int a = 1;
+	int b = test_a(a);
+
+	print b;
+}
+
+int main() {
+
+	test_a();
+
+	return 0;
+}
