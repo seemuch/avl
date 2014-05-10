@@ -12,7 +12,6 @@ TESTS = \
 			declaration_int.sh \
 			declaration_int_array.sh \
 			declaration_string.sh \
-			display1.sh \
 			display_bool.sh \
 			display_bool_array.sh \
 			display_char.sh \
@@ -22,7 +21,6 @@ TESTS = \
 			display_int_array.sh \
 			display_string.sh \
 			empty.sh \
-			expression.sh \
 			expression_bool.sh \
 			expression_bool_array.sh \
 			expression_char.sh \
@@ -31,7 +29,6 @@ TESTS = \
 			expression_int.sh \
 			expression_int_array.sh \
 			expression_string.sh \
-			function1.sh \
 			function_bool.sh \
 			function_bool_array.sh \
 			function_char.sh \
@@ -45,7 +42,6 @@ TESTS = \
 			init_test.sh \
 			insertion_sort.sh \
 			kmp.sh \
-			operator.sh \
 			operator_bool_mid.sh \
 			operator_bool_post.sh \
 			operator_char_mid.sh \
@@ -59,7 +55,6 @@ TESTS = \
 			operator_int_unary.sh \
 			operator_string_mid.sh \
 			quick_sort.sh \
-			statement.sh \
 			statement_empty.sh \
 			statement_for.sh \
 			statement_if.sh \
