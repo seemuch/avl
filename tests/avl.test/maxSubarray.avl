@@ -1,0 +1,76 @@
+int sum(int A[]) {
+	int r = 0;
+	for (index i = 0; i < len(A); i++) {
+		r = r + A[i];
+	}
+	return r;
+}
+
+int[] findMaxCrossSubarray(int A[], index mid) {
+	<begin_display>
+	int leftsum = 0;
+	bool init = false;
+	int sum = 0;
+	display index max_left = 0;
+
+	for (index i = mid; i >=0; i--) {
+		sum = sum + A[i];
+		if (!init || sum > leftsum) {
+			leftsum = sum;
+			max_left = i;
+			init = true;
+		}
+	}
+
+	int rightsum = 0;
+	init = false;
+	sum = 0;
+	display index max_right = 0;
+
+	for (index j = mid + 1; j < len(A); j++) {
+		sum = sum + A[j];
+		if (!init || sum > rightsum) {
+			rightsum = sum;
+			max_right = j;
+			init = true;
+		}
+	}
+
+	return A[max_left : (max_right+1)];
+	<end_display>
+}
+
+int[] findMaxSubarray(int A[]) {
+	<begin_display>
+	if (len(A) == 1) {
+		return A[0];
+	}
+	
+	display index low = 0;
+	display index high = len(A) - 1;
+	display index mid = (low + high) / 2;
+
+	display int left[] = findMaxSubarray(A[low : (mid + 1)]);
+	display int right[] = findMaxSubarray(A[(mid + 1) :  (high + 1)]);
+	display int cross[] = findMaxCrossSubarray(A, mid);
+	
+	if (sum(left) >= sum(right) && sum(left) >= sum(cross)) {
+		return left;
+	}
+	else if (sum(right) >= sum(left) && sum(right) >= sum(cross)) {
+		return right;
+	}
+	else {
+		return cross;
+	}
+	<end_display>
+}
+
+
+int main() {
+	display int A[] = {1,3,4,-8,-3,2,-1,0,4};
+	<begin_display>
+	findMaxSubarray(A);
+	<end_display>
+	return 0;
+}
