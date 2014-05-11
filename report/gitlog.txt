@@ -1,0 +1,1893 @@
+\begin{verbatim}
+commit 2caddd3ca010f8bd79753f51a0dcae794d720c4b
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 11 14:18:33 2014 -0400
+
+    code.sh updated
+
+commit 01d34e46f6004be8026cde861c26a21b8b1faee1
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 11 14:14:59 2014 -0400
+
+    script updated
+
+commit befac159e4c864953ae79bebca4c36657fa3e89e
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 11 14:09:05 2014 -0400
+
+    script updated
+
+commit b8ebe38cd51157b5033ccbb20bb46d081884fc0c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 11 14:05:07 2014 -0400
+
+    report done
+
+commit 57e527d63d8aaa1992062592c5190633a86753b7
+Merge: 747ea9c 9428692
+Author: seemuch <shining.app@gmail.com>
+Date:   Sun May 11 04:14:26 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 747ea9c4343c4a6ac71ea6a2ffe2f0fe41bc9a9f
+Author: seemuch <shining.app@gmail.com>
+Date:   Sun May 11 04:13:58 2014 -0400
+
+    Add type checking
+
+commit 94286929e9379ad71400246d0291b43adacb8251
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 11 02:52:13 2014 -0400
+
+    remove debug code
+
+commit ee6790a3a4c1d3ba8a3f07705b233b77e113c91b
+Merge: 2ed37fb eb37825
+Author: seemuch <shining.app@gmail.com>
+Date:   Sun May 11 02:18:53 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 2ed37fb2f2a413a70aa21b0d1231e49e51d953ff
+Author: seemuch <shining.app@gmail.com>
+Date:   Sun May 11 02:18:37 2014 -0400
+
+    Add type check
+
+commit eb3782589b59b91454c2967afa314d3f8691df01
+Merge: 3ec8584 2726622
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 23:36:56 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 3ec85845b7f97579c7022abc0c0950739b389cc6
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 23:36:43 2014 -0400
+
+    update
+
+commit 2726622fa9665534dcc751206dbeb07bf9028f68
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 23:28:36 2014 -0400
+
+    add pop, push, dequeue in AvlArray class
+
+commit aaba1bc1a686ea55b4158e8873a255479859c038
+Merge: 09859b9 8315fb4
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 22:09:59 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 09859b926075bdaab7ba1d8b1095696d5b897029
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 22:09:22 2014 -0400
+
+    add sleep for each statement when display
+
+commit 8315fb478d7d8b7e9ae86a1d696dbe9d11c1762d
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 21:32:20 2014 -0400
+
+    update mergesort
+
+commit 866ff1671f371c85330fc8d93afc8fdc4e88d8dc
+Merge: c3d1a77 1652f08
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 17:40:35 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit c3d1a77b782adfcdf969e7d46cd96c6d20c3aab0
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 17:40:25 2014 -0400
+
+    temp
+
+commit 1652f08fc15ae00774f41886477bf781abb9b194
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 17:25:09 2014 -0400
+
+    modified merge_sort_array.avl
+
+commit bb63bad726e49a2c5ed03f6ed6c9b1c28154a587
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 16:38:34 2014 -0400
+
+    nothing
+
+commit 4ed6a7e64ba42a5f01360087c1fab921630d4771
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat May 10 15:27:27 2014 -0400
+
+    fixed Issue #26
+
+commit 44f5488ed845db213207f6e8711155d4514ce062
+Merge: 2fa368b c41f57a
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 14:18:13 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 2fa368b92f7b35bb96400dd08a50f84827de04e3
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sat May 10 14:18:00 2014 -0400
+
+    mergesort and maxsubarray
+
+commit c41f57a4927000bda422dc5aadd49fc67fa7a37d
+Merge: 184857c d8faaa1
+Author: seemuch <shining.app@gmail.com>
+Date:   Sat May 10 14:02:16 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 184857cadeb5cb54be4eca0f7c741fc3787c809f
+Author: seemuch <shining.app@gmail.com>
+Date:   Sat May 10 14:01:36 2014 -0400
+
+    Modified struct identifier.
+
+commit d8faaa174e8da7bf91c8bd1ad652d6acabd33da1
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 12:53:56 2014 -0400
+
+    bug fixed test case
+
+commit 2336afebb8bdadf7f1aac4f4733fcc963f722163
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 12:48:47 2014 -0400
+
+    bug fixed empty statement
+
+commit 3d786e73df88bf22a640c2437c914dfc012c9e34
+Merge: 89e49fd 2234350
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 12:20:13 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 89e49fdd2e328399b5e15e5090e22e76218eb3c8
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 12:19:55 2014 -0400
+
+    add empty statement
+
+commit 22343501b161e43a9599039bb4cb5affc2abe052
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 11:37:35 2014 -0400
+
+    modified most of testcases
+
+commit a2b4af05e948ad8797ed692bea28c7965bfa9405
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 01:07:30 2014 -0400
+
+    fix test case
+
+commit aed7a062253d4c778903ba4dff298ba3a3f4c4ad
+Merge: 0f8e249 c166a62
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 00:48:45 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 0f8e2496e8d00f5ccfbfa785aec54ca23dd26632
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat May 10 00:48:12 2014 -0400
+
+    fix para declaration
+
+commit c166a629b0255bce47752305ab9ea383b046a591
+Merge: 3bfca76 9bd3b2f
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 00:41:04 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 3bfca76455a73e7b5c31d702b2d0647a58e60b66
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 10 00:40:31 2014 -0400
+
+    modified the error in test cases
+
+commit 9bd3b2f04b8e387bf32bb3c8d7f447a87bf8be37
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat May 10 00:38:23 2014 -0400
+
+    add a new sample code
+
+commit ef577d338c6816d3481117ad9e710de15983ddd3
+Merge: 2b2db8d bbb3ed1
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sat May 10 00:28:38 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 2b2db8d4f6d9d630a78dec6266caa351113110b1
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sat May 10 00:28:10 2014 -0400
+
+    libavl tests init_test.sh updated
+
+commit bbb3ed165803dc1b7db1cdf7a02195dd40f47fc8
+Merge: 34423ae 1b87c74
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 23:54:25 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 34423ae23cee402f09db1aa43def82f4ccb9db40
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 23:54:12 2014 -0400
+
+    more failed test cases
+
+commit 1b87c742237f75f77ee79bd467e7903b0802cde7
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 23:49:06 2014 -0400
+
+    fix char expression
+
+commit a67361a2dd57eced0ae71c55e42ccd05740b21aa
+Merge: d2860a6 1c32a4d
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 23:28:30 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit d2860a6cb58f7c3b21769dd7cd32a9ef6ffdc853
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 23:26:01 2014 -0400
+
+    add string
+
+commit 1c32a4de57094bedb371a6eec301d4ada7825b09
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 23:25:24 2014 -0400
+
+    type fixed
+
+commit 1f5d2076659d1a10dfc5e4ea52f8124a0bb385d1
+Merge: d26698f 920c6d7
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 22:54:31 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit d26698f718bafa44d3c03f3620c1e10f773c72ba
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 22:53:21 2014 -0400
+
+    fix bug assignment in declaration
+
+commit 920c6d738c2c7e177b4eac72bbd94946959ee87c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 22:53:09 2014 -0400
+
+    fixed gcc link problem on Ubuntu
+
+commit 8d64711d079fb7b3bdcfe18a2c20c94f95d3f325
+Merge: 58937c2 fb27457
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 22:43:16 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 58937c21c857ee8fcecf4e68bf291aeb9927216a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 22:43:01 2014 -0400
+
+    add support for multiple objects
+
+commit fb27457edcd95c00e480c8dc9f5fb74dda2eaad0
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Fri May 9 22:38:14 2014 -0400
+
+    modified some test cases end remove -werror option
+
+commit 73a822b5e766fb64688bf8e8ce56b8a14f628a24
+Merge: 3d908e4 dc0d3f1
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 21:59:31 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 3d908e44403dd358c45bdcffaa758516ca0dedc5
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 21:59:11 2014 -0400
+
+    correct makefile
+
+commit dc0d3f13c289992171ef102e9373d63c430bf0e0
+Merge: 65cc1b3 0ef5feb
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 21:54:02 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 65cc1b3d3b6fdec77fa682a40af20e12c00aea90
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 21:53:44 2014 -0400
+
+    add true and false
+
+commit 0ef5feb431b1eb82e9de3e42621e169ca5ba4e10
+Merge: 8f817fe 9d1b832
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 21:44:27 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 8f817fe0487b84752e4802531e3f112d6449cf8c
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Fri May 9 21:43:46 2014 -0400
+
+    add tokens in scanner.l
+
+commit 9d1b832428b16399e9c451519d1d740026728a47
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri May 9 21:35:36 2014 -0400
+
+    bug fixed
+
+commit 1a44d09ffe13ed4b6731467924a29f3ba1937b14
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 21:21:54 2014 -0400
+
+    fix bugs
+
+commit c37c1162f87ca7ebeccf43d9928cc086ce108192
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 21:13:43 2014 -0400
+
+    fix return type of main
+
+commit fcedb42453d7c67b96a2a06174e804622829bc4c
+Merge: c8d088d 0e481aa
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 20:37:26 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 0e481aa9b0f9c04638db589797a2b71fbd626b8c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 20:36:50 2014 -0400
+
+    bug fixed
+
+commit c8d088db7dbeb6b40ad7823b5abaac601a24e622
+Merge: 94e1b72 6b1139e
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 20:32:27 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 94e1b7273f553270efde446b13e7ba538cccfb2d
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 20:21:40 2014 -0400
+
+    delete cast
+
+commit 6b1139e4b661fed5475e781ed8a60809b5a49610
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 20:11:59 2014 -0400
+
+    Bug fixed
+
+commit 876e2a894098f0f4be8be03e3e2cd8c142690833
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Fri May 9 20:10:08 2014 -0400
+
+    modified the Makefile.am in tests/
+
+commit b9012e7f6e15462e1508a8d950cb01643696c280
+Merge: 8dc8aa5 96d6a6c
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 20:02:31 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 8dc8aa58c8b68bb2321aaa256d89f7b73dfc0929
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 20:01:29 2014 -0400
+
+    scanner string add sepcial char
+
+commit 96d6a6ce1cecd920c1490ceebaed365cc60ab2c5
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 19:56:44 2014 -0400
+
+    add sample code: merge_sorted_array
+
+commit 65d939181cc2aee9e8d22488710b553ff36713b4
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri May 9 19:51:42 2014 -0400
+
+    updated
+
+commit 914412809fa9864d2104431ef4808c2bc208a36e
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 19:48:14 2014 -0400
+
+    change file name
+
+commit 6071e670ee98508661c528a92c1dc7c2604e332d
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 19:47:10 2014 -0400
+
+    change function name
+
+commit 09b7dcedda41adedbc88920e7c80bd66accf7c5a
+Merge: e7bec3d 6d41746
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 18:49:35 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit e7bec3df10603eef7c30692b1674a62dfd4d8d04
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 18:48:22 2014 -0400
+
+    fix bugs in for loop, declaration and return
+
+commit 6d41746fd266783e5a177136ec58593b768a6b2b
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 18:21:30 2014 -0400
+
+    But fixex.
+
+commit 84997e08c61c3ce46184eede59fbf42de07f4343
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 17:20:13 2014 -0400
+
+    Bug fixes
+
+commit b8a4d644ef1724998933d0ba36cbb100ba85d27f
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 17:16:27 2014 -0400
+
+    Bug fixes based on Wu's comments.
+
+commit 405abbdb0f33cf6ad7fb03ae838fce32d3f1d9f4
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 16:58:16 2014 -0400
+
+    Bug fix for glutBitmapString
+
+commit 0accec5fb7fd6cb98db6956f7ef9914c705d12e4
+Merge: 44501f8 6038883
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 16:49:58 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+    
+    Conflicts:
+    	sample_code/sorting.cpp
+
+commit 44501f896ad51629da29df6fd67cf2b5bba0ad2c
+Author: seemuch <shining.app@gmail.com>
+Date:   Fri May 9 16:48:11 2014 -0400
+
+    aaa
+
+commit 60388833670e85fc5bcf6f775de5470f180534d3
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 15:17:03 2014 -0400
+
+    test
+
+commit 31ff85abeff0a4609a0d4e501041fb63d7e43992
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 14:41:47 2014 -0400
+
+    temp
+
+commit aa86cd77574527426b4f6aef7d9a0a294c842448
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 13:11:15 2014 -0400
+
+    change head file
+
+commit 0170a582b3ea242395f546d2e9aacc28aa424ae9
+Merge: 3211633 a83bca1
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 13:05:22 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 3211633e4231ef6b831ad781c31747a49235c859
+Author: stella <zhangqx10@gmail.com>
+Date:   Fri May 9 13:02:33 2014 -0400
+
+    fix bugs. begin to use symble table
+
+commit a83bca19ff758349dd1b8b5b3e65396d3aebc9fe
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri May 9 12:54:09 2014 -0400
+
+    Update README.md
+
+commit 8c2d7b38969396cf5a8472e52c6bdf628f942a52
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 4 14:10:24 2014 -0400
+
+    bug fixed
+
+commit bbb500bb3691e87d1afb1da124eca56a208df9fb
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun May 4 14:06:58 2014 -0400
+
+    bug fixed
+
+commit 9a3c5b6f21e98ea48a175b712848a0a9949a7cd6
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 3 22:09:12 2014 -0400
+
+    modify the last line problem
+
+commit 31f4598b61004b7a00c5a1d530b79d3059794f40
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sat May 3 21:49:31 2014 -0400
+
+    split many test cases, and add some new cases
+
+commit b766cc637978ee5413b9c7af92fb50d10108aed0
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat Apr 26 16:53:45 2014 -0400
+
+    add default case
+
+commit 9d484d7175c26c9afcbbb63138553b38f7d3c48b
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat Apr 26 16:49:33 2014 -0400
+
+    add default to switch case
+
+commit 1966f67a19d120de3b0333c1ce38c30f761ba934
+Merge: 32ffd50 004beba
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat Apr 26 16:23:59 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+    
+    Conflicts:
+    	sample_code/sorting.cpp
+    	src/Makefile.am
+
+commit 32ffd50dd9bbf098106da1d83dabbedd37b272c3
+Merge: 747e67e 5d831a6
+Author: stella <zhangqx10@gmail.com>
+Date:   Sat Apr 26 16:20:47 2014 -0400
+
+    Merge branch 'shining'
+    
+    Conflicts:
+    	sample_code/sorting.cpp
+
+commit 004beba7e9e5dc7e14fcda6fc0e904d60c79ccb6
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Apr 22 22:08:01 2014 -0400
+
+    implementation of AvlSleep updated
+
+commit 5d831a6b3d18836b7ce11d60e37602080d110728
+Merge: bd39b0b df518c9
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 20 18:04:18 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/parser.y
+
+commit bd39b0b6c1ca5268f94a326792a9d8e7a92d65b2
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 20 17:59:30 2014 -0400
+
+    modify parser.y
+
+commit 3499ef1d701242b4b6e7790d0dc7ba5627eb50c8
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 20 17:50:41 2014 -0400
+
+    simple compiler. err at begin and end of functions
+
+commit a8de1f18e86f8ff3cdedb6ed9105288d94a57d3e
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 20 01:03:34 2014 -0400
+
+    added AvlString
+
+commit cfd1fc2bae78f30890e96b5e0f63721f2a1ce527
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Thu Apr 17 22:25:04 2014 -0400
+
+    AvlBool: chage display value
+
+commit 07aa758b2d7915ea9659a5bb88dba0f8e121102c
+Merge: f286664 36d6006
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Thu Apr 17 22:02:47 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit f2866647bad0251a287b7ff41ad25614ba1f8f15
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Thu Apr 17 22:02:24 2014 -0400
+
+    Add AvlBool
+
+commit 36d6006fc4b41c3fd9deee911662244229c88906
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Apr 17 11:39:54 2014 -0400
+
+    adjust CPPFLAGS
+
+commit 52586b1c9b9864470dbfb031c5466b913c4b0948
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 16 12:47:45 2014 -0400
+
+    Bug fixes
+
+commit 44c97112e49f86d05b8bade70ef074cab952cea4
+Merge: df518c9 6f02d21
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 16 12:04:00 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+    
+    Conflicts:
+    	sample_code/sorting.cpp
+
+commit df518c9d767e32b676f42982d3dcd90d8c3dafbe
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 16 11:56:32 2014 -0400
+
+    Bug fixes.
+
+commit a546eea94ba56803ab6c2c3d8b0fc0f7d04ab21c
+Merge: 702b246 91fa3b1
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 16 11:51:33 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/parser.y
+
+commit 702b246ecbd581b43272b4494258cf3bd688e58e
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 16 11:47:10 2014 -0400
+
+    Added AvlIndex and AvlChar
+
+commit 6f02d21aa2bdd92a335709d41580e27415649285
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Apr 15 17:34:13 2014 -0400
+
+    scanner updated
+
+commit 52d6a54cccf71c04eab312a7dc4c1c9dc4843740
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Apr 15 16:26:06 2014 -0400
+
+    lex rules updated
+
+commit 4881a6a56ecb48b2bd81963d3f351168f7395400
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Apr 15 15:16:18 2014 -0400
+
+    bug fixed
+
+commit f1d81b673e3236c9dd27b50a01c12c9c0f7cd875
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Mon Apr 14 23:52:49 2014 -0400
+
+    modify the makefile to run testcases
+
+commit 94d6f9aa09edca874d1f80e0c6464b4342f4cb3b
+Merge: 35e3427 4e8ace7
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Mon Apr 14 23:47:37 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+    
+    Conflicts:
+    	src/scanner.l
+
+commit 35e342731404d9e0b4e1956c34fe618b7a9347de
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Mon Apr 14 23:39:08 2014 -0400
+
+    added some testcases , hehe
+
+commit 4e8ace71cd22a89d212a0a0d86bbb85d16c7288c
+Merge: 708973d 6c5c445
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Mon Apr 14 21:41:10 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 708973d875a7991817e1e2976f6f051703928591
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Mon Apr 14 21:40:44 2014 -0400
+
+    sample code typo fixed
+
+commit 6c5c4458f2949896c04d313e2e4b4747d56b6711
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Apr 14 21:36:51 2014 -0400
+
+    variable name typo fixed
+
+commit 99b1a46d41aba0519ae760a42aade2517256885e
+Merge: ac8ab33 91fa3b1
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Mon Apr 14 20:00:36 2014 -0400
+
+    Merge branch 'shining'
+
+commit 91fa3b17c707cba0260d677169581749a1726945
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Apr 10 17:29:00 2014 -0400
+
+    updated
+
+commit ac8ab33a4395305a57253c8b3eacfa32be049b2b
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Apr 10 17:13:07 2014 -0400
+
+    Add astyle for code formatting
+
+commit 9fd0f1ec4c0f9056c42f39870fad57ccf2927cd8
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Apr 10 17:10:52 2014 -0400
+
+    add code formatting for target code
+
+commit b97a5768798e58d1e150876c4e99abf28bc867b3
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Apr 10 14:36:18 2014 -0400
+
+    fix: not checking return value of mkstemp()
+
+commit 063ca3be81b6e356250f16ba842a606c07f38afe
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 9 23:06:51 2014 -0400
+
+    typo fixed
+
+commit 3dd8ec1b7f54f3ed99c829459a024969d72a169f
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Tue Apr 8 10:25:58 2014 -0400
+
+    Complete parser.y
+
+commit 00a91ba3d23b187339bb1dfd6faaabb05349b107
+Author: stella <zhangqx10@gmail.com>
+Date:   Tue Apr 8 10:09:11 2014 -0400
+
+    delete main function
+
+commit aeb36ad9f1b93a3c9f7f74754fd4d0441b9b46ce
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Mon Apr 7 19:27:50 2014 -0400
+
+    Complete parser.y
+
+commit fd8450c40457f5bb12c11c5c68a84dd7e6ac0a19
+Merge: 74fd021 873c73b
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Mon Apr 7 19:18:42 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 74fd0213ab39cf593adf0e8780f54a09957f3707
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Mon Apr 7 19:17:47 2014 -0400
+
+    Modified parse.y
+
+commit 873c73b0a8a75f7e0e4b2f360809e7c4ef4f9cd9
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Apr 7 14:08:53 2014 -0400
+
+    remove comment() completely from scanner.l
+
+commit 30e0be689c9220eb319e3f0954207978cb491ae0
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Apr 7 14:06:26 2014 -0400
+
+    updated comment implementation in scanner
+
+commit f7fcbb65347d19348d8ffa643dcd138823d423eb
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 22:44:53 2014 -0400
+
+    Bug fixex.
+
+commit 22d3df90975a387479f85f9909c977b9846e4649
+Merge: 1ea7ecd 1f033f0
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 21:13:31 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 1f033f0f1ab180924f5f249970986067d2fcecf0
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 21:12:29 2014 -0400
+
+    Modified makefile and scanner.l
+
+commit 1ea7ecdc0210a9ed7b78fa9ddc2c7a4b59278514
+Merge: 674d454 4dab6ad
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 21:11:51 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/parser.y
+
+commit 4dab6ad105b1254aefb1638339391d5d8fd3c0b5
+Merge: f9548f8 3fcbd84
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 21:10:28 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/parser.y
+
+commit 674d454cb31a7b2636294277681689ea808f7514
+Merge: c70a4a2 3fcbd84
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 21:10:00 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit c70a4a2f268a98693aa447ac30747b8b16218c3a
+Merge: 1dd4e39 0838743
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 21:09:40 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+
+commit f9548f85dc42c04dc840108a1a5941f7c266783e
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 21:05:48 2014 -0400
+
+    asdfasfd
+
+commit 3fcbd84bdc8f062f1741f608a0a6023ed35b8278
+Merge: 99ec7a8 0838743
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 21:00:53 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 0838743e449cc8f3c02169c8ececa4e64bee0895
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:59:37 2014 -0400
+
+    Bug fixes
+
+commit 99ec7a8b8b63c90b2e4e1c234fa0a2eb8d9e21e8
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 20:59:24 2014 -0400
+
+    updated statement
+
+commit 1dd4e39ebe0b87e877e3af7e877e544613df6863
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 20:54:00 2014 -0400
+
+    create tree
+
+commit 8ba55f568a064ef8f3c77498ac1c9b4c81ed486d
+Merge: 6a008d3 6667eb8
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 20:53:12 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 6a008d3ae46f61c72d96d42a557b8a6779451c4e
+Merge: de2f0ea 6b26684
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 20:52:34 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+    	src/parser.y
+
+commit 6667eb82b293d97ff3882a9e51e150b4057255f7
+Merge: 18526ae 6b26684
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:51:21 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 18526aed04ade6dc081b39836d83f134d200febb
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:51:03 2014 -0400
+
+    Modified .y
+
+commit de2f0eaf9fdb83a75363fab441618400e986ccc7
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 20:46:49 2014 -0400
+
+    modified include.h and parser.y in the section of expression
+
+commit 6b266847b8efc776251c7b950df343f3504ab1b7
+Merge: 8eaddda e5c354a
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 20:45:10 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+
+commit 8eaddda465bd0000cff5918a5263d91209a28a9a
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 20:44:08 2014 -0400
+
+    statement
+
+commit e5c354a605362a613aa76d5b2c788f84a0119faa
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:25:35 2014 -0400
+
+    Modified include.h and .y
+
+commit 000ace602fb19afbba4a78f18ddccd1aba45a1eb
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:18:09 2014 -0400
+
+    Modified .y
+
+commit 07f72e29d98a6d52ba39cdf077c9eef97e440ff8
+Merge: a52065b e2537d1
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 20:17:02 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+
+commit a52065ba17e0282e7acf33b15c0d32fcd1898d6e
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 20:14:51 2014 -0400
+
+    haha
+
+commit e2537d1750a245391ceb7307741d3ad554fa7343
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:14:20 2014 -0400
+
+    Add creator.
+
+commit ada2cbb3f68fe9c98d7960802e18769dcac8e715
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 20:10:34 2014 -0400
+
+    Operator node function defined.
+
+commit a0a78718d8f9f04c575bf07e405f6fd34f9b4c03
+Merge: 84af314 116a191
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 20:00:31 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+
+commit 7fb304dd0422d1705b700df379e4d3a09d197ad4
+Merge: 5439b7a 116a191
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 19:59:41 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+    	src/parser.y
+
+commit 84af314ae0c3e05c8354f715490cef45941e7b0b
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 19:58:10 2014 -0400
+
+    added some operators
+
+commit 5439b7aad53e92575d3b282c8d2943863df8466f
+Author: MackeyZheng <bearzheng2011@gmail.com>
+Date:   Sun Apr 6 19:55:50 2014 -0400
+
+    yu zheng
+
+commit 116a19150422d66f0d7788aae0a53002e5ab66da
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 19:55:06 2014 -0400
+
+    Operator API updated.
+
+commit 0a6ff9ddc18d9009d31e83bc9bd07d0f16b4f9a6
+Merge: e002789 6e50ddd
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 19:43:58 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+
+commit e002789497cbd1ad4e1b219b9380aba0ce922baf
+Author: stella <zhangqx10@gmail.com>
+Date:   Sun Apr 6 19:39:40 2014 -0400
+
+    change include.h
+
+commit 6e50ddd7dccbe658f6470ab18381584fed8a7827
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 19:26:58 2014 -0400
+
+    Modified included.
+
+commit 4e8ddc7d2c5f05d9dc59101efb0e7a71eef90fea
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 19:07:31 2014 -0400
+
+    Modified include.h
+
+commit fbee3b4da53412cd635a23a5320d78bccf1bb50d
+Merge: 8d65cb4 410faa7
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 19:06:09 2014 -0400
+
+    Merge branch 'shining' of https://github.com/wqfish/avl into shining
+    
+    Conflicts:
+    	src/include.h
+
+commit 8d65cb447e427e848460efe7953e21f72cb83f69
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 19:04:50 2014 -0400
+
+    Modified include.h
+
+commit 490970c82eb0f3f7838e85b5ccaf8f7f91080712
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Apr 6 15:26:19 2014 -0700
+
+    implemented a list for symbol tables
+
+commit 4a8b96ef18b7f8e458c2187b3c52703ca178b633
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Apr 6 14:08:28 2014 -0700
+
+    implemented a symbol table
+
+commit 10a2f5a0dcbd42be53af491b28d748305c6036d7
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Apr 6 13:03:22 2014 -0700
+
+    modified interface of sym_list
+
+commit 410faa7358ab6091e1ecb9d9d9a772d5c699acc1
+Author: Jiuyang <zhaojiuyangsjtu@gmail.com>
+Date:   Sun Apr 6 15:49:20 2014 -0400
+
+    added oprNodeType
+
+commit c0622101b9325ca7b2964428b0517eb2d11bb427
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Apr 6 12:36:20 2014 -0700
+
+    implemented a linked list for symbols
+
+commit 1eaaeedd6fb092d1c674219b3e4517e4ff953f4f
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 14:49:18 2014 -0400
+
+    Change include.h
+
+commit a097694c73c685e2dbfa6d52444609c06ca243a4
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 14:37:48 2014 -0400
+
+    More .y
+
+commit f052c723e5cc64aeff0fd3e27dbf448740e08111
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 13:37:49 2014 -0400
+
+    Add include.h
+
+commit cd693b97ad887299f21cddeda6582fc03b962015
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Apr 6 12:44:14 2014 -0400
+
+    Getting started on .y and .l
+
+commit 747e67e3a46ff475e2c3addcce863173fe56714d
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Apr 6 09:35:36 2014 -0700
+
+    sample code updated
+
+commit b42e98f344c16873ef5de81d7627a44a64da3ea7
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Apr 5 10:37:30 2014 -0700
+
+    add -Werror option to configure.ac
+
+commit 114a457f3722fb225603fc72de76aef289b9ff54
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Apr 3 00:53:55 2014 -0400
+
+    sample code updated
+
+commit 19897a07b2135428d76912241631f0e75b3baf91
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 2 22:01:08 2014 -0400
+
+    updated scanner
+
+commit 23d68107e3013a246302c28332e26c9bd6924719
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 2 21:59:12 2014 -0400
+
+    reduce # random numbers in test cases
+
+commit d621f64f80218751247544e44083525ce727490f
+Merge: 09e2359 51d1fa7
+Author: stella <zhangqx10@gmail.com>
+Date:   Wed Apr 2 21:31:51 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 51d1fa73e511e0f3db8db0fdbb7cb46281f77921
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 2 21:28:15 2014 -0400
+
+    remove -Werror option from sample_code
+
+commit 399451d21676a2e1f8197194e64690d261fc1929
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 2 21:22:49 2014 -0400
+
+    remove "-Werror" from configure.ac
+
+commit 09e235953054348cfd71476dee73bcb4e85caff1
+Merge: 81cf015 41a54b9
+Author: stella <zhangqx10@gmail.com>
+Date:   Wed Apr 2 21:21:08 2014 -0400
+
+    Merge commit '41a54b91176c7d8d7992f3d3b74a4bc2f3d3716f'
+
+commit 81cf0155d77c4c5151d6c822588656a26c9086b0
+Author: stella <zhangqx10@gmail.com>
+Date:   Wed Apr 2 21:20:58 2014 -0400
+
+    backup
+
+commit 46695a6cd8d29a67b754fd5827d724ee38a7d66f
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Apr 2 21:20:31 2014 -0400
+
+    typo fixed
+
+commit 41a54b91176c7d8d7992f3d3b74a4bc2f3d3716f
+Author: stella <zhangqx10@gmail.com>
+Date:   Wed Apr 2 21:07:17 2014 -0400
+
+    Update parser and scanner.
+
+commit e31b2ae3012d4a463a3cce927d1b406462da3f92
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Wed Apr 2 19:29:48 2014 -0400
+
+    Erase debug print.
+
+commit 85c5ccb844940351d8ef5a9e8eecc430822e33d0
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Mar 30 21:10:40 2014 -0400
+
+    Display array name.
+
+commit d01ec22c1acc8a2e02193239fe2c2f5bf8875586
+Merge: 5ac0ca7 ec57d9b
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Mar 30 20:36:49 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+    
+    Conflicts:
+    	lib/AvlTypes.h
+
+commit 5ac0ca7c72418faa704e78732968f14c611f8be7
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Mar 30 20:32:22 2014 -0400
+
+    Show indices in AvlArray
+
+commit ec57d9b51979f79af972037d3c470b4c0501f875
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 28 22:25:03 2014 -0400
+
+    add support for print
+
+commit cd7a58955de783d3a87093481416ee2ed49f997d
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 28 15:26:09 2014 -0400
+
+    sample code updated
+
+commit 3da6fbaf6bcfacf29714796f1fa2194113f1739c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 28 14:43:15 2014 -0400
+
+    implementation of avlSleep() updated
+
+commit 1e9e2c1825e9375a78e0a1a83b69f9406744b907
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 26 20:18:30 2014 -0400
+
+    update support for <begin_display> and <end_display>
+
+commit acccf9dc335a51fad00291469e38b2db66a5172d
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 26 19:43:19 2014 -0400
+
+    update support for <begin_display> and <end_display>
+
+commit 5f3d1ee2d8d32f4ae98d8d1762ec69815f7c1661
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 26 17:46:02 2014 -0400
+
+    place the array in the middle of the window
+
+commit 0b8c36b4ee3d2bebba57b35261cde403fc207b92
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 26 17:10:01 2014 -0400
+
+    add highlight support
+
+commit b82710ba7cd72a5a8152b31d1e54c1ec3e013749
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 14:53:37 2014 -0400
+
+    for loop updated
+
+commit 1170a66ebab935a559c5e2f87b170bcb4747a97e
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 14:39:07 2014 -0400
+
+    remove AvlArray::width()
+
+commit 815bcc0387e80a9789cf7cd4922a02632891c0c8
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 14:22:46 2014 -0400
+
+    private derivation -> a vector member for AvlArray
+
+commit 2e8e352a9230412beb4848488cd70bb2f855cccf
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 14:01:08 2014 -0400
+
+    change update() policy for AvlInt
+
+commit ef3906141485a1cafe1bee563f36b69e722656ce
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 10:57:27 2014 -0400
+
+    fix potential race conditon in moveObject
+
+commit de67b58ece0cd57a863a95d294ed89b9d233be4c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 09:39:19 2014 -0400
+
+    add .gitignore files
+
+commit 8a5fca6fba1b09d5476842d1639f8817082efca6
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 25 09:25:17 2014 -0400
+
+    modified makefiles
+
+commit c8cae9e2d954df5282fec6d63a463087b0026e7f
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 16:39:15 2014 -0400
+
+    missing -lavl option when invoking g++
+
+commit 6ecb17b75756a15d308ebeae58c5c09e2e986c32
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 16:32:28 2014 -0400
+
+    updated
+
+commit 76281fcfcb95dc5b2f09a78db1ba1f62954aeedf
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 16:20:00 2014 -0400
+
+    modify some variable names to avoid conflicts with users
+
+commit 07802b811f6ff364d0e1d0e81dedc8677b459e1c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 13:46:57 2014 -0400
+
+    remove pthread completely
+
+commit 34c2cd520f9d2e342ca884cceaeaaeb3a4d82135
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 13:12:38 2014 -0400
+
+    add condition variable in sample code
+
+commit a077ef6c28a639d31efbaed896dea519b6e0635f
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 11:54:29 2014 -0400
+
+    change 'bool shouldUpdate' to mutex
+
+commit 53178f3f961bbeaad2d01ea7f0a3724e829bb4bc
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 11:02:28 2014 -0400
+
+    add some sample target code
+
+commit 670d5c0c8bb65a80400ab433e184c7d1e15c3afa
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 10:54:06 2014 -0400
+
+    add support for <begin_display> and <end_display>
+
+commit 57eca827ac3b8e6d010205d8632559cf19f723a9
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 24 00:00:33 2014 -0400
+
+    overload ++ and -- operator for AvlInt
+
+commit accc8dc02efe72c99f9ddfee4278b859d63e7c75
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 23:48:31 2014 -0400
+
+    remove pthread, add standard c++ thread
+
+commit 2f2a3d9f9203ae3d7c9aee2bd6268d1940702eb5
+Merge: 5acdaf7 f3f2f07
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 20:20:12 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 5acdaf7f5fd3b7a7560a17ccc73cdf8a7f454f38
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 20:19:42 2014 -0400
+
+    add subarray method for AvlArray
+
+commit f3f2f070091663fd01496f902f2c258dc478fc83
+Merge: ffa86f5 b610d7f
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Mar 23 20:08:43 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit ffa86f5d8f34c445b7becd46d7861f2436ffbd4f
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sun Mar 23 20:04:18 2014 -0400
+
+    Bug fix.
+
+commit b610d7f0cc78cdfb35aefc225cb40e3fbaf38dd2
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 18:37:21 2014 -0400
+
+    In AvlArray, change pointers from T* to shared_ptr<T>
+
+commit 6d5aff122991400aba77e766d552d09276d68a12
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 18:02:28 2014 -0400
+
+    New implementation: every element in AvlArray is a pointer to an AvlObject.
+
+commit 40a7f4c95ecec1dc23deaed61bc31c0c475f36c9
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 16:02:55 2014 -0400
+
+    add delay in AvlVisualizer::addObject
+
+commit c7fb66d4070aa000972a0a2d6f443ef2a0ca6b8a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 15:41:54 2014 -0400
+
+    add swap_element for AvlArray
+
+commit 7bd8442c299e9f28c5c0da3e0fbb8cae08e0903a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 13:14:45 2014 -0400
+
+    overload relational operators for AvlInt
+
+commit de2f1d50b171af5c8afcd46dffef7e9223be73ba
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:55:48 2014 -0400
+
+    fixed the issue that multiple avl instances are sharing the same
+    intermediate c++ file.
+
+commit b6e5784ad915b673017d607bd9916e2884175a96
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:25:43 2014 -0400
+
+    Update README.md
+
+commit 0d944a5d6d65c7abe89072901b531698591b7612
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:19:42 2014 -0400
+
+    bug fixed
+
+commit 7d8d082d171e52648009e8b62196746c8a6cfea4
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:16:47 2014 -0400
+
+    add delay value for AvlObject
+
+commit 91261dbe6439625470b6537ae541cb31ef34d47d
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:07:03 2014 -0400
+
+    add avlSleep()
+
+commit cb8798fa1c1fc33afb6faf4adec65a63ff37a6b2
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 23 11:06:15 2014 -0400
+
+    updated
+
+commit 438281b2b6e803700df2630731e8a286a33f4c66
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 23 10:30:32 2014 -0400
+
+    Update README.md
+
+commit d91bd5f41d2739462b158c368ba4347e4413fed6
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 23 09:16:41 2014 -0400
+
+    Update README.md
+
+commit f7a35ed4db60c5d527fe0f894d4d422ca9def942
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 23 01:05:10 2014 -0400
+
+    Update README.md
+
+commit d95b3eb856be5ed92a962b05a88c477c81b691c9
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 23 01:04:18 2014 -0400
+
+    Update README.md
+
+commit 64058064d4f28448ca70469f052e6ca4f1eceb4e
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 22:29:24 2014 -0400
+
+    typo fixed
+
+commit e4a7e9cb9e4cab68b757b7667fb20555fa63f5b1
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 22:09:38 2014 -0400
+
+    typo fixed
+
+commit e49f4a7074b8cd55ba01b234f3d097da81cea8f0
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 22:01:57 2014 -0400
+
+    new scripts
+
+commit 0d4f966bdf2a9e8a5f516b22e649c0a0a36a3b3b
+Author: Shining Sun <shining.app@gmail.com>
+Date:   Sat Mar 22 21:56:11 2014 -0400
+
+    Four sample codes, by Shining Sun.
+
+commit e1cd9382d81eec89d9342d744fed3d1477cfcb03
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 21:03:35 2014 -0400
+
+    Add mutex support for AvlObject
+
+commit e43b64e75bc1a8561e7a8c54f368a2e6a73a2929
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 19:57:57 2014 -0400
+
+    bug fixed.
+
+commit 5be3e2f7e19205bb348657eb5af6393dccb6fee2
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sat Mar 22 19:45:30 2014 -0400
+
+    add test scripts for avl
+
+commit 8727ce42fcf11cd8dd9e2fefd36bf6ee3487198d
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 23:12:08 2014 -0400
+
+    test cases updated
+
+commit 96bbaf03e6add8f2f709f3226b812244295c2185
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 21:08:34 2014 -0400
+
+    bug fixed
+
+commit 9a61d21fbfb8faf63c9b8c736ab714c6a707c142
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 20:58:49 2014 -0400
+
+    bug fixed
+
+commit 2e6cd121e33b6f1583d21514c8cf806d915a086c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 20:43:04 2014 -0400
+
+    test scripts updated
+
+commit 9418c050040180ed7efc25d046ccc89c158da883
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 20:39:39 2014 -0400
+
+    More efficient random array generation.
+
+commit 185ecc7f3bfed885a09f12e54df4554775d25c1c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 20:23:26 2014 -0400
+
+    test scripts updated
+
+commit 9e36068c98aceec56bb116ffc1a6efd570b3ff20
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 19:34:06 2014 -0400
+
+    test case updated.
+
+commit 8d6ac7a01f566dbefd6ee81257074251efc7d206
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 16:23:44 2014 -0400
+
+    Update avl.c
+
+commit 349d458b2f0610a4bf129f219999443210efb74a
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:56:53 2014 -0400
+
+    Update README.md
+
+commit 1f7d27aeda0abf520f3d27cebb9e88d772ffc61c
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:45:08 2014 -0400
+
+    Update README.md
+
+commit 9dcf0ec61aee3678d76bb18bae4894f2ff599f6b
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:39:00 2014 -0400
+
+    Add new test case
+
+commit 7a8a9d50339a02bc8a3635d8d3e7bf28b1ed4ebf
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:08:24 2014 -0400
+
+    Rename AvlInt_assign1.sh to avlint_assign1.sh
+
+commit 69fffad8cd8af836bab74dbb1a1eabdafe61ce0b
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:08:04 2014 -0400
+
+    Rename AvlInt_assign1.cpp to avlint_assign1.cpp
+
+commit dd75a87faaecdcd6f1399b88ae68c5361b4397ce
+Merge: 8215a3d b4ca60a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:06:59 2014 -0400
+
+    Merge branch 'master' of https://github.com/wqfish/avl
+
+commit 8215a3d50e8c81a0d1d0a906ae0c74ac29d3a040
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 15:06:35 2014 -0400
+
+    add a test case
+
+commit b4ca60a6a250e71467d8df4a805700bb3dc85a79
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 14:51:59 2014 -0400
+
+    Update README.md
+
+commit 04e64705f7ae03b319138a4bf01abff5bcd4d2e4
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Thu Mar 20 14:49:28 2014 -0400
+
+    Update README.md
+
+commit d20d1001d57a814875a2be8e4f4215dc66b83e6e
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 14:38:31 2014 -0400
+
+    test case updated
+
+commit 5b07ec526747e280135073dc1ee5776537a3f0bc
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Thu Mar 20 12:07:53 2014 -0400
+
+    Add initial testsuites
+
+commit b6d2df491da0e5cf17f5b1f4c3d15588807bb420
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 19 16:56:26 2014 -0400
+
+    bug fixed
+
+commit 04089a9285f373acef5fbec3164ec315fa6f7695
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 19 15:06:20 2014 -0400
+
+    AvlArray updated
+
+commit 9838beca37dc4c8cf6f7ee9189ba2ce2c878ca7c
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Wed Mar 19 10:54:32 2014 -0400
+
+    Add partial array visualization support
+
+commit 987b10fbc29dbb63e82ee888d9db8e932c4165db
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 18 11:13:46 2014 -0400
+
+    g++ options updated
+
+commit 8f13f045348d67e694dbf564bb4e0d0bbab7a006
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Tue Mar 18 10:21:16 2014 -0400
+
+    CFLAGS and CPPFLAGS updated.
+
+commit 1e4d3c97634ee59cb8ea9b1e25056eafd54a782b
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 17 19:10:30 2014 -0400
+
+    updated AM_CFLAGS and AM_CPPFLAGS in Makefile.ams.
+
+commit 4a91337abd9aa66dc4215c5aa207b1add997aaba
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 17 16:21:23 2014 -0400
+
+    Built shared library.
+
+commit ed6a6873039b6690b5e19774a5df05290c71932a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 17 11:35:23 2014 -0400
+
+    operators of AvlInt updated.
+
+commit a5e2dca1e78c4d6f90c91c0e2ff3904daefd39a7
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Mar 17 00:34:15 2014 -0400
+
+    Basic opengl implemented!
+
+commit 7493ee69f0b2edf7e87e81e8dc678aa92f3c6e15
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 23:04:41 2014 -0400
+
+    Added object rendering.
+
+commit 5d6ba5d98f6e494b9011c0b82f91b6c014d2e0c5
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 17:05:45 2014 -0400
+
+    Added AvlObject and AvlInt classes.
+
+commit 76a152237f1bc7cf3333ac46616599a5c09c9fdd
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:58:09 2014 -0400
+
+    define -> const
+
+commit 6307fa34bf44dd4e82a0fb68d0bceaebf318a06b
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:12:26 2014 -0400
+
+    Update README.md
+
+commit 80c37deeb72e895b8e837ec3729fc80eacf99d03
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:08:46 2014 -0400
+
+    Update README.md
+
+commit 0cf338d3f0da4668d9a6d85f7f24873ca3972788
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:05:24 2014 -0400
+
+    Update README.md
+
+commit 4f80b9b773d3739780eb2f769052db6e3bba667b
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:01:23 2014 -0400
+
+    Update README.md
+
+commit 2de3fec2f3b5123aa90ae8df1eaa60838b36c712
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 15:00:25 2014 -0400
+
+    Update README.md
+
+commit dcfdfff2c64baf4c1dbf644180fffd3074578938
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:58:42 2014 -0400
+
+    Update README.md
+
+commit ec0e18ddbfa887ccb24332d8f76d7e0c7867cf40
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:57:35 2014 -0400
+
+    Update README.md
+
+commit 956c93487c72a1c3a57d3505d5c463264bba2b95
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:54:52 2014 -0400
+
+    Update README.md
+
+commit 34441f408b5c6bca997078502a54544be079ed80
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:51:15 2014 -0400
+
+    README updated.
+
+commit 565793d67b3798ea87f8473ba520b3f40dcb2e97
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:22:11 2014 -0400
+
+    updated
+
+commit be135fbcd76bdc16b4b0b2ce34a99f9298eb3cf1
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:20:13 2014 -0400
+
+    Updated Makefiles.
+
+commit 5d91174e5135327ee6efa4013b43e80433cd3268
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 16 14:18:44 2014 -0400
+
+    Added avl libs.
+
+commit c19d8efae0f8acc216c6b8f09abff38a4df61955
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri Mar 14 20:54:18 2014 -0400
+
+    updated.
+
+commit 5aaf691d9a77240e3b01354dcd3f4ae312209364
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri Mar 14 19:03:02 2014 -0400
+
+    Bug fixed.
+
+commit 1bf2fdcd7e1dab5dbafe5c59e5cb93ae6ace0fb5
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 15:24:53 2014 -0400
+
+    updated
+
+commit e897611f7163992cfce6cd46d0e91817161568f8
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 15:07:53 2014 -0400
+
+    updated
+
+commit dd8383e53b885914360b04a0a7ab18cbfa1910db
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 15:00:21 2014 -0400
+
+    Bug fixed.
+
+commit 2eaaa0507a4ee2a3567f7b22baa7eb1e18dd506e
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 14:43:46 2014 -0400
+
+    Added g++ for compiling the parsing result.
+
+commit df0042a959f4903ede3b7dedc96202077e9b9e48
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 14:08:54 2014 -0400
+
+    Change input/output from stdin/stdout to files.
+
+commit 85c0a48cbb1b6fb014d23e6238c920fb5215e13f
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Fri Mar 14 13:32:48 2014 -0400
+
+    Command-line parsing updated.
+
+commit 53f67db5fe9d37974609e658e7dbc8b07a58967c
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri Mar 14 02:01:12 2014 -0400
+
+    Move command-line parsing into a single function.
+
+commit 45ec98e02104be7b9f18a1936923305a155dbc78
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Fri Mar 14 00:25:13 2014 -0400
+
+    Added command-line options parsing.
+
+commit 4bf0f2ad3e00423388674cc2f8404a485356b6c8
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 9 19:43:07 2014 -0400
+
+    Modified readme.
+
+commit 06e04a99af06af326e6d9d90bd7726ed89c0880a
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Sun Mar 9 19:41:33 2014 -0400
+
+    Added build instructions.
+
+commit 786029dfcc339d034eca05aa4538299d32fbe991
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Sun Mar 9 19:26:15 2014 -0400
+
+    Build environment initialized.
+
+commit 41d4abe016878ab7de14899b6f821801ee3c9887
+Author: Qinfan Wu <wuqinfan@gmail.com>
+Date:   Mon Feb 24 19:43:13 2014 -0500
+
+    Added main function.
+
+commit 1092302511c8c744001af4e85c78a01c5e4b5488
+Author: wqfish <wuqinfan@gmail.com>
+Date:   Mon Feb 24 16:40:23 2014 -0800
+
+    Initial commit
+\end{verbatim}
