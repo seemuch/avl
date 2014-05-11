@@ -239,12 +239,12 @@ int generateOpNode(oprNode* opr) {
 			newLine = 1;
 			break;
 		case exp_state:
-			if (needSleep) print_append("avlSleep(0.3);", 1);
+			if (needSleep) print_append("avlSleep(0.15);", 1);
 			newLine = 1;
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(";", 0);
 			newLine = 1;
-			if (needSleep) print_append("avlSleep(0.3);", 1);
+			if (needSleep) print_append("avlSleep(0.15);", 1);
 			newLine = 1;
 			break;
 		case declar_state:
