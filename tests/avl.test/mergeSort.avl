@@ -1,0 +1,68 @@
+void mergeSort(int A[]) {
+	if (len(A) <= 1)
+		return;
+	
+	display index s = 0;
+	display index e = len(A) - 1;
+	display index m = (s + e) / 2;
+	
+	<begin_display>
+	mergeSort(A[s:(m+1)]);
+	mergeSort(A[(m+1):(e+1)]);
+	<end_display>
+
+	int tmp[] = A[s:(m+1)];
+	display int L[len(tmp)];
+	for (index i = 0; i < len(tmp); i++) {
+		L[i] = tmp[i];
+	}
+
+	tmp = A[(m+1):(e+1)];
+	display int R[len(tmp)];
+	for (index i = 0; i < len(tmp); i++) {
+		R[i] = tmp[i];
+	}
+	
+	display index l = 0;
+	display index r = 0;
+
+	<begin_display>
+	for (index i = s; i <= e; i++) {
+		if (l == m - s + 1) {
+			while (r < e - m) {
+				A[i] = R[r];
+				++i;
+				++r;
+			}
+			break;
+		}
+
+		if (r == e - m) {
+			while (l < m - s + 1) {
+				A[i] = L[l];
+				++i;
+				++l;
+			}
+			break;
+		}
+
+		if (L[l] <= R[r]) {
+			A[i] = L[l];
+			++l;
+		} else {
+			A[i] = R[r];
+			++r;
+		}
+	}
+	<end_display>
+}
+
+
+
+int main() {
+	<begin_display>
+	display int A[] = {2, 4, 1, 10, 8, 7, 5, 5, 3, 3};
+	mergeSort(A);
+	<end_display>
+	return 0;
+}
