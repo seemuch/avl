@@ -21,20 +21,15 @@ extern FILE *yyout;
 char** paraList;
 int paraCount;
 int mainFun;
+int needSleep;
 
+// function for generate code from syntax tree rooted at nodeType* root
 void avl_code_generator(nodeType* root) {
 	printf("begin translate.\n");
-	/*sym_table_init(&funTable);
-	if (buildFunTable(&funTable, &root->opr)) {
-		printf("Fail\n");
-		return;
-	}
-	*/
 	print_header();
 	paraList = NULL;
 	int ret = generateSubtree(root);
 	freeTree(root);
-	//sym_table_destroy(&funTable);
 	if (ret == 0) {
 		printf("Succeed\n");
 	} else {
@@ -42,15 +37,17 @@ void avl_code_generator(nodeType* root) {
 	}
 }
 
+// count nunber of paramenters of a function
 int numPara(oprNode* node) {
 	if (node->opType == concatenate)
 		return numPara(&node->op[0]->opr) + 1;
 	return 1;
 }
 
-
+// generate code for the tree rooted at node (called recursively)
 int generateSubtree(nodeType* node) {
 	switch (node->type) {
+		// leaf node
 		case INTCON_NODE:
 			print_append_int(node->intCon.value, 1);
 			break;
@@ -94,6 +91,7 @@ int generateSubtree(nodeType* node) {
 		case MATHOP_NODE:
 			print_append(node->mathOp.value, 1);
 			break;
+		// inner node
 		case OPERATOR_NODE:
 			if(generateOpNode(&node->opr)) return 1;
 			break;
@@ -101,11 +99,12 @@ int generateSubtree(nodeType* node) {
 	return 0;
 }
 
+// generate code for a tree rooted at an operation node (inner node)
 int generateOpNode(oprNode* opr) {
 	int i;
 	char* id;
 	nodeType* temp;
-	switch (opr->opType) {
+	switch (opr->opType) { // operation node type
 		case parentheses_exp:
 			print_append("(", 1);
 			if (generateSubtree(opr->op[0])) return 1;
@@ -131,7 +130,7 @@ int generateOpNode(oprNode* opr) {
 			if (opr->numOperands == 2 && generateSubtree(opr->op[1])) return 1;
 			print_append(")", 1);
 			break;
-		case concatenate:	
+		case concatenate:
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(",", 0);
 			if (generateSubtree(opr->op[1])) return 1;
@@ -240,8 +239,12 @@ int generateOpNode(oprNode* opr) {
 			newLine = 1;
 			break;
 		case exp_state:
+			if (needSleep) print_append("avlSleep(0.3);", 1);
+			newLine = 1;
 			if (generateSubtree(opr->op[0])) return 1;
 			print_append(";", 0);
+			newLine = 1;
+			if (needSleep) print_append("avlSleep(0.3);", 1);
 			newLine = 1;
 			break;
 		case declar_state:
@@ -261,11 +264,13 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case display_state:
+			needSleep ++;
 			print_append("__avl__vi->start();", 1);
 			newLine = 1;
 			print_append("avlSleep(0.5);", 0);
 			newLine = 1;
 			if (generateSubtree(opr->op[0])) return 1;
+			needSleep --;
 			print_append("avlSleep(0.1);", 1);
 			newLine = 1;
 			print_append("__avl__vi->stop();", 0);
@@ -416,6 +421,7 @@ int generateOpNode(oprNode* opr) {
 			if (generateSubtree(opr->op[1])) return 1;
 			break;
 		case func_def:
+			needSleep = 0;
 			if (strcmp(opr->op[1]->id.value,"main") == 0)
 				mainFun = 1;
 			else
