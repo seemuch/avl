@@ -65,5 +65,6 @@ TESTS = \
 			maxSubarray.sh
 
 XFAIL_TESTS = \
+			cast.sh \
 			statement_scope.sh \
 			empty.sh
