@@ -45,8 +45,9 @@ int typeChecking(nodeType* root) {
 
 int typeCheckingSubTree(nodeType* node) {
 	if (node->type == OPERATOR_NODE) {
-		if(typeCheckingOpNode(&node->opr)) 
+		if(typeCheckingOpNode(&node->opr)) {
 			return 1;
+		}
 	}
 	return 0;
 }
