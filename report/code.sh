@@ -4,6 +4,7 @@ set -e
 
 OUTPUT=code.txt
 rm -f $OUTPUT
+rm -f gitlog.txt
 
 echo "\\begin{verbatim}" >> $OUTPUT
 
@@ -14,15 +15,17 @@ do
 		continue
 	fi
 
-	echo "file: $f" >> $OUTPUT
-	echo "" >> $OUTPUT
-	cat $f >> $OUTPUT
-	echo "" >> $OUTPUT
-	echo "" >> $OUTPUT
-	echo "" >> $OUTPUT
+	echo "file: $f" >> avl/report$OUTPUT
+	echo "" >> avl/report/$OUTPUT
+	cat $f >> avl/report/$OUTPUT
+	echo "" >> avl/report/$OUTPUT
+	echo "" >> avl/report/$OUTPUT
+	echo "" >> avl/report/$OUTPUT
 done
 cd -
 
 echo "\\end{verbatim}" >> $OUTPUT
 
-git log > gitlog.txt
+echo "\\begin{verbatim}" >> gitlog.txt
+git log >> gitlog.txt
+echo "\\end{verbatim}" >> gitlog.txt
