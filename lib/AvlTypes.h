@@ -656,7 +656,7 @@ public:
 	}
 
 	// constructor 
-	AvlIndex (const AvlInt &v = 0, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
+	AvlIndex (const AvlInt &v, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
 		this->value = v.val();
 	}
 	
@@ -1122,23 +1122,6 @@ class AvlArray : public AvlObject
 				*dst = std::shared_ptr<T>(new T(*src));
 				src++;
 				dst++;
-			}
-
-			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
-			toplevelArray = this;
-
-			update();
-		}
-
-		// copy constructor
-		AvlArray(const AvlArray<T> &other) : AvlObject(other.x(), other.y(), other.font()), arr(other.arr.size()), 
-			index_x(other.arr.size()), index_y(other.arr.size())
-		{
-			// std::out << "Copy constructor" << std::edl;
-
-			for (size_t i = 0; i < arr.size(); i++) {
-				arr[i] = std::shared_ptr<T>(new T);
-				*arr[i] = *other.arr[i];
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);

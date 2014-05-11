@@ -4,30 +4,34 @@ void findMaxCrossSubarray(int A[], int mid, int cross[]) {
 	int sum = 0;
 	int max_left = 0;
 
+	int count = mid - cross[0];
 	<begin_display>
 	for (index i = mid - cross[0]; i >=0; i--) {
 		sum = sum + A[i];
 		if (!init || sum > leftsum) {
 			leftsum = sum;
-			max_left = i + cross[0];
+			max_left = count + cross[0];
 			init = true;
 		}
+		count--;
 	}
 	<end_display>
 
 	int rightsum = 0;
 	init = false;
 	sum = 0;
-	display index max_right = 0;
+	int  max_right = 0;
 
+	count = mid + 1 - cross[0];
 	<begin_display>
 	for (index j = mid + 1 - cross[0]; j < len(A); j++) {
 		sum = sum + A[j];
 		if (!init || sum > rightsum) {
 			rightsum = sum;
-			max_right = j + cross[0];
+			max_right = count + cross[0];
 			init = true;
 		}
+		count++;
 	}
 	<end_display>
 
