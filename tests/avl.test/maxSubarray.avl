@@ -1,0 +1,108 @@
+void findMaxCrossSubarray(int A[], int mid, int cross[]) {
+	int leftsum = 0;
+	bool init = false;
+	int sum = 0;
+	int max_left = 0;
+
+	int count = mid - cross[0];
+	<begin_display>
+	for (index i = mid - cross[0]; i >=0; i--) {
+		sum = sum + A[i];
+		if (!init || sum > leftsum) {
+			leftsum = sum;
+			max_left = count + cross[0];
+			init = true;
+		}
+		count--;
+	}
+	<end_display>
+
+	int rightsum = 0;
+	init = false;
+	sum = 0;
+	int  max_right = 0;
+
+	count = mid + 1 - cross[0];
+	<begin_display>
+	for (index j = mid + 1 - cross[0]; j < len(A); j++) {
+		sum = sum + A[j];
+		if (!init || sum > rightsum) {
+			rightsum = sum;
+			max_right = count + cross[0];
+			init = true;
+		}
+		count++;
+	}
+	<end_display>
+
+	cross[0] = max_left;
+	cross[1] = max_right;
+	cross[2] = leftsum + rightsum;
+}
+
+void findMaxSubarray(int A[], int ret[]) {
+	if (ret[0] >= ret[1]) {
+		ret[2] = A[0];
+		return;
+	}
+
+	<begin_display>
+	display index low = 0;
+	display index high = len(A) - 1;
+	display index mid = (low + high) / 2;
+
+	int m = (ret[0] + ret[1]) / 2;
+
+	int left[] = {0,0,0};
+	left[0] = ret[0];
+	left[1] = m;
+
+	int right[] = {0,0,0};
+	right[0] = m + 1;
+	right[1] = ret[1];
+
+	int cross[] = {0,0,0};
+	cross[0] = ret[0];
+	cross[1] = ret[1];
+
+	findMaxSubarray(A[low : (mid + 1)], left);
+	findMaxSubarray(A[(mid + 1) :  (high + 1)], right);
+	findMaxCrossSubarray(A, m, cross);
+	
+	if (left[2] >= right[2] && left[2] >= cross[2]) {
+		ret[0] = left[0];
+		ret[1] = left[1];
+		ret[2] = left[2];
+	}
+	else if (right[2] >= left[2] && right[2] >= cross[2]) {
+		ret[0] = right[0];
+		ret[1] = right[1];
+		ret[2] = right[2];
+	}
+	else {
+		ret[0] = cross[0];
+		ret[1] = cross[1];
+		ret[2] = cross[2];
+	}
+	<end_display>
+}
+
+
+int main() {
+	display int A[] = {1,3,4,-8,-3,2,-1,0,4};
+	int ret[] = {0,0,0};
+	ret[1] = len(A) - 1;
+
+	<begin_display>
+	findMaxSubarray(A, ret);
+	<end_display>
+	
+	index s = ret[0];
+	index e = ret[1];
+
+	<begin_display>
+	display int B[] = A[s:(e+1)];
+	<end_display>
+	
+	return 0;
+}
