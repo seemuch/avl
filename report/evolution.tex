@@ -1,0 +1,52 @@
+\section{Language evolution}
+
+In the original language proposal, we proposed a language that visualizes algorithms for teaching
+and learning purpose. Actually it was me who initially came up with this idea, and that was how I
+ended up with this role. Originally we had plenty of interesting and ambitious ideas, including
+visualize Aho–Corasick string matching algorithm. But as the implementation process going, we found
+that it was not easy to implement all of them because different algorithms requires different data
+structures, and different data structures requires different methods for vitalization. For example,
+it is very different to visualize an array than to visualize a finite automaton. Therefore, we
+decided to start from the most basic structures, array. 
+
+Without distracting thoughts, we focus on implementing array. We firstly had a case study on the
+algorithms that use array as their primary data structures, like sorting algorithms, and tried to
+extract common features of them. We then concluded that there need to have swap as a build-in
+operation on arrays. For example, in compare-based sorting algorithms, it is essential to have swap
+because the basic idea behind these algorithms is to compare two elements and adjust their
+positions. Therefore, having swap as build-in operator makes it convenient for the programmer to
+visualize array-based algorithms. 
+
+Also, we thought that it is useful to give the programmer the right to decide which part of his
+program to be visualized. This makes sense because although it is a cool idea to visualize
+algorithms, it is possible that user may not want to visualize everything they write. For example,
+as mentioned above, it is possible to visualize sorting algorithms. But in other algorithms, sorting
+might be a sub-routine and should not be visualized. Therefore, we have defined
+\verb"<begin_display>" and \verb"<end_display>" to enclose the part that needs to be visualized.
+Also, for each variable, programmer can also choose to visualize it or not. 
+
+Along the process of implementation, we also made some decisions on what not to be included in the
+language. For example, we decided not to include pointers, because it is way to complicated to
+implement. As another example, while a struct is very useful in C, we decided to not include that in
+our language, because there is no way to correctly visualize every user-defined struct. 
+
+\subsection{Compiler Tools}
+
+We decided to use C++ as the target language for our compiler because that is the most familiar
+language for all of the team member. 
+
+Lex and Yacc are used as scanner and parser for our compiler, because it is compatible with C/C++,
+and there are tons of tutorials, resource and documentations online for them. 
+
+\subsubsection{Libraries}
+
+The main functionality of our language is visualization. Therefore, we used OpenGL, freeglut, glew
+glm and glfw as they are the most commonly used libraries in computer graphics. 
+
+\subsection{Consistency}
+
+Although there are some aggressive ideas in the white paper, in the LRM, the only structure left is
+the array. Therefore, we did not had a chance to deviate from the LRM. Besides, we thought it is
+nice to have our grammar as close to that of C as possible, because that will create a more
+reasonable learning curve for programmers. Therefore, we largely referred to the C standard as we
+writing our grammar. This also helps us to stick to our original idea, grammar wise. 
