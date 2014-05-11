@@ -34,7 +34,6 @@ int main(){
 		print i;
 	}
 
-
 	/*testing nested for*/
 	for(i=0;i<3;i++){
 		for(int j = 0; j<2; j++)
@@ -47,7 +46,6 @@ int main(){
 		if(i==5)
 			return 0;
 	}
-
 
 	return 0;
 }
