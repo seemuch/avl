@@ -15,7 +15,7 @@ do
 		continue
 	fi
 
-	echo "file: $f" >> avl/report$OUTPUT
+	echo "file: $f" >> avl/report/$OUTPUT
 	echo "" >> avl/report/$OUTPUT
 	cat $f >> avl/report/$OUTPUT
 	echo "" >> avl/report/$OUTPUT
