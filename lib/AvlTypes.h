@@ -1324,6 +1324,57 @@ class AvlArray : public AvlObject
 			avlSleep(0.1);
 		}
 
+		//push
+		void push(const T a){
+			
+			std::shared_ptr<T> current = std::shared_ptr<T> (new T);
+			*current = a;
+			arr.push_back(current);
+			index_x.push_back(0);
+			index_y.push_back(0);
+			
+			update();	
+		}
+
+		//pop
+		T pop(){
+			if(empty())
+				return 0;
+			else{
+				T current = **(arr.end()-1);
+				arr.pop_back();
+				index_x.pop_back();
+				index_y.pop_back();
+				
+				update();	
+				return current;
+			}
+		}
+
+		//empty
+		bool empty(){
+			if ( arr.size() == 0)
+				return true;
+			else
+				return false;	
+		}
+
+		//dequeue
+		T dequeue(){
+			if(empty())
+				return 0;
+			else{
+				T current = *arr[0];
+				arr.erase(arr.begin());
+				index_x.pop_back();
+				index_y.pop_back();
+				
+				update();	
+				return current;
+				
+			}
+		}
+
 	private:
 		void auxiliary_display() {
 			// display "Content"
