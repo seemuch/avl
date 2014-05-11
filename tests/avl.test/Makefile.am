@@ -60,8 +60,11 @@ TESTS = \
 			statement_if.sh \
 			statement_while.sh \
 			statement_scope.sh \
-			subarray_int.sh
+			subarray_int.sh \
+			mergeSort.sh \
+			maxSubarray.sh
 
 XFAIL_TESTS = \
+			cast.sh \
 			statement_scope.sh \
 			empty.sh

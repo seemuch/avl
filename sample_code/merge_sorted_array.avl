@@ -12,16 +12,19 @@ void merge(int a[], int b[], int c[])
 	while (true) {
 		if (i >= len(a) || j >= len(b))
 			break;
+		if(a[i] < b[j])
+			c[k] = a[i++];
+		else
+			c[k] = b[j++];
 
-		c[k] = a[i] < b[j] ? a[i++] : b[j++];
 		k++;
 	}
 
-	for (; i < len(a); i++) {
+	for (i ; i < len(a); i++) {
 		c[k] = a[i];
 		k++;
 	}
-	for (; j < len(b); j++) {
+	for (j; j < len(b); j++) {
 		c[k] = b[j];
 		k++;
 	}

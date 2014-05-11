@@ -113,7 +113,10 @@ class AvlObject
 		}
 
 		// destructor (virtual)
-		virtual ~AvlObject() {}
+		virtual ~AvlObject()
+		{
+			_vi->delObject(name());
+		}
 
 		// getter functions
 		GLfloat x() const { return _x; }
@@ -139,7 +142,7 @@ class AvlObject
 		void unlock() { mtx.unlock(); }
 
 		// set visualizer
-		void setVisualizer(const AvlVisualizer *vi) { _vi = vi; }
+		void setVisualizer(AvlVisualizer *vi) { _vi = vi; }
 
 	protected:
 		// position setter
@@ -158,7 +161,7 @@ class AvlObject
 
 		std::mutex mtx;
 
-		const AvlVisualizer *_vi;
+		AvlVisualizer *_vi;
 
 		std::string _name;
 }; // end of AvlObject
@@ -652,6 +655,10 @@ public:
 		this->value = v;
 	}
 
+	// constructor 
+	AvlIndex (const AvlInt &v, GLfloat x = 0, GLfloat y = 0, void *font = GLUT_BITMAP_9_BY_15) : AvlObject(x, y, font) {
+		this->value = v.val();
+	}
 	
 	// << operator
 	friend std::ostream& operator<<(std::ostream &os, const AvlIndex &v)
@@ -673,11 +680,10 @@ public:
 	}
 
 	// assignment operator for AvlInt type
-	const AvlIndex& operator= (AvlInt a) {
+	const AvlIndex& operator= (const AvlInt &a) {
 		this->value = a.val();
 		return *this;
 	}
-
 
 	// unary plus and minus
 	const AvlIndex& operator+() const { return *this; }
@@ -1112,13 +1118,10 @@ class AvlArray : public AvlObject
 			typename std::initializer_list<T>::const_iterator src = l.begin();
 			typename std::vector< std::shared_ptr<T> >::iterator dst = arr.begin();
 
-			//!!!FIXME!!!: what this count for???
-			int count = 0;
 			while (src != l.end()) {
 				*dst = std::shared_ptr<T>(new T(*src));
 				src++;
 				dst++;
-				count++;
 			}
 
 			updateMutex = std::shared_ptr<std::mutex>(new std::mutex);
