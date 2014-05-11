@@ -89,7 +89,8 @@ void AvlVisualizer::placeObject()
 
 	for (auto& o : objects) {
 		AvlObject *obj = o.second;
-		if (typeid(*obj) == typeid(AvlArray<AvlInt>) || typeid(*obj) == typeid(AvlArray<AvlChar>) || typeid(*obj) == typeid(AvlArray<AvlBool>))
+		if (typeid(*obj) == typeid(AvlArray<AvlInt>) || typeid(*obj) == typeid(AvlArray<AvlChar>)
+				|| typeid(*obj) == typeid(AvlArray<AvlBool>))
 			arrays.push_back(obj);
 		else {
 			if (typeid(*obj) != typeid(AvlIndex))
