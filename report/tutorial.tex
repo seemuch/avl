@@ -1,0 +1,247 @@
+\section{Language Tutorial}
+
+This section is a short tutorial of the Algorithm Visualization Language. In this section, we will
+go through some example programs that demonstrate our language and show how to use our language to
+visualize some simple algorithms.
+
+This tutorial will focus on basic data types, expressions, control flows, inputs and outputs so that
+users can get started with AVL quickly. In order to provide users a way to visualize algorithms by
+writing C-style code, the syntax of AVL is very similar to C. Users who have a basic understanding
+of C programming would be able to write AVL programs after reading this tutorial.
+
+AVL is an intuitive educational programming language that concentrates on the algorithm teaching and
+learning in the way of visualization. The output of AVL is a sequence of graphics or video, which
+describes how an algorithm works. AVL provides varying degrees of flexibility and programmability.
+It helps beginners understand a complicated algorithm in an intuitive way. It assists professionals
+to visualize their self-design algorithms, where AVL provides visualization control interface.
+
+AVL breaks the limitation of current similar languages. It is highly focused on the robust algorithm
+guarantee as a visualization language. The shining breakthrough is to provide a series of
+complicated low-level drawing operations, which is specially designed for algorithm visualization.
+
+AVL is also an educational language. It provides simple and clear grammar with C++ style. Benefiting
+from the easy-to-use features of AVL, the target users, teachers and students, are able to easily
+demonstrate or learn the algorithms.
+
+First, let us examine the input and output of the compiler.
+
+\subsection{Input and Output}
+
+The purpose of AVL is to help user create a program which visualizes a particular algorithm without
+much effort. The user creates a \verb".avl" file as input, which contains AVL code that describes
+the algorithm. Then the \verb".avl" file is compiled by our compiler and an executable is created.
+When user runs the executable, they would see a window that displays the algorithm procedure.
+
+We provide a program avl which acts as the compiler.
+
+\begin{verbatim}
+$ avl --help
+Usage: avl [-h|-o|-t] file
+Options:
+    -h --help            Display this information
+    -o --output=<file>   Compile and place the executable into <file>
+    -t --translate       Translate the source files into c++
+
+    Use at most one option at a time.
+\end{verbatim}
+
+The input filename should have the extension \verb".avl".
+
+Assuming the input file is \verb"test.avl", the following command will create an executable file
+with the default output name \verb"a.out":
+
+\begin{verbatim}
+    avl test.avl
+\end{verbatim}
+
+Then the user can run \verb"./a.out" to display the algorithm procedure.
+
+The user is also allowed to specify the output name of the executable using the -o option:
+
+\begin{verbatim}
+    avl -o test test.avl
+\end{verbatim}
+
+For debugging purpose, if we want to examine whether the compiler works correctly, we could invoke
+avl with -t option to translate the input file into a C++ file, which is the intermediate result:
+
+\begin{verbatim}
+    avl test.avl -t
+\end{verbatim}
+
+This would generate a C++ file with name test.cpp.
+
+\subsection{Hello World}
+A Hello World program in AVL creates images of the characters ``Hello world'' on the screen, and
+images of an integer array on the screen. This program is for demonstration of the basic
+visualization feature of the program.
+
+\begin{verbatim}
+    int main()
+    {
+        <begin_display>
+            display char str[] = {'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'};
+            display int a[] = {1, 2, 3, 4};
+        <end_display>
+
+        return 0;
+    }
+\end{verbatim}
+
+As you may already notice, the code is similar to C/C++ code. This is actually a feature of AVL:
+programmers do not need to spend too much time to learn new grammars. As long as a programmer knows
+C/C++, she or he will have little obstacle picking up AVL.
+
+Now let me briefly explain the program.  The first line declares a main function, which is the
+entrance of any program. On line 2 and 5, there are a \verb"<begin_display>" and a
+\verb"<end_display>". This means anything in between this two tags are to displayed on the screen.
+On line 3 and 4, a char array and a integer array are declared, and \verb"display" keyword indicates
+these arrays are displayable on the screen. Variables are not displayable by default, unless it has
+a \verb"display" key word before it.  Notice that the \verb"display" keyword does not have to be put
+before variables while being declared. A variable can be declared as non-display while later changed
+to display.
+
+
+\subsection{Types and Variables}
+
+AVL is a strongly typed language. For the current version, it supports the following types:
+
+\begin{verbatim}
+    int
+    char
+    bool
+    index
+    string
+    array
+\end{verbatim}
+
+Among them, array is the only derivative type. There could be array of ints, or chars, etc. Most of
+them are the same with C/C++, while there are several things to be noticed.
+
+\begin{enumerate}
+\item
+If a programmer wants to display a string on the screen, she should use array of chars, instead of
+\verb"string". The type \verb"string" are supposed to be used to print things in terminal, e.g. for
+debug use.
+
+\item
+The type \verb"index" is used for indexing elements inside an array. While it is similar to the
+\verb"int" type , the purpose of having this type is to highlight certain elements inside an array.
+Therefore, whenever we want to index an array, we should use \verb"index" instead of \verb"int".
+
+\item
+The type \verb"array" is not similar to C/C++ arrays in a number of ways.  First, the length of an
+array in AVL can be obtained by calling \verb"len(arr)". Also, subarray of an array can be
+conveniently obtained by calling \verb"arr[i : j]" , where \verb"i" and \verb"j" are two indices,
+and the array obtained is the subarray of \verb"arr" that starts at index \verb"i" and ends at index
+\verb"j-1". Lastly, if an array is declared without initialization, it is set to be the default
+value of its type. For example, the following statements creates an array of five 0’s:
+
+\begin{verbatim}
+    int a[5];
+\end{verbatim}
+
+\end{enumerate}
+
+\subsection{Display Hierarchy}
+
+As described in the Hello World part above, a variable is set to be displayable only when it is
+declared to be \verb"display". This can happen during or after the variable being declared. However,
+the \verb"display" key word does not actually display things on the screen. What actually displays
+things on the screen is the pair of \verb"<begin_display>" and \verb"<end_display>". Things between
+this two tags are displayed (if they are declared to be \verb"display").
+
+A intuitive question to ask is, what if the tag pairs are nested?  This behaves differently in two
+cases. The first case is, the tag pairs are nested within one function. For example:
+
+\begin{verbatim}
+    int main()
+    {
+        <begin_display>
+        <begin_display>
+            display char str[] = “Hello world!”;
+            display int a[] = {1, 2, 3, 4};
+        <end_display>
+        <end_display>
+
+        return 0;
+    }
+\end{verbatim}
+
+In this program, the tag pairs are nested. In this case, the inner pair are ignored.
+
+The second case is, the nesting happens in another function. For example:
+
+\begin{verbatim}
+    void quicksort(int a[])
+    {
+        if (len(a) <= 1)
+            return;
+
+        display index i = -1;
+        display index j = 0;
+        display index k = len(a) - 1;
+
+        <begin_display>
+            while (j < k) {
+                if (a[j] >= a[k]) {
+                    j = j + 1;
+                }
+                else {
+                    swap(a, i + 1, j);
+                    i = i + 1;
+                    j = j + 1;
+                }
+            }
+            swap(a, i + 1, k);
+
+            quicksort(a[0 : i+1]);
+            quicksort(a[i + 2 : k + 1]);
+        <end_display>
+    }
+   
+    int main()
+    {
+        <begin_display>
+            display int a[] = {5, 2, 3, 6, 1, 7, 4, 9, 8};
+            quicksort(a);
+        <end_display>
+
+        return 0;
+    }
+\end{verbatim}
+
+In this program, there is a display tag pair inside \verb"main" function. In between this tag pair,
+another function \verb"quicksort" is called, within which there is another display tag pair. In this
+case, only the things inside the \verb"quicksort"’s display tag pair are displayed, while things
+inside \verb"quicksort" but outside the display tag pair are not displayed.  That means, if there
+were not a display tag pair inside \verb"quicksort", then nothing inside \verb"quicksort" is
+displayed.
+
+\subsection{Sample Code}
+
+One more piece of sample code is listed below:
+
+\begin{verbatim}
+    int main()
+    {
+        display int a[] = {5, 2, 7, 3, 6, 8};
+
+        <begin_display>
+            for (display index i = 1; i < len(a); i = i + 1)
+            {
+                display index j = i - 1;
+
+                while (j >= 0 && a[j] > a[j + 1])
+                {
+                    swap(a, j + 1, j);
+                    j = j - 1;
+                }
+            }
+        <end_display>
+
+        return 0;
+    }
+\end{verbatim}
+
+This code above shows a bubblesort for an integer array.

@@ -1,0 +1,101 @@
+\section{Project plan}
+
+\subsection{Management Process}
+
+Our team was formed after the first class. During the early process of the project we met two to
+three times a week to brainstorm ideas about the new language. We use three weeks to discuss what
+language we want to implement. Finally, we combined several ideas of different team members and AVL
+came out.
+
+After we decide the language, we met once a week to discuss what we can do for the next step. We
+separated the project into two part: the front-end and back-end, and they are developed parallelly.
+The back-end is the library code which is used after AVL code was translated to C++ code. We began
+early in implementing the back-end, since it need less knowledge about PLT when we started to write
+code. The front-end process went on according to the what we learned from the course. The workloads
+are divided to creating grammar, implementing scanner and parser, building abstract syntax tree,
+implementing code generator and doing semantic check. 
+
+We adopt GitHub to help us control the code version. We require each member push their code to the
+master node after testing the code locally. At least the code can be compiled at that time.
+Otherwise, the member need to create a branch on Github. It can make sure that the team member’s
+work will not be slowed down by others. We assigned the work to each member according to the
+modularity rule that each one was not working on a same file at one time. That can greatly enhance
+the efficiency of the whole process. When someone find the bugs which is not managed by him, he can
+open an issue on Github and everyone can receive the notify email immediately.
+
+For each file, we did small tests directly by the one who was responsible to it. This step can
+decrease the number of bugs as soon as possible. After we complete the whole project, we tested them
+together by using the designed set of  test cases. We could found some special bugs, and discussed
+together to fix it.
+
+\subsection{Roles and Responsibilities}
+
+\begin{table}[htp]
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    Team Member & Role & Responsibility \\
+    \hline
+    Qianxi Zhang & Project Manager & parser, AST, code generator \\
+    \hline
+    Shining Sun & Language Guru & grammar, semantic check, AvlTypes \\
+    \hline
+    Yu Zheng & System Architect & AST, AvlTypes, test cases \\
+    \hline
+    Qinfan Wu & System Integrator & symbol table, AvlTypes, AvlVisualizer, AvlUtils, runtime environment \\
+    \hline
+    Jiuyang Zhao & System Tester & scanner, parser, test cases \\
+    \hline
+  \end{tabular}
+  \caption{Roles and responsibilities}
+  \label{tab:roles}
+\end{table}
+
+\subsection{Implementation Style Sheet}
+
+Keep code neat and clean. Use 4 spaces tab to indent.
+
+Make sure the code can be compiled when push the code to master node in GitHub.
+
+Push uncompilable code to new branches if needed.
+
+Push code regularly to let other team members keep track of the newest version.
+
+When one find a bug which cannot be fixed by himself, notify team members through GitHub.
+
+\subsection{Timeline}
+
+\begin{table}[htp]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    Date & Milestone \\
+    \hline
+    01/22/2014 \hspace{1cm} & Team Formation \\
+    02/16/2014 & Project AVL Confirmed \\
+    02/24/2014 & GitHub Opened \\
+    02/26/2014 & Whitepaper Completed \\
+    03/09/2014 & Build Environment Initialized \\
+    03/23/2014 & AvlUtils Implemented \\
+    03/24/2014 & AvlVisualizor Implemented \\
+    03/25/2014 & Scanner \verb"&" Parser Implemented \\
+    03/26/2014 & Language Tutorial \verb"&" LRM Completed \\
+    03/28/2014 & AvlInt and AvlArray in AvlType Implemented \\
+    04/16/2014 & AvlChar in AvlType Implemented \\
+    04/17/2014 & AvlBool in AvlType Implemented \\
+    04/20/2014 & AST Implemented \\
+    04/20/2014 & AvlString in AvlType Implemented \\
+    04/26/2014 & Code Generator Implemented \\
+    05/03/2014 & Test Cases Design Completed \\
+    05/09/2014 & AvlIndex in AvlType Implemented \\
+    05/10/2014 & Semantic Check Implemented \\
+    05/11/2014 & Test Finished \\
+    \hline
+  \end{tabular}
+  \caption{Timeline}
+  \label{tab:timeline}
+\end{table}
+
+\subsection{Project Log}
+
+Project log is appended in Appendix.
