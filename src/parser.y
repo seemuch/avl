@@ -46,13 +46,13 @@ primary_expression
 	;
 
 postfix_expression
-	: primary_expression                                                            { $<nt>$ = $<nt>1; }
-	| postfix_expression '[' conditional_expression ']'                             { $<nt>$ = operatorNodeCreator(array, 2, $<nt>1, $<nt>3); }
-	| postfix_expression '[' conditional_expression ':' conditional_expression ']'  { $<nt>$ = operatorNodeCreator(array, 3, $<nt>1, $<nt>3, $<nt>5); }
-	| postfix_expression '(' ')'                                                    { $<nt>$ = operatorNodeCreator(func_call, 1, $<nt>1); }
-	| postfix_expression '(' argument_expression_list ')'                           { $<nt>$ = operatorNodeCreator(func_call, 2, $<nt>1, $<nt>3); }	
-	| postfix_expression INC_OP                                                     { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, mathOpNodeCreator("++")); }
-	| postfix_expression DEC_OP                                                     { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, mathOpNodeCreator("--")); }
+	: primary_expression                                                    { $<nt>$ = $<nt>1; }
+	| IDENTIFIER '[' conditional_expression ']'                             { $<nt>$ = operatorNodeCreator(array, 2, idNodeCreator($<idVal>1), $<nt>3); }
+	| IDENTIFIER '[' conditional_expression ':' conditional_expression ']'  { $<nt>$ = operatorNodeCreator(array, 3, idNodeCreator($<idVal>1), $<nt>3, $<nt>5); }
+	| IDENTIFIER '(' ')'                                                    { $<nt>$ = operatorNodeCreator(func_call, 1, idNodeCreator($<idVal>1)); }
+	| IDENTIFIER '(' argument_expression_list ')'                           { $<nt>$ = operatorNodeCreator(func_call, 2, idNodeCreator($<idVal>1), $<nt>3); }	
+	| postfix_expression INC_OP                                             { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, mathOpNodeCreator("++")); }
+	| postfix_expression DEC_OP                                             { $<nt>$ = operatorNodeCreator(math_op, 2, $<nt>1, mathOpNodeCreator("--")); }
 	;
 
 argument_expression_list

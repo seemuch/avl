@@ -13,15 +13,25 @@ void merge(int a[], int b[], int c[])
 		if (i >= len(a) || j >= len(b))
 			break;
 
-		c[k] = a[i] < b[j] ? a[i++] : b[j++];
+		if (a[i] < b[j]) {
+			swap(a, i, i);
+			c[k] = a[i++];
+		}
+		else {
+			swap(b, j, j);
+			c[k] = b[j++];
+		}
+
 		k++;
 	}
 
-	for (; i < len(a); i++) {
+	for (i ; i < len(a); i++) {
+		swap(a, i, i);
 		c[k] = a[i];
 		k++;
 	}
-	for (; j < len(b); j++) {
+	for (j; j < len(b); j++) {
+		swap(b, j, j);
 		c[k] = b[j];
 		k++;
 	}
