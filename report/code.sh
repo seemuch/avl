@@ -5,7 +5,10 @@ set -e
 OUTPUT=code.txt
 rm -f $OUTPUT
 
-for f in `find avl | grep -v "\.git"`
+echo "\\begin{verbatim}" >> $OUTPUT
+
+cd ../..
+for f in `find avl | grep -v "^avl/\.git" | grep -v "^avl/report"`
 do
 	if [ -d $f ]; then
 		continue
@@ -18,3 +21,8 @@ do
 	echo "" >> $OUTPUT
 	echo "" >> $OUTPUT
 done
+cd -
+
+echo "\\end{verbatim}" >> $OUTPUT
+
+git log > gitlog.txt
