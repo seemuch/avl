@@ -244,7 +244,7 @@ parameter_declaration
 	;
 
 program
-	: translation_unit                          { int ret = typeChecking($<nt>1); if (!ret) avl_code_generator($<nt>1); }
+	: translation_unit                          { varTypeEnum ret = typeChecking($<nt>1); if (ret != ERROR_TYPE) avl_code_generator($<nt>1); }
 	;
 	
 %%
