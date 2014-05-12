@@ -1,0 +1,38 @@
+		case parentheses_exp:
+		case array:
+		case func_call:
+		case math_op:
+		case len:
+		case assignment:
+		case disp_exp:
+		case hide_exp:
+		case swap:
+		case print:
+			check
+
+		case print_list:
+
+		case var_decl:
+		case var_decl_disp:
+		case var_decl_hide:
+			int var del with assignemnt
+
+		case init_list:
+		case exp_state:
+		case declar_state:
+		case comp_state:
+		case state_list:
+		case select_state:
+		case while_state:
+		case do_while_state:
+		case for_state:
+		case jump_continue_state:
+		case jump_break_state:
+		case jump_ret_state:
+		case trans_unit:
+		case func_def:
+			Main function def
+	}
+	return 0;
+}
+
