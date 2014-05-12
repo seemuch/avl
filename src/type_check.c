@@ -55,6 +55,59 @@ varTypeEnum jumpRetStateHandler(oprNode* opr);
 varTypeEnum transUnit(oprNode* opr);
 varTypeEnum funcDefHandler(oprNode* opr);
 
+varTypeEnum conditionalExpressionHandler(nodeType* node) {
+	int i;
+	nodeType* temp = 0;
+	char* idName = 0;
+	struct identifier* id = 0; 	
+	varTypeEnum ret = VOID_TYPE;
+
+	temp = node;
+	/*
+	 * Now temp is a conditional-expression node. 
+	 * 		It can be various operator node;
+	 * 		It can be ID node;
+	 * 		It can be const node;
+	 */
+	if (temp->type == OPERATOR_NODE) {
+		ret = typeCheckingOpNode (&temp->opr);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
+		return ret;
+	}
+
+	else if (temp->type == ID_NODE) {
+		idName = idGen(temp);
+		id = findVariable(idName);
+		if (!id) {
+			printf ("Identifier not found: %s\n", idName);
+			return ERROR_TYPE;
+		}
+		return id->type;
+	}
+	
+	// handles const types
+	else if (temp->type == INTCON_NODE) {
+		return INT_TYPE;
+	}
+
+	else if (temp->type == BOOLCON_NODE) {
+		return BOOL_TYPE;
+	}
+
+	else if (temp->type == CHARCON_NODE) {
+		return CHAR_TYPE;
+	}
+
+	else if (temp->type == STRLIT_NODE) {
+		return STRING_TYPE;
+	}
+	
+	printf("Shining wrong?\n");
+	return ERROR_TYPE;
+	
+}
+
 varTypeEnum typeChecking(nodeType* root) {
 
 	st_list_init(&symbolTableStack);
@@ -81,6 +134,23 @@ varTypeEnum typeCheckingSubTree(nodeType* node) {
 			return ERROR_TYPE;
 		}
 	}
+
+	if (node->type == INTCON_NODE) {
+		return INT_TYPE;
+	}
+
+	if (node->type == BOOLCON_NODE) {
+		return BOOL_TYPE;
+	}
+
+	if (node->type == CHARCON_NODE) {
+		return CHAR_TYPE;
+	}
+
+	if (node->type == STRLIT_NODE) {
+		return STRING_TYPE;
+	}
+
 	return VOID_TYPE;
 }
 
@@ -343,32 +413,7 @@ void clearParaList() {
 }
 
 varTypeEnum parenthesesExpHandler(oprNode* opr) {
-	int i;
-	nodeType* temp = 0;
-	char* idName = 0;
-	struct identifier* id = 0;
-
-	temp = opr->op[0];
-	/*
-	 * Now temp is a conditional-expression node. 
-	 * 		It can be various operator node;
-	 * 		It can be ID node;
-	 * 		It can be const node;
-	 */
-	if (temp->type == OPERATOR_NODE) {
-		if (typeCheckingOpNode (&temp->opr) == ERROR_TYPE)
-			return ERROR_TYPE;
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(opr->op[0]);
-		id = findVariable(idName);
-		if (!id) {
-			printf ("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-	}
-	return VOID_TYPE;
+	return conditionalExpressionHandler(opr->op[0]);
 }
 
 varTypeEnum arrayHandler(oprNode* opr) {
@@ -376,6 +421,7 @@ varTypeEnum arrayHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	// else if (opr->op[0]->type == ID_NODE) {
 	idName = idGen(opr->op[0]);
@@ -385,75 +431,42 @@ varTypeEnum arrayHandler(oprNode* opr) {
 		return ERROR_TYPE;
 	}
 
+	varTypeEnum elementType = id->type;
+
 	// one index
 	if (opr->numOperands == 2) { 
 		temp = opr->op[1];
-		/*
-		 * Now temp is a conditional-expression node. 
-		 * 		It can be various operator node;
-		 * 		It can be ID node;
-		 * 		It can be const node;
-		 */
-		if (temp->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode (&(temp->opr)) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
+		ret = conditionalExpressionHandler(temp);
 
-		else if (temp->type == ID_NODE) {
-			idName = idGen(opr->op[0]);
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-		}
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
+
+		if (ret != INT_TYPE && ret != INDEX_TYPE)
+			return ERROR_TYPE;
+
+		return elementType;
 	} 
 
 	// two index, representing a range
 	else {
 		temp = opr->op[1];
-		/*
-		 * Now temp is a conditional-expression node. 
-		 * 		It can be various operator node;
-		 * 		It can be ID node;
-		 * 		It can be const node;
-		 */
-		if (temp->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode (&temp->opr) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
+		ret = conditionalExpressionHandler(temp);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
 
-		else if (temp->type == ID_NODE) {
-			idName = idGen(opr->op[0]);
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-		}
-
+		if (ret != INT_TYPE && ret != INDEX_TYPE)
+			return ERROR_TYPE;
+		
 		temp = opr->op[2];
-		/*
-		 * Now temp is a conditional-expression node. 
-		 * 		It can be various operator node;
-		 * 		It can be ID node;
-		 * 		It can be const node;
-		 */
-		if (temp->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode (&temp->opr) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
+		ret = conditionalExpressionHandler(temp);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
 
-		else if (temp->type == ID_NODE) {
-			idName = idGen(temp);
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-		}
+		if (ret != INT_TYPE && ret != INDEX_TYPE)
+			return ERROR_TYPE;
+
+		return RANGE_TYPE;
 	}
-	return VOID_TYPE;
 }
 
 varTypeEnum funcCallHandler(oprNode* opr) {
@@ -461,6 +474,7 @@ varTypeEnum funcCallHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	idName = idGen(opr->op[0]);
 
@@ -492,16 +506,28 @@ varTypeEnum funcCallHandler(oprNode* opr) {
 	if (opr->numOperands == 2) {
 		temp = opr->op[1]; // now temp is an argument expression list
 
+		// count arguments
 		int tmp = 1;
 		while (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
 			tmp += 1;
 			temp = temp->opr.op[0];
 		}
 
+		// the number of arguments must match
 		if (id->numArgs != tmp) {
 			printf("Function arguments do not match: %s\n", idName);
 			return ERROR_TYPE;
 		}
+
+		// argumetn type must match
+		temp = opr->op[1];
+		while (tmp > 0) {
+			if (id->args[tmp - 1] != conditionalExpressionHandler(temp->opr.op[1]))
+				return ERROR_TYPE;
+			tmp --;
+			temp = temp->opr.op[0];
+		}
+
 	}
 	return VOID_TYPE;
 }
@@ -511,14 +537,17 @@ varTypeEnum mathOpHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	// iterate the node's operands (children)
 	for (i=0; i < opr->numOperands; i++) {
 		temp = opr->op[i];
+		// operator it self
 		if (temp->type == MATHOP_NODE) {
 			continue;
 		}
 
+		// a recursive math_op node
 		if (temp->type == OPERATOR_NODE && temp->opr.opType == math_op) {
 			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
 				return ERROR_TYPE;
@@ -528,13 +557,19 @@ varTypeEnum mathOpHandler(oprNode* opr) {
 			switch (temp->opr.opType) {
 				case len:
 				case parentheses_exp:
-					if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
+					ret = typeCheckingOpNode(&temp->opr);
+					if (ret == ERROR_TYPE)
+						return ERROR_TYPE;
+					else if (ret != INDEX_TYPE && ret != INT_TYPE && ret != BOOL_TYPE)
 						return ERROR_TYPE;
 					break;
 
 				case array:
 					if (temp->opr.numOperands ==2) {
-						if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
+						ret = typeCheckingOpNode(&temp->opr);
+						if (ret == ERROR_TYPE)
+							return ERROR_TYPE;
+						else if (ret != INT_TYPE && ret != INT_TYPE && ret != BOOL_TYPE)
 							return ERROR_TYPE;
 						break;
 					}
@@ -582,7 +617,7 @@ varTypeEnum mathOpHandler(oprNode* opr) {
 			return ERROR_TYPE;
 		}
 	}
-	return VOID_TYPE;
+	return INT_TYPE;
 }
 
 varTypeEnum lenHandler(oprNode* opr) {
@@ -590,6 +625,7 @@ varTypeEnum lenHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (opr->op[0]->type != ID_NODE) {
 		printf ("len operator can only be applied to an array.\n");
@@ -610,7 +646,7 @@ varTypeEnum lenHandler(oprNode* opr) {
 			return ERROR_TYPE;
 		}
 	}
-	return VOID_TYPE;
+	return INT_TYPE;
 }
 
 varTypeEnum assignmentHandler(oprNode* opr) {
@@ -618,7 +654,34 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
+	varTypeEnum beforeEqual = VOID_TYPE;
+    varTypeEnum afterEqual = VOID_TYPE;
+	int isCollection = 0;
+
+	// deal with the node after assignment first
+	temp = opr->op[1];
+	/*
+	 * Now Temp could be conditional-expression or operator node with init_list opration
+	 */
+	if (temp->type == OPERATOR_NODE && temp->opr.opType == init_list) {
+		isCollection = 1;
+		ret = typeCheckingOpNode(&temp->opr);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
+
+		afterEqual = ret;
+	}
+
+	else {
+		ret = conditionalExpressionHandler(temp);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
+		afterEqual = ret;
+	}
+
+	// then deal with the node before the assignemnt operator
 	temp = opr->op[0];
 	/*
 	 * Now temp could be postfix-expression or declarator. 
@@ -636,6 +699,18 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 	if (temp->type == OPERATOR_NODE && temp->opr.opType == array) {
 		if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
 			return ERROR_TYPE;
+
+		// cannot assign to an array range 
+		if (temp->opr.numOperands == 3)
+			return ERROR_TYPE;
+
+		// for single array element, get its type
+		idName = idGen(temp->opr.op[0]);
+		id = findVariable(idName);
+		beforeEqual = id->type;
+
+		if (beforeEqual != afterEqual)
+			return ERROR_TYPE;
 	}
 
 
@@ -648,6 +723,18 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 			printf ("Identifier not found: %s\n", idName);
 			return ERROR_TYPE;
 		}
+
+		if (!id->isArray) {
+			printf ("%s is not an array.\n", idName);
+			return ERROR_TYPE;
+		}
+
+		// for array declaration, what's after the assignment must be a collection
+		if (!isCollection)
+			return ERROR_TYPE;
+
+		if (id->type != afterEqual)
+			return ERROR_TYPE;
 	}
 
 	// It is an identifier node
@@ -658,15 +745,15 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 			printf ("Identifier not found: %s\n", idName);
 			return ERROR_TYPE;
 		}
+		
+		if (id->type != afterEqual)
+			return ERROR_TYPE;
 	}
 
 	else {
 		printf("Illegal assignment.\n");
 		return ERROR_TYPE;
 	}
-
-	if (typeCheckingSubTree(opr->op[1]) == ERROR_TYPE)
-		return ERROR_TYPE;
 
 	return VOID_TYPE;
 }
@@ -676,6 +763,7 @@ varTypeEnum dispExpHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 	idName = idGen(temp);
@@ -699,6 +787,7 @@ varTypeEnum hideExpHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 	idName = idGen(temp);
@@ -717,6 +806,7 @@ varTypeEnum swapHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 	if (temp->type != ID_NODE) {
@@ -738,93 +828,21 @@ varTypeEnum swapHandler(oprNode* opr) {
 
 	// index one
 	temp = opr->op[1];
-	if (temp->type == OPERATOR_NODE) {
-		if (temp->opr.opType == len || temp->opr.opType == math_op)  {
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
-
-		else if (temp->opr.opType == func_call) {
-			idName = idGen(temp->opr.op[0]);
-			id = findFunction(idName);
-			if (!id) {
-				printf ("Function not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-
-			if (id->type != INT_TYPE && id->type != INDEX_TYPE) {
-				printf ("Illegal index.\n");
-				return ERROR_TYPE;
-			} 
-
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) {
-				return ERROR_TYPE;
-			}
-		}
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-		if (id->type != INT_TYPE && id->type != INDEX_TYPE) {
-			printf("Index can only be int type or index type: %s\n", idName);
-			return ERROR_TYPE;
-		}
-	}
-
-	else if (temp->type != INTCON_NODE) {
-		printf ("Illegal index.\n");
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
 		return ERROR_TYPE;
-	}
+	
+	if (ret != INT_TYPE && ret != INDEX_TYPE)
+		return ERROR_TYPE;
 
 	// index two
 	temp = opr->op[2];
-	if (temp->type == OPERATOR_NODE) {
-		if (temp->opr.opType == len || temp->opr.opType == math_op)  {
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
-
-		else if (temp->opr.opType == func_call) {
-			idName = idGen(temp->opr.op[0]);
-			id = findFunction(idName);
-			if (!id) {
-				printf ("Function not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-
-			if (id->type != INT_TYPE && id->type != INDEX_TYPE) {
-				printf ("Illegal index.\n");
-				return ERROR_TYPE;
-			} 
-
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) {
-				return ERROR_TYPE;
-			}
-		}
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-		if (id->type != INT_TYPE && id->type != INDEX_TYPE) {
-			printf("Index can only be int type or index type: %s\n", idName);
-			return ERROR_TYPE;
-		}
-	}
-
-	else if (temp->type != INTCON_NODE) {
-		printf ("Illegal index.\n");
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
 		return ERROR_TYPE;
-	}
+	
+	if (ret != INT_TYPE && ret != INDEX_TYPE)
+		return ERROR_TYPE;
 
 	return VOID_TYPE;
 }
@@ -834,6 +852,7 @@ varTypeEnum printHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (typeCheckingSubTree(opr->op[0])== ERROR_TYPE)
 		return ERROR_TYPE;
@@ -846,35 +865,20 @@ varTypeEnum printListHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 
 	while (temp->type == OPERATOR_NODE && temp->opr.opType == print_list) {
-		if (temp->opr.op[1]->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode(&(temp->opr.op[1]->opr)) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
-
-		else if (temp->opr.op[1]->type == ID_NODE) {
-			idName = idGen(temp->opr.op[1]);
-			id = findVariable(idName);
-			if (!id) {
-				printf("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-		}
-
+		ret = conditionalExpressionHandler(temp->opr.op[1]);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
 		temp = temp->opr.op[0];
 	}
 
-	if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-	}
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
+		return ERROR_TYPE;
 
 	return VOID_TYPE;
 }
@@ -884,6 +888,10 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
+
+	varTypeEnum declaredType = typeGen(opr->op[0]);
+	int isArray = 0;
 
 	// whether is an array
 	temp = opr->op[1];
@@ -893,7 +901,7 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 	}
 
 	if (temp->opr.opType == arr_decl) { // is array
-
+		isArray = 1;
 
 		if (temp->opr.op[0]->type != ID_NODE) {
 			printf("Illegal array declaration!\n");
@@ -920,6 +928,7 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 	} 
 
 	else { // not array
+		isArray = 0;
 		idName = idGen(temp);
 		id = findVariable(idName);
 		if (id) {
@@ -939,19 +948,33 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 		sym_table_add(symbolTableStack.first->st, id);
 
 	}
+
 	// assignment
-	if (opr->op[1]->type == OPERATOR_NODE && opr->op[1]->opr.opType == assignment) {
-		temp = opr->op[1]->opr.op[1];
-		if (temp->type == ID_NODE) {
-			idName = idGen(temp);
-			id = findVariable(idName);
-			if (!id) {
-				printf("Identifier not found: %s\n", idName);
+	temp = opr->op[1];
+	if (temp->type == OPERATOR_NODE && temp->opr.opType == assignment) {
+
+		temp = temp->opr.op[1];
+		if (temp->type == OPERATOR_NODE && temp->opr.opType == init_list) {
+			if (!isArray) 
 				return ERROR_TYPE;
-			}
+
+			ret = typeCheckingOpNode(&temp->opr);
+
+			if (ret == ERROR_TYPE)
+				return ERROR_TYPE;
+
+			if (ret != declaredType) 
+				return ERROR_TYPE; 
 		}
-		else if (temp->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
+
+		else {
+			if (isArray)
+				return ERROR_TYPE;
+
+			ret = conditionalExpressionHandler(temp);
+			if (ret == ERROR_TYPE)
+				return ERROR_TYPE;
+			if ( ret != declaredType)
 				return ERROR_TYPE;
 		}
 	}
@@ -962,41 +985,35 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 
 
 varTypeEnum initListHandler(oprNode* opr) {
+	// TODO
 	int i;
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 
-	while (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
-		if (temp->opr.op[1]->type == OPERATOR_NODE) {
-			if (typeCheckingOpNode (&(temp->opr.op[1]->opr)) == ERROR_TYPE)
-				return ERROR_TYPE;
-		}
+	varTypeEnum lastType = ERROR_TYPE;
+	if (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
+		lastType = conditionalExpressionHandler(temp->opr.op[1]);
+		if (ret == ERROR_TYPE)
+			return ERROR_TYPE;
+	}
 
-		else if (temp->opr.op[1]->type == ID_NODE) {
-			idName = idGen((temp->opr.op[1]));
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-		}
+	while (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
+		ret = conditionalExpressionHandler(temp->opr.op[0]);
+		if (ret != lastType)
+			return ERROR_TYPE;
 
 		temp = temp->opr.op[0];
 	}
 
-	if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-	}
+	ret = conditionalExpressionHandler(temp);
+	if (ret != lastType)
+		return ERROR_TYPE;
 
-	return VOID_TYPE;
+	return ret;
 }
 
 varTypeEnum expStateHandler(oprNode* opr) {
@@ -1004,6 +1021,7 @@ varTypeEnum expStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
 	if (temp->type == ID_NODE) {
@@ -1028,6 +1046,7 @@ varTypeEnum declarStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) 
 		return ERROR_TYPE;
@@ -1040,6 +1059,7 @@ varTypeEnum compStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (opr->numOperands == 1 && typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) 
 		return ERROR_TYPE;
@@ -1052,6 +1072,7 @@ varTypeEnum stateListHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) return ERROR_TYPE;
 	if (typeCheckingSubTree(opr->op[1]) == ERROR_TYPE) return ERROR_TYPE;
@@ -1064,34 +1085,15 @@ varTypeEnum selectStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
-	if (temp->type == OPERATOR_NODE) {
-		if (temp->opr.opType != math_op) {
-			printf ("Illegal index.\n");
-			return ERROR_TYPE;
-		}
-		if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) return ERROR_TYPE;
-
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf ("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-		if (id->type != BOOL_TYPE && id->type != INT_TYPE) {
-			printf("Illegal if condition\n");
-			return ERROR_TYPE;
-		}
-	}
-
-	else if (temp->type != INTCON_NODE && temp->type != BOOLCON_NODE) {
-		printf("Illegal if condition\n");
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
 		return ERROR_TYPE;
-	}
+
+	if (ret != INT_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE)
+		return ERROR_TYPE;
 
 	pushNewSymbolTable();
 
@@ -1117,34 +1119,15 @@ varTypeEnum whileStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	temp = opr->op[0];
-	if (temp->type == OPERATOR_NODE) {
-		if (temp->opr.opType != math_op) {
-			printf ("Illegal index.\n");
-			return ERROR_TYPE;
-		}
-		if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) return ERROR_TYPE;
-
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf ("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-		if (id->type != BOOL_TYPE && id->type != INT_TYPE) {
-			printf("Illegal while condition\n");
-			return ERROR_TYPE;
-		}
-	}
-
-	else if (temp->type != INTCON_NODE && temp->type != BOOLCON_NODE) {
-		printf("Illegal while condition\n");
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
 		return ERROR_TYPE;
-	}
+
+	if (ret != INT_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE)
+		return ERROR_TYPE;
 
 	pushNewSymbolTable();
 
@@ -1161,6 +1144,7 @@ varTypeEnum doWhileStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	pushNewSymbolTable();
 
@@ -1170,32 +1154,12 @@ varTypeEnum doWhileStateHandler(oprNode* opr) {
 	st_list_del(&symbolTableStack);
 
 	temp = opr->op[1];
-	if (temp->type == OPERATOR_NODE) {
-		if (temp->opr.opType != math_op) {
-			printf ("Illegal index.\n");
-			return ERROR_TYPE;
-		}
-		if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) return ERROR_TYPE;
-
-	}
-
-	else if (temp->type == ID_NODE) {
-		idName = idGen(temp);
-		id = findVariable(idName);
-		if (!id) {
-			printf ("Identifier not found: %s\n", idName);
-			return ERROR_TYPE;
-		}
-		if (id->type != BOOL_TYPE && id->type != INT_TYPE) {
-			printf("Illegal while condition\n");
-			return ERROR_TYPE;
-		}
-	}
-
-	else if (temp->type != INTCON_NODE && temp->type != BOOLCON_NODE) {
-		printf("Illegal while condition\n");
+	ret = conditionalExpressionHandler(temp);
+	if (ret == ERROR_TYPE)
 		return ERROR_TYPE;
-	}
+
+	if (ret != INT_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE)
+		return ERROR_TYPE;
 
 	return VOID_TYPE;
 }
@@ -1205,6 +1169,7 @@ varTypeEnum forStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (opr->op[0]->opr.opType == var_decl ||opr->op[0]->opr.opType == var_decl_disp || opr->op[0]->opr.opType == var_decl_hide) {
 		pushNewSymbolTable();
@@ -1212,32 +1177,11 @@ varTypeEnum forStateHandler(oprNode* opr) {
 		if (typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) return ERROR_TYPE;
 
 		temp = opr->op[1];
-		if (temp->type == OPERATOR_NODE) {
-			if (temp->opr.opType != math_op) {
-				printf ("Illegal index.\n");
-				return ERROR_TYPE;
-			}
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) return ERROR_TYPE;
-
-		}
-
-		else if (temp->type == ID_NODE) {
-			idName = idGen(temp);
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-			if (id->type != BOOL_TYPE && id->type != INT_TYPE) {
-				printf("Illegal for condition\n");
-				return ERROR_TYPE;
-			}
-		}
-
-		else if (temp->type != INTCON_NODE && temp->type != BOOLCON_NODE) {
-			printf("Illegal for condition\n");
+		ret = conditionalExpressionHandler(temp);
+		if (ret == ERROR_TYPE)
 			return ERROR_TYPE;
-		}
+		if (ret != INDEX_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE)
+			return ERROR_TYPE;
 
 		if (opr->numOperands == 4 && typeCheckingSubTree(opr->op[2]) == ERROR_TYPE) return ERROR_TYPE;
 		if (typeCheckingSubTree(opr->op[opr->numOperands-1]) == ERROR_TYPE) return ERROR_TYPE;
@@ -1250,32 +1194,12 @@ varTypeEnum forStateHandler(oprNode* opr) {
 		if (typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) return ERROR_TYPE;
 
 		temp = opr->op[1];
-		if (temp->type == OPERATOR_NODE) {
-			if (temp->opr.opType != math_op) {
-				printf ("Illegal index.\n");
-				return ERROR_TYPE;
-			}
-			if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE) return ERROR_TYPE;
-
-		}
-
-		else if (temp->type == ID_NODE) {
-			idName = idGen(temp);
-			id = findVariable(idName);
-			if (!id) {
-				printf ("Identifier not found: %s\n", idName);
-				return ERROR_TYPE;
-			}
-			if (id->type != BOOL_TYPE && id->type != INT_TYPE) {
-				printf("Illegal for condition\n");
-				return ERROR_TYPE;
-			}
-		}
-
-		else if (temp->type != INTCON_NODE && temp->type != BOOLCON_NODE) {
-			printf("Illegal for condition\n");
+		ret = conditionalExpressionHandler(temp);
+		if (ret == ERROR_TYPE)
 			return ERROR_TYPE;
-		}
+
+		if (ret != INT_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE)
+			return ERROR_TYPE;
 
 		if (opr->numOperands == 4 && typeCheckingSubTree(opr->op[2]) == ERROR_TYPE) return ERROR_TYPE;
 
@@ -1295,6 +1219,7 @@ varTypeEnum jumpRetStateHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (opr->numOperands == 1 && typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) return ERROR_TYPE;
 
@@ -1306,6 +1231,7 @@ varTypeEnum transUnit(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	if (typeCheckingSubTree(opr->op[0]) == ERROR_TYPE) return ERROR_TYPE;
 	if (typeCheckingSubTree(opr->op[1]) == ERROR_TYPE) return ERROR_TYPE;
@@ -1318,6 +1244,7 @@ varTypeEnum funcDefHandler(oprNode* opr) {
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
+	varTypeEnum ret = VOID_TYPE;
 
 	// if there is not one symbol table in the stack, create one as the base
 	if (!symbolTableStack.first) {

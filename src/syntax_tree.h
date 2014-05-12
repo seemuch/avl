@@ -55,7 +55,8 @@ typedef enum {
 	STRING_TYPE,
 	INDEX_TYPE,
 	BOOL_TYPE,
-	ERROR_TYPE // internal use only
+	ERROR_TYPE, // internal use only
+	RANGE_TYPE 	// internal use only
 } varTypeEnum;
 
 // integer constants
