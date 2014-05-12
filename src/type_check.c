@@ -9,7 +9,6 @@ void freeTree(nodeType* node);
 varTypeEnum typeCheckingOpNode(oprNode* opr);
 varTypeEnum typeCheckingSubTree(nodeType* node);
 
-int getNumPara(oprNode*);
 void getParaList(nodeType*);
 void clearParaList();
 
@@ -56,8 +55,6 @@ varTypeEnum jumpRetStateHandler(oprNode* opr);
 varTypeEnum transUnit(oprNode* opr);
 varTypeEnum funcDefHandler(oprNode* opr);
 
-// shining
-
 varTypeEnum typeChecking(nodeType* root) {
 
 	st_list_init(&symbolTableStack);
@@ -67,7 +64,7 @@ varTypeEnum typeChecking(nodeType* root) {
 	varTypeEnum ret = typeCheckingSubTree(root);
 	clearParaList();	
 
-	if (ret == ERROR_TYPE) {
+	if (ret != ERROR_TYPE) {
 		printf("Type checking succeeds.\n");
 	} else {
 		printf("Type checking fails.\n");
@@ -252,28 +249,6 @@ varTypeEnum typeGen(nodeType* node) {
 		return -1;
 
 	return node->varType.value;
-	/*
-	switch (node->varType.value) {
-		case VOID_TYPE:
-			return VOID_TYPE;
-			break;
-		case CHAR_TYPE:
-			return CHAR_TYPE;
-			break;
-		case INT_TYPE:
-			return INT_TYPE;
-			break;
-		case STRING_TYPE:
-			return STRING_TYPE;
-			break;
-		case INDEX_TYPE:
-			return INDEX_TYPE;
-			break;
-		case BOOL_TYPE:
-			return BOOL_TYPE;
-			break;
-	}
-	*/
 }
 
 char* idGen(nodeType* node) {
@@ -282,20 +257,22 @@ char* idGen(nodeType* node) {
 	return 0;
 }
 
-int getNumPara(oprNode* node) {
-	if (node->opType == concatenate)
-		return getNumPara(&node->op[0]->opr) + 1;
-	return ERROR_TYPE;
-}
-
 void getParaList(nodeType* node) {
 	clearParaList();
 
 	if (node->type != OPERATOR_NODE)
 		return ;
-	paraCount = getNumPara(&node->opr);
-
+	
+	printf("paraCount: %zu\n", paraCount);
+	paraCount = 1;
 	nodeType* tmp = node;
+	while (tmp->type == OPERATOR_NODE && tmp->opr.opType == concatenate) {
+		paraCount += 1;
+		tmp = tmp->opr.op[0];
+	}
+	printf("paraCount: %zu\n", paraCount);
+
+	tmp = node;
 	nodeType ** para_decl = (nodeType **) malloc (paraCount * sizeof (nodeType *)); 
 	if (paraCount == 1) {
 		para_decl[0] = node;
@@ -303,7 +280,7 @@ void getParaList(nodeType* node) {
 
 	else {
 		int i =0;
-		while (tmp->opr.opType == concatenate) {
+		while (tmp->type == OPERATOR_NODE && tmp->opr.opType == concatenate) {
 			para_decl[i] = tmp->opr.op[1];
 			i ++;
 			tmp = tmp->opr.op[0];
@@ -1347,8 +1324,10 @@ varTypeEnum funcDefHandler(oprNode* opr) {
 		pushNewSymbolTable();
 	}
 
+
 	varTypeEnum returnType = typeGen(opr->op[0]); // function return type
 	idName = idGen(opr->op[1]); // function name
+
 
 	id = findFunction(idName);
 
@@ -1393,6 +1372,7 @@ varTypeEnum funcDefHandler(oprNode* opr) {
 
 	} 
 	else if (opr->numOperands == 4) {
+
 		getParaList(opr->op[2]);
 
 		id = (struct identifier*) malloc(sizeof(struct identifier));
