@@ -983,7 +983,6 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 
 
 varTypeEnum initListHandler(oprNode* opr) {
-	// TODO
 	int i;
 	nodeType* temp = 0;
 	char* idName = 0;
@@ -995,7 +994,7 @@ varTypeEnum initListHandler(oprNode* opr) {
 	varTypeEnum lastType = ERROR_TYPE;
 	if (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
 		lastType = conditionalExpressionHandler(temp->opr.op[1]);
-		if (ret == ERROR_TYPE)
+		if (lastType == ERROR_TYPE)
 			return ERROR_TYPE;
 	}
 
