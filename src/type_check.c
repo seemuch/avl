@@ -65,10 +65,6 @@ int typeCheckingOpNode(oprNode* opr) {
 	char* idName = 0;
 	struct identifier* id = 0;
 
-	printf("----------------------\n");
-	printf("opr->opType: %d\n", opr->opType);
-	printf("%d\n", jump_break_state);
-
 	switch (opr->opType) {
 
 		case parentheses_exp:
@@ -131,7 +127,6 @@ int typeCheckingOpNode(oprNode* opr) {
 			// two index, representing a range
 			else {
 				temp = opr->op[1];
-				printf("first index node type: %d\n", temp->type);
 				/*
 				 * Now temp is a conditional-expression node. 
 				 * 		It can be various operator node;
@@ -153,7 +148,6 @@ int typeCheckingOpNode(oprNode* opr) {
 				}
 
 				temp = opr->op[2];
-				printf("second index node type: %d\n", temp->type);
 				/*
 				 * Now temp is a conditional-expression node. 
 				 * 		It can be various operator node;
@@ -420,7 +414,6 @@ int typeCheckingOpNode(oprNode* opr) {
 			}
 
 			// index one
-			printf("Jenny first\n");
 			temp = opr->op[1];
 			if (temp->type == OPERATOR_NODE) {
 				if (temp->opr.opType == len || temp->opr.opType == math_op)  {
@@ -466,9 +459,7 @@ int typeCheckingOpNode(oprNode* opr) {
 			}
 
 			// index two
-			printf("Jenny second\n");
 			temp = opr->op[2];
-			printf("nodeType: %u\n", temp->type);
 			if (temp->type == OPERATOR_NODE) {
 				if (temp->opr.opType == len || temp->opr.opType == math_op)  {
 					if (typeCheckingOpNode(&temp->opr))
@@ -496,7 +487,6 @@ int typeCheckingOpNode(oprNode* opr) {
 
 			else if (temp->type == ID_NODE) {
 				idName = idGen(temp);
-				printf("idName: %s\n", idName);
 				id = findVariable(idName);
 				if (!id) {
 					printf("Identifier not found: %s\n", idName);
@@ -572,7 +562,6 @@ int typeCheckingOpNode(oprNode* opr) {
 					return 1;
 				}
 				idName = idGen(temp->opr.op[0]);
-				printf("idName: %s\n", idName);
 				id = findVariable(idName);
 				if (id) {
 					printf("Redefinition of %s\n.", idName);
@@ -635,16 +624,12 @@ int typeCheckingOpNode(oprNode* opr) {
 			temp = opr->op[0];
 
 			while (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
-				printf ("Jenny 2\n");
-				printf ("type: temp->opr.op[1]->type %d\n", temp->opr.op[1]->type);
 				if (temp->opr.op[1]->type == OPERATOR_NODE) {
-					printf ("Jenny 3\n");
 					if (typeCheckingOpNode (&(temp->opr.op[1]->opr)))
 						return 1;
 				}
 
 				else if (temp->opr.op[1]->type == ID_NODE) {
-					printf("Jenny 4\n");
 					idName = idGen((temp->opr.op[1]));
 					id = findVariable(idName);
 					if (!id) {
@@ -657,7 +642,6 @@ int typeCheckingOpNode(oprNode* opr) {
 			}
 
 			if (temp->type == ID_NODE) {
-				printf ("Jenny 1\n");
 				idName = idGen(temp);
 				id = findVariable(idName);
 				if (!id) {
@@ -972,7 +956,6 @@ int typeCheckingOpNode(oprNode* opr) {
 
 			} 
 			else if (opr->numOperands == 4) {
-				printf("%d\n", opr->op[2]->type);
 				getParaList(opr->op[2]);
 
 				id = (struct identifier*) malloc(sizeof(struct identifier));
