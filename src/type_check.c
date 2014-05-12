@@ -333,14 +333,12 @@ void getParaList(nodeType* node) {
 	if (node->type != OPERATOR_NODE)
 		return ;
 	
-	printf("paraCount: %zu\n", paraCount);
 	paraCount = 1;
 	nodeType* tmp = node;
 	while (tmp->type == OPERATOR_NODE && tmp->opr.opType == concatenate) {
 		paraCount += 1;
 		tmp = tmp->opr.op[0];
 	}
-	printf("paraCount: %zu\n", paraCount);
 
 	tmp = node;
 	nodeType ** para_decl = (nodeType **) malloc (paraCount * sizeof (nodeType *)); 
