@@ -140,7 +140,7 @@ nodeType* operatorNodeCreator (operatorTypeEnum, int, ...);
 
 void avl_code_generator(nodeType* root);
 
-int typeChecking(nodeType* root);
+varTypeEnum typeChecking(nodeType* root);
 
 void freeTree(nodeType* node);
 
