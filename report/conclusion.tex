@@ -1,0 +1,203 @@
+\section{Conclusions}
+
+\subsection{Lessons Learned as a Team}
+
+\begin{enumerate}
+\item
+One of the most important things is to invent a great language idea. The idea should be
+interesting enough and can be done in given a semester. Also, the team should be able to estimate
+the total amount of work before making the plan for such a semester-long project.
+
+\item
+Meetings regularly to keep every team member up to date with bi-weekly tasks. Keep coding every
+week improves efficiency and productivity. Each team member should feel a greater sense of
+responsibility for his/her scope. In addition, each team member should finish his/her task in time.
+
+\item
+Using version control systems appropriately greatly helps development of a large project.
+\end{enumerate}
+
+\subsection{Lessons Learned by Each Team Member}
+
+\subsubsection{Jiuyang Zhao}
+
+From this project. I have done the task I never covered before. Testing is not as easy as most
+people imagine. First, To write a good test code we need to deeply know the target to the program we
+write. So I take part in designing grammar, and backend function coding to know both front-end and
+back-end things in a compiler, but I found this knowledge is still far from enough and often I still
+have trouble to locate the bugs.  Second, the concept of unitest is difficult to implement. In this
+project we use autotool in GNU to generate automatic test-bench. However it is not atomic enough to
+cope with every corner of our program. Most of test cases I write was to test the every production
+in grammar, and the different function in our back-end class. However, to test the function like
+scope and memory leak is still very difficult. 
+
+Also designing a good language is also very tough because there are no existing standard and method
+to designing context free grammar. We have some technique to generate regular expression. But we
+don’t have too much way to deal with CFG. The only technique we have is some basic things like
+remove left reduction, factoring and disambiguous a grammar. With the powerful modern tools like
+bison, this problem will be solved automatically, and how to design a grammar still remains a core
+problem. The lesson we learn from this is trying to use the CFG from existent language such as C and
+python. There CFG are already well defined so we don’t need to do most of task our self to write a
+concise programming language.
+
+\subsubsection{Qianxi Zhang}
+
+First of all, the project helped me to have a deeper understanding of the knowledge we learned in
+the course. As we discussed how to implement each part of the project a little bit earlier than the
+course, we may think the question by ourselves. After that, we can compare our ideas with the
+algorithm taught in class which helped a lot for grasp the outstanding points of the algorithm.
+The most important things I learned from the project is about team working.
+
+\begin{enumerate}
+\item Creative Power: I really appreciate the creative power of the team, which I would never have by
+working by myself. The first several ideas about the project were trivial or had already been
+implemented by other teams in the past years. For example, language to solve the mathematical
+problems or graph theory problems, language to generate movies or language to teach students.
+Although each idea seemed simple, but when we combined them together, a novel language AVL came out.
+I think it is worth to spend a long time to do brainstorming and don't give up when you feel
+depressed. Discussing and exchanging ideas will get magic result and a great idea is half the battle
+for a team.
+\item Listening and Learning from Others: When implementing our project, we may often have
+	different ideas with each other. Instead of consisting on our own ideas, the better way is to
+	listen to others, and try to understand their core intention of the ideas. Then we can discuss
+	the advantages and disadvantages of the ideas and finally find what is truly best for our
+	project. Moreover, each member have their own talent, and we can learn a lot from others. For
+	example, the rigorous coding style, the knowledge to set up the complex project environment or
+	even basic skills such as how to use VIM efficiently.
+\item Coding: For coding part, we learned a lot about version management. We emphasized the
+	importance of uploading code after tested locally or at least can be compiled. Otherwise, others
+	may be unable to debug their new code. Another way to avoid this problem is to let different
+	member manage different file at same time and the interface of each module should be well
+	defined earlier. Moreover, discussing frequently can help us catch up with others steps. Since
+	we manage different parts of the project, if we have different understanding of the newest
+	feature of the language, it may lead to bugs between the modules.
+\end{enumerate}
+
+\subsubsection{Qinfan Wu}
+
+It is relatively hard to building a project from scratch. Also, we need to learn how to work in
+a team of five, how to communicate with each other and build a big project in parallel. A few
+things that worth noting are as follows.
+
+\begin{enumerate}
+\item
+Have a good design and understanding of the project before coding. Keep modular design and
+always make sure that you can add more features and make modifications without unnecessary
+effort.
+\item
+Every time you implement a small feature, you need to do enough testing by creating some test
+cases, then commit to the git repository. Also, it is hard to create test cases that cover all
+the cases.
+\item
+Split up the whole project into appropriate modules. First define the interface between all
+the modules and then implement each functionality.
+\item
+Working in a team with several people is more productive than working alone. Also, having
+roles assigned helps divide the task into appropriate parts.
+\item
+Automate the building and testing process as much as you can. Almost all of them can be done
+by Makefiles and bash scripts.
+\item
+All the code must be clearly organized and well commented.
+\end{enumerate}
+
+\subsubsection{Shining Sun}
+
+This is one of the largest project that I have worked on. I had a enjoyable time, also a hard
+time. Also, this is the largest team I have ever been in. Although suffering from time to time,
+I did learn  a lot from this project. 
+
+\begin{enumerate}
+\item
+Plan well. One of the lessons that I learned from this project is that always plan ahead of
+time, especially large projects like this. Planning is good for all aspects. Time wise, a good
+plan can save us from rushing towards the deadline. Work load wise, a good plan can keep
+everybody in the team involved, and have a reasonable work load such that nobody can sit back
+and take everything for granted, and nobody needs to have to much burden on his shoulder. 
+\item
+Execution. A good play needs good execution. Even with a perfect plan, if nobody follows it,
+it still does not make any sense. There are tons of ways to keep the execution of the team. For
+example, there could be some reward for people finish their work on time, and punishment for
+those who do not. 
+\item
+Communication. I did not realize the importance of communication until I participated in this
+project. It is so important and not so easy to understand each other’s idea. We had a lot of
+arguments just because people did not understand each other. I think everybody agrees that
+meeting regularly is very important. But I also learned that meeting with an agenda is also very
+important. At the beginning of each meeting, an agenda should be firstly drafted. This is
+essential for a meeting to be concise and time-saving.
+\item
+Coding. Coding is of course the main part of the project. With such a large project, I
+learned that coding in good structure and style is very important. We have written about 7000
+lines of code, and if the structure of the code is bad, it is almost impossible to maintain the
+code. This is also very important for my future career, because in real-world industry, 7000
+lines of code is actually not that much. Software nowadays can have millions lines of code. If
+there is not a good structure and documentation, there is noway to maintain such a massive
+project. 
+\end{enumerate}
+
+\subsubsection{Yu Zheng}
+
+Building a project from scratch was quite an interesting experience. Also designing and
+implementing a translator was pretty helpful for understanding programming languages. Through
+this project, I learned how a source program was translated into an executable  file. More
+importantly, I learned how a team worked together, and how a team should work efficiently and
+effectively.
+
+\begin{enumerate}
+\item
+    	Start early. Weekly meeting is essential, no matter how unnecessary you think it would
+		be. Get prepared before meeting, and a well organized meeting is quite efficient.
+\item
+	    Working with talented teammates widened my horizon. They are not only classmates, but
+		also teachers that encouraged me a lot. Working together can be very creative and
+		productive. 
+\item
+		Project control tools, e.g. Automake, are life-saver. Generating projects
+		automatically and programmatically guarantees the development process. Of course, a
+		version control tool e.g. GibHub, is crucial, especially when the team size is larger
+		than 3.
+\item
+		Nothing would be sweeter and cooler than solving an issue. 
+\item
+		You will never regret to take this course. This project is full of fun and really
+		educative.
+\item
+		Teamwork is the most interesting and crutial part of this project. Believe your teammates and you will never
+		walk alone.
+\end{enumerate}
+
+\subsection{Advice for Future Teams}
+
+\begin{enumerate}
+\item
+Invent a good language idea.
+\item
+Use an appropriate version control system. Git/GitHub is a good choice.
+\item
+Use Autotools to generate and maintain Makefiles. Automake has good support for
+Lex/Yacc. Autotools are also helpful for running test cases automatically.
+\item
+Given the time, don’t create too complicated grammars, which makes semantic check
+much harder. Concentrate on the core functionality.
+\item
+Follow good coding style. Set ‘-Wall -Wextra -Werror’ for gcc and treat all warnings
+as errors.
+\item
+Good communication between all team members is important.
+\end{enumerate}
+
+\subsection{Suggestions for the instructor on what topics to keep, drop, or add in future
+courses}
+
+\begin{enumerate}
+\item
+We want to learn more detailed information about semantic check, especially type
+checking, scope checking, and symbol table.
+\item
+More detailed information about SDT is desired.
+\item
+We are curious about back end of the compiler. More back end topics are desired.
+\item
+We want to know more technique on how to design a context free grammar we want.
+\end{enumerate}
