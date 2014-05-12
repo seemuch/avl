@@ -83,6 +83,9 @@ int generateSubtree(nodeType* node) {
 				case BOOL_TYPE:
 					print_append("AvlBool", 1);
 					break;
+				case ERROR_TYPE:
+					print_append("/*Error*/", 1);
+					break;
 			}
 			break;
 		case ID_NODE:
