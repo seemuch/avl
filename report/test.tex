@@ -1,0 +1,128 @@
+\section{Test plan: Jiuyang Zhao}
+
+\subsection{Tools}
+
+AVL compiler uses GNU Autotools to generate makefiles automatically. Autotools provides the function
+make check to run our tests cases automatically. By running this command, our makefile will run the
+test cases sequentially one by another. It give the result into four classes. \verb"#PASS",
+\verb"#FAIL", \verb"#XPASS" and \verb"#XFAIL". Each of them denotes the meaning that: the correct
+test cases that passed(good case), the correct test cases but failed(bad case), the incorrect test
+cases but passed(bad case) and the incorrect test cases that failed(good case).
+
+After running  make check, we can get to statistics result of the successful rate of our test cases.
+After the we run the that command, a log file will be generated for each test case to record the
+output of stdout and stderr. So once that are unexpected result, we can check the log file and debug
+easily.
+
+\subsection{Relevant and Description}
+
+Our test cases can be divided into seven classes, each classes corresponds to a part in AVL grammar.
+They are:
+\begin{itemize}
+\item constant\_*: 
+This is a most simple one. Just test if there are any error when we taking each data types as
+constant.
+\item declaration\_*:
+In declaration part we test different way of declaration for data type. For example: adding keyword
+‘display’, ‘hide’ or not, declare with initialization value or not, and different way in declare an
+array.
+\item expression\_*:
+In expression part we test some operation in expression like swaping an array, or displaying/hiding
+a variable in half way.
+\item operator\_*:
+In operator we test the basic operation for every data type, including postfix, unary and binary
+operator. Because different data type are implement in different class at our back end, and we
+overload every operator for them. So it is necessary to check these member functions.
+\item display\_*:
+For each object like AvlInt and AvlArray in our back-end, we use the function render to draw each
+object and ready to print. We design part of test cases to check whether each kind of data type can
+be displayed correctly.
+\item function\_*: 
+Here we test for parameter and return value for each data type. Also we test the function of
+subarray and the displaying when functions are nested.
+\item statement\_*:
+Here we mainly aim to test for different of control flows like if, for and while. Also we have
+tested for some basic scope.
+\end{itemize}
+
+\subsection{Selected Test Cases}
+
+This is a simple test cases for declare an bool array:
+
+\begin{verbatim}
+    int main()
+    {
+        bool b6[5];
+        display bool b7[5];
+        hide bool b8[6];
+        bool b9[3] = {true, true, false};
+
+        return 0;
+    }
+\end{verbatim}
+
+This is another test cases for for loop taken as looping variable.
+
+\begin{verbatim}
+
+int main(){
+    /* empty, line 4 failed */
+    for (int i = 0; i < 10; i++);
+
+    for (int i = 0; i<10; i++) {
+
+    }
+
+    /* regular for */
+    for (int i = 0; i < 10; i++) {
+        print i;
+    }
+
+    /* changing i inside */
+    for (int i = 0; i < 10; ) {
+        print i;
+        i = i + 2;
+    }
+
+    /* decleare i outside for */
+    int i = 0;
+    for (i; i < 10; i++)
+        print i;
+    for(i; i > 0;)
+        print i--;
+
+    /* testing continue, break */
+    for (i; i < 10; i++) {
+        if( i == 2)
+            continue;
+        else if (i == 5)
+            break;
+        print i;
+    }
+
+    /* testing nested for */
+    for (i = 0; i < 3; i++) {
+        for (int j = 0; j < 2; j++)
+            print j;
+    }
+
+    /* testing return */
+    for (i = 0; i < 10; i++){ 
+        print i;
+        if (i == 5)
+            return 0;
+    }
+
+    return 0;
+}
+\end{verbatim}
+
+\subsection{Notable Bugs Encountered}
+
+\begin{enumerate}
+\item We must add \verb"()" when we translate print into \verb"std::cout" because in c++ the
+precedence of \verb"<<" is higher than some operator we need in AVL like \verb"||".
+\item Because we translate int to our own defined type AvlInt, we must treat the \verb"int" in
+\verb"int main().." differently to avoid the main function in c++ returning an \verb"AvlInt".
+\item Our test cases in loop statement find out that we cannot handle empty loop before.
+\end{enumerate}

@@ -1,0 +1,118 @@
+\section{Introduction}
+
+\subsection{The Problem}
+   
+AVL (Algorithm Visualization Language) is an intuitive educational programming language that
+concentrates on the algorithm teaching and learning in the way of visualization. The output of AVL
+is a sequence of graphics or video, which describes how an algorithm works. AVL provides varying
+degrees of flexibility and programmability. It helps beginners understand a complicated algorithm in
+an intuitive way. It assists professionals to visualize their self-design algorithms, where AVL
+provides visualization control interface.
+    
+AVL breaks the limitation of current similar languages. It is highly focused on the robust algorithm
+guarantee as a visualization language. The shining breakthrough is to provide a series of
+complicated low-level drawing operations, which is specially designed for algorithm visualization.
+	 
+AVL is also an educational language. It provides simple and clear grammar with C++ style. Benefiting
+from the easy-to-use features of AVL, the target users, teachers and students, are able to easily
+demonstrate or learn the algorithms.
+	  
+	   
+\subsection{Why Use AVL}
+	    
+There are several existing approaches to algorithm visualization. First, in order to visualize
+algorithms such as Quicksort, we can just write a C++ program that manipulates an array and use
+third-party libraries to display the animation. Second, there are lots of videos which show
+different kinds of algorithms and data structures, such as sorting
+(\url{http://www.sorting-algorithms.com/}) and trees
+(\url{http://www.qmatica.com/DataStructures/Trees/AVL/AVLTree.html}). There are also some
+visualization techniques, such as Animal (\url{http://www.algoanim.info/AnimalAV/}). However, these
+approaches all have certain kinds of drawbacks and limitations.
+		 
+\subsubsection{Complicated low-level drawing operations}
+
+Some approaches require users to implement the low-level drawing operations. People have to generate
+the video frame by frame, take into account where to put the array on the screen and think about
+what third-party library is available to draw the variables and operations. These low-level
+operations are complicated, making algorithm visualization difficult and inefficient.
+		  
+\subsubsection{Limitation on available algorithms}
+
+Many approaches only allow visualization of a limited number of existing algorithms. They do not
+allow user to visualize their own algorithms.
+		   
+\subsubsection{Hard to learn and use}
+
+Some approaches, such as Animal (\url{http://www.algoanim.info/AnimalAV/}), provides a good
+animation tool for general-purpose animation. However, learning to use these tools is also hard and
+takes extra time for people who only have a basic understanding of C programming.
+		    
+			 
+\subsection{Target Users}
+			  
+The target users of our algorithm visualization language are teachers and students in computer
+education in high school. This language can also be utilized in basic programming courses in college
+like Data Structure.
+			   
+Teachers with rich programming experiences can use our AVL to generate the video for the algorithms
+they prepare to demonstrate in class. With our language, they do not need to draw the picture
+describing their algorithm in the old fashioned way. In addition, because our languages are highly
+flexible, teachers can visualize whatever algorithm they want. For example, when preparing a
+teaching material, you may easily get the picture for Quick Sort from internet. But it’s difficult
+to get one for Randomized Quick Sort. Then our AVL may help you at this time. You just need to write
+a Randomized Quick Sort liked program. Our language will generate the video for you automatically.
+			    
+Our language is also a good tool for the students or beginner in coding. Students with no
+programming background can use our built-in library such as Stack and LinkedList. Operation of these
+built-in data structures are well encapsulated, but we can generate the video telling you what is
+happening inside.
+				 
+				  
+\subsection{Properties}
+				   
+\subsubsection{Visualization}
+
+According to research, visual information accounts for more than $70\%$ of all the information human
+perceive. And that is our origin motivation of inventing AVL. The most significant feature of AVL
+is, as its name indicates, visualization. Instead of focusing on the outcome of algorithms as normal
+programming languages do, AVL concentrates on the process of algorithms. With AVL, users can
+actually see how their programs run, via which they can have a better understanding of their
+programs and algorithms.
+				    
+\subsubsection{Convenient}
+
+The primary goal of AVL is to hide the complex visualization process behind the code for user to
+write. By using AVL, user can focus on the algorithm and write C-style code without thinking how to
+visualize it. The visualization process, such as where to draw the array on the screen and how to
+highlight a part of a array, is generated automatically when the code is compiled.
+					 
+\subsubsection{Flexible}
+
+The most important feature of AVL is visualization. But users of AVL may not what to visualize
+everything they write. Therefore, AVL has some key words to let the uses define which part of their
+program to visualize. It gives the users a flexible choice to generate their own animations. For
+example, some user may be curious about the difference between merge sort and insertion sort, and he
+can create two animations with AVL to compare them. While in other cases, sorting might just be a
+subroutine of a complex program, and thus can be ignored in the animation.
+					  
+\subsubsection{Simple and Familiar}
+
+Since the users of the AVL are professors and students who teach and learn algorithms, respectively,
+we want to design AVL as a simple language that can be used without extensive training.
+
+We keep AVL as a similar language to C++ which means that the programmers can migrate easily to our
+language. Focusing on the problem of algorithm visualization, we must add new features such as
+keywords mentioned in part ``Flexible''. Moreover, considering the fact that student users may be
+entry level programmers and the limitation of visualization, we remove some unnecessary complexities
+of C++ and add some build-in libraries which include general data structures and algorithms for the
+beginners.
+					   
+\subsubsection{Robust}
+
+AVL is designed for creating clearly and understandable animations of algorithms, so it provides
+compile-time checking of the code to prevent violations such as exceeding array bounds. However, for
+the purpose of flexibility, AVL cannot check whether the program is ``correct''. For example, the
+user may write a sort algorithm whose result is still unsorted, or the user may write an infinite
+loop which makes the program never end. To solve this problem, we simply create the animation as the
+user defined in their program and let them to find the error by themselves, which, on the other
+hand, makes AVL a debug tool for students learning algorithms.

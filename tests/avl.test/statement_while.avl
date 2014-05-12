@@ -37,8 +37,6 @@ int main(){
 		else if(i==5)
 			break;
 		print i;
-		
-
 	}
 
 	i = 0;
@@ -55,8 +53,6 @@ int main(){
 		if(i == 5)
 			return 0;
 	}
-
-	
 	
 	return 0;
 }
