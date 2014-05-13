@@ -1,7 +1,11 @@
 int main() {
 	<begin_display>
 	<begin_display>
+<<<<<<< HEAD
 	display char str[] = {'H', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'};
+=======
+	display char str[] = "Hello world!";
+>>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 	display int a[] = {1, 2, 3, 4};
 	<end_display>
 	<end_display>

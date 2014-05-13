@@ -2,12 +2,18 @@ int main(){
 
 	index in1;
 	index in2 = 1;
+<<<<<<< HEAD
 	/*
+=======
+>>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 	display index in3 = 1;
 	hide index in4 = 1;
 	display index in5;
 	hide index in6;
+<<<<<<< HEAD
 	*/
+=======
+>>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 
 	return 0;
 }

@@ -13,6 +13,7 @@ typedef enum {
 } nodeTypeEnum;
 
 typedef enum {
+<<<<<<< HEAD
 	parentheses_exp, // 0
 	array,           // 1
 	func_call,       // 2 
@@ -46,6 +47,41 @@ typedef enum {
 	trans_unit,      // 30
 	func_def,        // 31
 	para_declar      // 32
+=======
+	parentheses_exp,
+	array,
+	func_call,
+	concatenate,
+	math_op,
+	len,
+	assignment,
+	disp_exp,
+	hide_exp,
+	swap,
+	print,
+	print_list,
+	var_decl,
+	var_decl_disp,
+	var_decl_hide,
+	arr_decl,
+	init_list,
+	empty_state,
+	exp_state,
+	declar_state,
+	comp_state,
+	state_list,
+	display_state,
+	select_state,
+	while_state,
+	do_while_state,
+	for_state,
+	jump_continue_state,
+	jump_break_state,
+	jump_ret_state,
+	trans_unit,
+	func_def,
+	para_declar
+>>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 } operatorTypeEnum;
 
 typedef enum {
@@ -55,7 +91,12 @@ typedef enum {
 	STRING_TYPE,
 	INDEX_TYPE,
 	BOOL_TYPE,
+<<<<<<< HEAD
 	ERROR_TYPE // internal use only
+=======
+	ERROR_TYPE, // internal use only
+	RANGE_TYPE 	// internal use only
+>>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 } varTypeEnum;
 
 // integer constants
