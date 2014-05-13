@@ -13,39 +13,39 @@ typedef enum {
 } nodeTypeEnum;
 
 typedef enum {
-	parentheses_exp,
-	array,
-	func_call,
-	concatenate,
-	math_op,
-	len,
-	assignment,
-	disp_exp,
-	hide_exp,
-	swap,
-	print,
-	print_list,
-	var_decl,
-	var_decl_disp,
-	var_decl_hide,
-	arr_decl,
-	init_list,
-	empty_state,
-	exp_state,
-	declar_state,
-	comp_state,
-	state_list,
-	display_state,
-	select_state,
-	while_state,
-	do_while_state,
-	for_state,
-	jump_continue_state,
-	jump_break_state,
-	jump_ret_state,
-	trans_unit,
-	func_def,
-	para_declar
+	parentheses_exp, // 0
+	array,           // 1
+	func_call,       // 2 
+	concatenate,     // 3
+	math_op,         // 4
+	len,             // 5
+	assignment,      // 6
+	disp_exp,        // 7
+	hide_exp,        // 8
+	swap,            // 9
+	print,           // 10
+	print_list,      // 11
+	var_decl,        // 12
+	var_decl_disp,   // 13
+	var_decl_hide,   // 14
+	arr_decl,        // 15
+	init_list,       // 16
+	empty_state,     // 17
+	exp_state,       // 18
+	declar_state,    // 19
+	comp_state,      // 20
+	state_list,      // 21
+	display_state,   // 22
+	select_state,    // 23
+	while_state,     // 24
+	do_while_state,  // 25
+	for_state,       // 26
+	jump_continue_state,  // 27
+	jump_break_state,     // 28
+	jump_ret_state,  // 29
+	trans_unit,      // 30
+	func_def,        // 31
+	para_declar      // 32
 } operatorTypeEnum;
 
 typedef enum {
@@ -55,8 +55,7 @@ typedef enum {
 	STRING_TYPE,
 	INDEX_TYPE,
 	BOOL_TYPE,
-	ERROR_TYPE, // internal use only
-	RANGE_TYPE 	// internal use only
+	ERROR_TYPE // internal use only
 } varTypeEnum;
 
 // integer constants

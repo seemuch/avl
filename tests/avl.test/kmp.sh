@@ -1,2 +1,2 @@
 #!/bin/bash
-avl -o kmp kmp.avl
+avl -t kmp.avl

@@ -2,10 +2,12 @@ int main(){
 
 	index in1;
 	index in2 = 1;
+	/*
 	display index in3 = 1;
 	hide index in4 = 1;
 	display index in5;
 	hide index in6;
+	*/
 
 	return 0;
 }

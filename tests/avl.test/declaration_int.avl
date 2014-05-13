@@ -2,11 +2,10 @@ int main(){
 
 
 	int i;
-        int i1 = 1;
-        display int i2 = 1;
-        hide int i3 = 1;
-        display int i4;
-        hide i5;
+    int i1 = 1;
+    display int i2 = 1;
+	hide int i3 = 1;
+	display int i4;
 
 	return 0;
 }

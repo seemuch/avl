@@ -1,2 +1,2 @@
 #!/bin/bash
-avl -o function_char function_char.avl
+avl -t function_char.avl

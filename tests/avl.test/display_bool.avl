@@ -5,11 +5,13 @@ int main(){
 		b;
 	<end_display>
 
+	/*
 	hide b;
 
 	<begin_display>
 		b;
 	<end_display>
+	*/
 
 	return 0;
 }

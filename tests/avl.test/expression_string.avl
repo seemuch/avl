@@ -4,8 +4,6 @@ int main(){
 	print s;
 	s = "abc";	
 	print s;
-	hide s;
-	display s;
 
 	return 0;
 }
