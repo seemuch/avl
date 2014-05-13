@@ -86,11 +86,6 @@ int generateSubtree(nodeType* node) {
 				case ERROR_TYPE:
 					print_append("/*Error*/", 1);
 					break;
-<<<<<<< HEAD
-=======
-				case RANGE_TYPE:
-					print_append("/*Range*/", 1);
->>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 			}
 			break;
 		case ID_NODE:

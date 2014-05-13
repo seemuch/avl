@@ -22,10 +22,6 @@ AC_CONFIG_FILES([
 		 tests/libavl.test/Makefile
 		 tests/avl.test/Makefile
 		 tests/error.test/Makefile
-<<<<<<< HEAD
-		 tests/shining_test/Makefile
-=======
->>>>>>> eeb3a8c0b1fbd1d5f20dfb9e221997ec6b5ecf0c
 		 ])
 
 AC_OUTPUT
