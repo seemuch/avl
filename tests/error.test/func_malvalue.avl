@@ -1,4 +1,4 @@
-int test(bool b) {
+char test(bool b) {
 	return b;
 }
 

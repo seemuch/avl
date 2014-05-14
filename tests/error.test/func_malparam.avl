@@ -3,6 +3,6 @@ int test(int b) {
 }
 
 int main() {
-	test(true);
+	test('a');
 	return 0;
 }

@@ -11,6 +11,8 @@
 
 int yyparse();
 
+int typeCheckingFail = 0;
+
 const char *const USAGE =
 	"Usage: " PACKAGE " [-h|-o|-t] file\n"
 	"Options:\n"
@@ -212,6 +214,9 @@ int main(int argc, char *argv[])
 
 	if (yyparse() != 0)
 		die("Parsing failed.");
+
+	if (typeCheckingFail)
+		die("Sorry, type checking failed.");
 
 	fclose(yyin);
 	fclose(yyout);
