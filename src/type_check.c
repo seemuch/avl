@@ -121,7 +121,7 @@ varTypeEnum conditionalExpressionHandler(nodeType* node) {
 		return STRING_TYPE;
 	}
 	
-	printf("Shining wrong 1?\n");
+	//printf("Shining wrong 1?\n");
 	return ERROR_TYPE;
 	
 }
@@ -147,8 +147,8 @@ varTypeEnum typeChecking(nodeType* root) {
 
 // secondary entrance of type checking
 varTypeEnum typeCheckingSubTree(nodeType* node) {
-	//printf("--------------------------------------jenny\n");
-	//printf("node type: %s\n", node->type);
+	// printf("--------------------------------------jenny\n");
+	// printf("node type: %s\n", node->type);
 
 	if (node->type == OPERATOR_NODE) {
 		if(typeCheckingOpNode(&node->opr) == ERROR_TYPE) {
@@ -177,8 +177,8 @@ varTypeEnum typeCheckingSubTree(nodeType* node) {
 
 // type checking for operator node
 varTypeEnum typeCheckingOpNode(oprNode* opr) {
-	printf("--------------------------------------jenny\n");
-	printf("operator type: %u\n", opr->opType);
+	// printf("--------------------------------------jenny\n");
+	// printf("operator type: %u\n", opr->opType);
 	varTypeEnum ret;
 	switch (opr->opType) {
 
@@ -205,7 +205,6 @@ varTypeEnum typeCheckingOpNode(oprNode* opr) {
 		case len:
 			ret = lenHandler(opr);
 			if (ret == ERROR_TYPE) return ERROR_TYPE;
-			printf("return: %u\n", ret);
 			return ret;
 
 		case assignment:
@@ -322,11 +321,10 @@ varTypeEnum typeCheckingOpNode(oprNode* opr) {
 			return VOID_TYPE;
 
 		default:
-			printf("Shining wrong 2?\n");
-			printf("Operator type: %u\n", opr->opType);
+			// printf("Shining wrong 2?\n");
 			return ERROR_TYPE;
 	}
-	printf("Shining wrong 3?\n");
+	// printf("Shining wrong 3?\n");
 	return ERROR_TYPE;
 }
 
@@ -577,7 +575,6 @@ varTypeEnum funcCallHandler(oprNode* opr) {
 			tmp += 1;
 			temp = temp->opr.op[0];
 		}
-		printf("Jenny: %d\n", tmp);
 
 		// the number of arguments must match
 		if (id->numArgs != tmp) {
@@ -601,8 +598,6 @@ varTypeEnum funcCallHandler(oprNode* opr) {
 
 			else {
 				currType = conditionalExpressionHandler(temp);
-				printf("currType: %u\n", currType);
-				printf("idType: %u\n", id->args[tmp-1]);
 				if (!compatibleType(id->args[tmp - 1], currType)) {
 					printf("Function argument has a wrong type.\n");
 					return ERROR_TYPE;
@@ -705,38 +700,30 @@ varTypeEnum mathOpHandler(oprNode* opr) {
 }
 
 varTypeEnum lenHandler(oprNode* opr) {
-	printf("jenny0\n");
 	int i;
 	nodeType* temp = 0;
 	char* idName = 0;
 	struct identifier* id = 0;
 	varTypeEnum ret = VOID_TYPE;
 
-	printf("jenny\n");
 	if (opr->op[0]->type != ID_NODE) {
-		printf("jenny2\n");
-		printf("len operator can only be applied to an array.\n");
 		return ERROR_TYPE;
 	}
 
 	else {
-		printf("jenny3\n");
 		idName = idGen(opr->op[0]);
 		id = findVariable(idName);
 
-		printf("jenny4\n");
 		if (!id) {
 			printf("Identifier not found: %s\n", idName);
 			return ERROR_TYPE;
 		}
-		printf("jenny5\n");
 
 		if (! (id->isArray) ) {
 			printf ("len operator can only be applied to an array.\n");
 			return ERROR_TYPE;
 		}
 	}
-		printf("jenny6\n");
 	return INT_TYPE;
 }
 
@@ -772,7 +759,6 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 		afterEqual = ret;
 	}
 
-	printf("Jenny1\n");
 
 	// then deal with the node before the assignemnt operator
 	temp = opr->op[0];
@@ -790,7 +776,6 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 
 	// It is an operator node, with array operation
 	if (temp->type == OPERATOR_NODE && temp->opr.opType == array) {
-	printf("Jenny2\n");
 		if (typeCheckingOpNode(&temp->opr) == ERROR_TYPE)
 			return ERROR_TYPE;
 
@@ -812,7 +797,6 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 
 	// It is an operator node, with arr_decl operation
 	else if (temp->type == OPERATOR_NODE && temp->opr.opType == arr_decl) {
-	printf("Jenny3\n");
 		temp = temp->opr.op[0];
 		idName = idGen(temp);
 		id = findVariable(idName);
@@ -838,27 +822,20 @@ varTypeEnum assignmentHandler(oprNode* opr) {
 
 	// It is an identifier node
 	else if (temp->type == ID_NODE) {
-	printf("Jenny4\n");
 		idName = idGen(temp);
 		id = findVariable(idName);
 		if(!id) {
-			printf("Jenny41\n");
 			printf ("Identifier not found: %s\n", idName);
 			return ERROR_TYPE;
 		}
 		
-		printf("Jenny42\n");
-		printf("id->type: %u\n", id->type);
-		printf("afterEqual: %u\n", afterEqual);
 		if (!compatibleType(id->type, afterEqual)) {
 		printf("Assignemnt with wrong type.\n");
 			return ERROR_TYPE;
 		}
-		printf("Jenny43\n");
 	}
 
 	else {
-	printf("Jenny5\n");
 		printf ("Illegal assignment.\n");
 	}
 
@@ -1073,7 +1050,6 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 	// assignment
 	temp = opr->op[1];
 	if (temp->type == OPERATOR_NODE && temp->opr.opType == assignment) {
-		printf("Jenny0\n");
 
 		temp = temp->opr.op[1];
 		if (temp->type == OPERATOR_NODE && temp->opr.opType == init_list) {
@@ -1083,31 +1059,25 @@ varTypeEnum varDeclHandler(oprNode* opr) {
 			ret = typeCheckingOpNode(&temp->opr);
 
 			if (ret == ERROR_TYPE) {
-				printf("Jenny1\n");
 				return ERROR_TYPE;
 			}
 
 			if (ret != declaredType) {
-				printf("Jenny2\n");
 				return ERROR_TYPE; 
 			}
 		}
 
 		else {
-			printf("Jenny00\n");
 			if (isArray && !(temp->type == OPERATOR_NODE && temp->opr.opType == array && temp->opr.numOperands == 3))
 				return ERROR_TYPE;
 
-			printf("Jenny1\n");
 			ret = conditionalExpressionHandler(temp);
 			if (ret == ERROR_TYPE)
 				return ERROR_TYPE;
-			printf("Jenny2\n");
 			if (!compatibleType(ret, declaredType)) {
 				printf("Assignemnt with wrong type.\n");
 				return ERROR_TYPE;
 			}
-			printf("Jenny3\n");
 		}
 	}
 
@@ -1125,41 +1095,32 @@ varTypeEnum initListHandler(oprNode* opr) {
 
 	temp = opr->op[0];
 
-	printf("Shining1\n");
 	varTypeEnum lastType = ERROR_TYPE;
 	if (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
 		lastType = conditionalExpressionHandler(temp->opr.op[1]);
 		if (lastType == ERROR_TYPE) {
-			printf("Jenn1\n");
 			return ERROR_TYPE;
 		}
 	}
 
-	printf("Shining2\n");
 	while (temp->type == OPERATOR_NODE && temp->opr.opType == concatenate) {
 		ret = conditionalExpressionHandler(temp->opr.op[1]);
 		if (ret != lastType) {
-			printf("jenny2\n");
 			return ERROR_TYPE;
 		}
 
 		temp = temp->opr.op[0];
 	}
-	printf("Shining3\n");
 
 	ret = conditionalExpressionHandler(temp);
 	if (ret != lastType) {
-		printf("jenny3\n");
 		return ERROR_TYPE;
 	}
 
-	printf("Shining4\n");
 	if (ret == ERROR_TYPE) {
-		printf("Jenny4\n");
 		return ERROR_TYPE;
 	}
 
-	printf("Shining5\n");
 	return ret;
 }
 
@@ -1221,7 +1182,6 @@ varTypeEnum compStateHandler(oprNode* opr) {
 	printf("After Number of symbol table %d\n", countSymbolTable());
 
 	id = findVariable("j");
-	printf("j pointer: %p\n", id);
 	
 	return VOID_TYPE;
 }
@@ -1351,7 +1311,6 @@ varTypeEnum forStateHandler(oprNode* opr) {
 		if (ret == ERROR_TYPE)
 			return ERROR_TYPE;
 		if (ret != INT_TYPE && ret != INDEX_TYPE && ret != BOOL_TYPE) {
-			printf("second return: %u\n", ret);
 			return ERROR_TYPE;
 		}
 
